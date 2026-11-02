@@ -1,3 +1,23 @@
+## [2026-11-02 ~23:10-23:40] Cycle 22 — native/index.ts WIP completion: 16 svelte-check errors fixed (P1)
+- **Type**: Fix / Type-Debt (M-type, finish WIP from 2026-11-02 ~12:00 session)
+- **Priority**: HIGH (FE type-check gate)
+- **Status**: ✅ Success (svelte-check 289 → 273 errors; native service files 16 → 0 errors)
+- **Method**: root-cause bằng cách đọc type definitions THẬT trong `node_modules/@capacitor/**/definitions.d.ts` (no hallucination), align wrapper với plugin API đã cài:
+  - `DeliveredNotifications`: derive `Awaited<ReturnType<typeof PushNotifications.getDeliveredNotifications>>` (package không export type)
+  - `Device.getId() → { identifier }` (DeviceInfo không còn `uuid`); `App.getInfo().version` cho app version
+  - `Network.removeListener` → plugin chỉ có `removeAllListeners` → giữ signature + document
+  - `Encoding.Base64` không tồn tại (UTF8/ASCII/UTF16) → readFile không set encoding
+  - `AppState.state` không tồn tại → synthesize `'active'|'background'` từ `isActive`, giữ consumer contract
+  - `AppUrlOpen` → `URLOpenListenerEvent`; `Browser.open(options = {})` → `options?:` (url required)
+  - `app.removeListener`: listener-handle registry `Map<string, Promise<PluginListenerHandle>>` (race-safe: remove awaits registration)
+  - `stores.ts`: xoá local `DeviceInfo` drift, import type từ `@capacitor/device`
+- **Verify**: eslint 0 errors (2 warnings PRE-EXISTING — xác nhận bằng `git stash` A/B); svelte-check 273; full vitest **7654 passed / 0 failed / 61 skipped** (không regression).
+- **Test Delta**: 0 new tests (không có test cho native service — registered as gap, xem TODO)
+- **Self-score**: tests-thuần + docs ≤20 LOC/fn, complexity thấp, no new anti-patterns; error messages `[Native] Component - Reason - Suggestion` chuẩn §9.
+- **Lessons**: (1) WIP dang dở phải hoàn thành trước khi bắt đầu việc mới (audit_failed loop); (2) type drift ở local interface replica (stores.ts DeviceInfo) là bẫy lặp lại — luôn reuse plugin type.
+
+---
+
 ## [2026-11-02 ~22:00-23:00] Cycle 21 — Discovery: full multi-backend verification + FE flaky-test fix (P1)
 - **Type**: Violation Fix (T) + Discovery/Measurement (all backends)
 - **Priority**: HIGH (failing test = quality-gate violation)

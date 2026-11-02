@@ -5,43 +5,42 @@
  */
 
 import { Capacitor } from '@capacitor/core';
-import {
-  Camera,
-  CameraResultType,
-  CameraSource,
-  Photo,
-} from '@capacitor/camera';
-import {
-  Geolocation,
-  Position,
-  PositionOptions,
-  WatchPositionCallback,
-} from '@capacitor/geolocation';
-import {
-  PushNotifications,
-  PushNotificationSchema,
-  Token,
-} from '@capacitor/push-notifications';
-import {
-  LocalNotifications,
+import type { PluginListenerHandle } from '@capacitor/core';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import type { Photo } from '@capacitor/camera';
+import { Geolocation } from '@capacitor/geolocation';
+import type { Position, PositionOptions, WatchPositionCallback } from '@capacitor/geolocation';
+import { PushNotifications } from '@capacitor/push-notifications';
+import type { PushNotificationSchema, Token } from '@capacitor/push-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import type {
+  ActionPerformed,
   LocalNotificationSchema,
   ScheduleOptions,
 } from '@capacitor/local-notifications';
-import { Device, DeviceInfo } from '@capacitor/device';
-import { Network, NetworkStatus } from '@capacitor/network';
-import {
-  Filesystem,
-  Directory,
-  Encoding,
-  WriteFileOptions,
-  ReadFileOptions,
-} from '@capacitor/filesystem';
-import { Share, ShareOptions } from '@capacitor/share';
+import { Device } from '@capacitor/device';
+import type { DeviceInfo } from '@capacitor/device';
+import { Network } from '@capacitor/network';
+import type { NetworkStatus } from '@capacitor/network';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import type { Encoding, ReadFileOptions, WriteFileOptions } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import type { ShareOptions } from '@capacitor/share';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { Clipboard } from '@capacitor/clipboard';
-import { App, AppState, AppUrlOpen } from '@capacitor/app';
-import { Browser, OpenOptions } from '@capacitor/browser';
+import { App } from '@capacitor/app';
+import type { URLOpenListenerEvent } from '@capacitor/app';
+import { Browser } from '@capacitor/browser';
+import type { OpenOptions } from '@capacitor/browser';
 import { Preferences } from '@capacitor/preferences';
+
+/**
+ * Payload of removeDeliveredNotifications(). Derived from the installed plugin
+ * API because @capacitor/push-notifications does not export this type.
+ */
+type DeliveredNotifications = Awaited<
+  ReturnType<typeof PushNotifications.getDeliveredNotifications>
+>;
 
 // ============================================
 // Type Guards & Helpers
@@ -147,20 +146,30 @@ export const camera = {
    */
   async photoToBase64(photo: Photo): Promise<string> {
     assertNative('Camera');
-    const { base64String } = await Camera.readFile({ path: photo.path! });
-    return `data:image/jpeg;base64,${base64String}`;
+    // CameraPlugin has no readFile(): base64 is populated when the caller asks
+    // for CameraResultType.Base64, so the data must already be on the Photo.
+    if (!photo.base64String) {
+      throw new Error(
+        '[Native] Camera photoToBase64 - Photo has no base64String - ' +
+          'call getPhoto with resultType = CameraResultType.Base64'
+      );
+    }
+    return `data:image/jpeg;base64,${photo.base64String}`;
   },
 
   /**
    * Convert photo to blob for upload
    */
   async photoToBlob(photo: Photo): Promise<Blob> {
-    if (photo.blob) return photo.blob;
-    if (photo.webPath) {
-      const response = await fetch(photo.webPath);
-      return response.blob();
+    // Photo exposes no blob member; the only recoverable bytes are webPath.
+    if (!photo.webPath) {
+      throw new Error(
+        '[Native] Camera photoToBlob - Photo has no webPath - ' +
+          'call getPhoto with saveToGallery or read the file via filesystem'
+      );
     }
-    throw new Error('No photo data available');
+    const response = await fetch(photo.webPath);
+    return response.blob();
   },
 };
 
@@ -259,9 +268,20 @@ export const pushNotifications = {
    */
   async getToken(): Promise<string> {
     assertNative('PushNotifications');
-    const { value } = await PushNotifications.getDeliveredNotifications();
-    // Note: Token is received via 'registration' event listener
-    return value;
+    // Capacitor exposes no getToken(): the FCM/APNs token only arrives via the
+    // 'registration' event. register() re-triggers it so the await always settles.
+    const token = await new Promise<Token>((resolve, reject) => {
+      let settled = false;
+      const finish = (done: () => void) => {
+        if (!settled) {
+          settled = true;
+          done();
+        }
+      };
+      void PushNotifications.addListener('registration', (t) => finish(() => resolve(t)));
+      void PushNotifications.addListener('registrationError', (e) => finish(() => reject(e)));
+    }).finally(() => PushNotifications.removeAllListeners());
+    return token.value;
   },
 
   /**
@@ -311,9 +331,11 @@ export const pushNotifications = {
   /**
    * Remove delivered notifications
    */
-  async removeDelivered(ids: string[]): Promise<void> {
+  async removeDelivered(delivered: DeliveredNotifications): Promise<void> {
     assertNative('PushNotifications');
-    await PushNotifications.removeDeliveredNotifications({ ids });
+    // The plugin removes a full DeliveredNotifications payload, not bare ids,
+    // because DeliveredNotificationSchema requires id, title and body.
+    await PushNotifications.removeDeliveredNotifications(delivered);
   },
 };
 
@@ -362,9 +384,7 @@ export const localNotifications = {
           title,
           body,
           id,
-          schedule: schedule
-            ? { at: schedule.at.getTime(), repeats: schedule.repeats, every: schedule.every }
-            : undefined,
+          schedule: schedule ? { at: schedule.at, repeats: schedule.repeats, every: schedule.every } : undefined,
           sound,
           attachments,
           extra,
@@ -414,7 +434,8 @@ export const localNotifications = {
   /**
    * Add listener for notification action
    */
-  onActionPerformed(callback: (notification: LocalNotificationSchema) => void): void {
+  onActionPerformed(callback: (action: ActionPerformed) => void): void {
+    // The plugin emits ActionPerformed ({ actionId, notification }), not the schema.
     assertNative('LocalNotifications');
     LocalNotifications.addListener('localNotificationActionPerformed', callback);
   },
@@ -434,11 +455,11 @@ export const device = {
   },
 
   /**
-   * Get device ID (UUID)
+   * Get device ID
    */
   async getId(): Promise<string> {
-    const info = await this.getInfo();
-    return info.uuid;
+    const { identifier } = await Device.getId();
+    return identifier;
   },
 
   /**
@@ -459,10 +480,10 @@ export const device = {
    * Get app version
    */
   async getAppVersion(): Promise<string> {
-    assertNative('Device');
-    // Note: Requires @capacitor/app for version
-    const info = await Device.getInfo();
-    return info.appVersion || 'unknown';
+    assertNative('App');
+    // AppInfo.version comes from @capacitor/app; DeviceInfo carries no version.
+    const { version } = await App.getInfo();
+    return version;
   },
 };
 
@@ -499,9 +520,11 @@ export const network = {
   /**
    * Remove network listener
    */
-  async removeListener(listenerId: string): Promise<void> {
+  async removeListener(_listenerId: string): Promise<void> {
     assertNative('Network');
-    await Network.removeListener(listenerId);
+    // NetworkPlugin exposes no per-listener removeListener() and a handle cannot
+    // be recovered from an event name, so the only supported cleanup clears all.
+    await Network.removeAllListeners();
   },
 };
 
@@ -539,7 +562,9 @@ export const filesystem = {
    */
   async readFileBase64(path: string, directory: Directory = Directory.Data): Promise<string> {
     assertNative('Filesystem');
-    const result = await Filesystem.readFile({ path, directory, encoding: Encoding.Base64 });
+    // Encoding has no Base64 member; native readFile without an encoding option
+    // returns base64 content, which is exactly this method's contract.
+    const result = await Filesystem.readFile({ path, directory });
     return result.data as string;
   },
 
@@ -735,8 +760,20 @@ export const clipboard = {
 
 export interface AppStateInfo {
   isActive: boolean;
-  state: AppState;
+  /**
+   * Capacitor's AppState only exposes isActive: active vs background.
+   * 'inactive' stays in the union for the terminated state consumers model.
+   */
+  state: 'active' | 'background' | 'inactive';
 }
+
+/**
+ * Registration handles for App listeners, keyed by the event-name string the
+ * onXxx() methods return. addListener resolves a handle asynchronously, so the
+ * pending promise is stored (not the resolved value) and removeListener awaits
+ * it — a listener destroyed before registration settled is still removed.
+ */
+const appListenerHandles = new Map<string, Promise<PluginListenerHandle>>();
 
 export const app = {
   /**
@@ -744,8 +781,8 @@ export const app = {
    */
   async getState(): Promise<AppStateInfo> {
     assertNative('App');
-    const { isActive, state } = await App.getState();
-    return { isActive, state };
+    const { isActive } = await App.getState();
+    return { isActive, state: isActive ? 'active' : 'background' };
   },
 
   /**
@@ -753,16 +790,31 @@ export const app = {
    */
   onStateChange(callback: (state: AppStateInfo) => void): string {
     assertNative('App');
-    App.addListener('appStateChange', ({ isActive, state }) => callback({ isActive, state }));
+    appListenerHandles.set(
+      'appStateChange',
+      App.addListener('appStateChange', ({ isActive }) =>
+        callback({ isActive, state: isActive ? 'active' : 'background' })
+      )
+    );
     return 'appStateChange';
+  },
+
+  /**
+   * Remove a previously registered app listener (by its event-name id).
+   */
+  removeListener(eventName: string): Promise<void> {
+    const pending = appListenerHandles.get(eventName);
+    if (!pending) return Promise.resolve();
+    appListenerHandles.delete(eventName);
+    return pending.then((handle) => handle.remove());
   },
 
   /**
    * Add listener for app URL open (deep links)
    */
-  onUrlOpen(callback: (data: AppUrlOpen) => void): string {
+  onUrlOpen(callback: (data: URLOpenListenerEvent) => void): string {
     assertNative('App');
-    App.addListener('appUrlOpen', callback);
+    appListenerHandles.set('appUrlOpen', App.addListener('appUrlOpen', callback));
     return 'appUrlOpen';
   },
 
@@ -771,7 +823,7 @@ export const app = {
    */
   onBackButton(callback: () => void): string {
     assertNative('App');
-    App.addListener('backButton', callback);
+    appListenerHandles.set('backButton', App.addListener('backButton', callback));
     return 'backButton';
   },
 
@@ -800,7 +852,7 @@ export const browser = {
   /**
    * Open URL in system browser
    */
-  async open(url: string, options: OpenOptions = {}): Promise<void> {
+  async open(url: string, options?: OpenOptions): Promise<void> {
     assertNative('Browser');
     await Browser.open({ url, ...options });
   },
@@ -808,7 +860,7 @@ export const browser = {
   /**
    * Open URL in in-app browser (SafariViewController / Chrome Custom Tab)
    */
-  async openInApp(url: string, options: OpenOptions = {}): Promise<void> {
+  async openInApp(url: string, options?: OpenOptions): Promise<void> {
     assertNative('Browser');
     await Browser.open({ url, presentationStyle: 'popover', ...options });
   },

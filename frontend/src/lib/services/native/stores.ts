@@ -4,6 +4,7 @@
  */
 
 import { derived, readable, writable } from 'svelte/store';
+import type { DeviceInfo } from '@capacitor/device';
 import { native, network, geolocation, device, app, preferences } from './index';
 
 // ============================================
@@ -247,21 +248,9 @@ export const devicePlatform = derived(deviceStore, ($device) => $device.info?.pl
 // Types (for TypeScript)
 // ============================================
 
-export interface DeviceInfo {
-  uuid: string;
-  model: string;
-  platform: string;
-  osVersion: string;
-  manufacturer: string;
-  isVirtual: boolean;
-  memUsed: number;
-  diskTotal: number;
-  diskFree: number;
-  appVersion: string;
-  appBuild: string;
-  appName: string;
-  appId: string;
-}
+// DeviceInfo is the installed @capacitor/device type. The previous local copy
+// declared uuid/appVersion/disk* fields the plugin dropped (Cycle 22), which
+// made Device.getInfo() results unassignable here.
 
 export interface GeolocationPosition {
   timestamp: number;

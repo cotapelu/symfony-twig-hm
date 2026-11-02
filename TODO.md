@@ -111,7 +111,17 @@ Step 3: [T/PHP hoặc M/FE type] batch tiếp theo tuỳ kết quả Step 1-2
 1. **[T] PHP coverage 52.96% → ≥80%**: bộ test cho targets ở bảng trên (Test-first, mỗi public method ≥1 test, mọi branch, error paths). Ưu tiên: PharmacyDeliveryService (178 unc) → AppointmentService+Repository (224) → Feedback (198) → ANTT repos (153).
 2. **[T] Sửa docs số liệu sai**: `docs/PROJECT_STATE.md` + root TODO claim PHP ~22% → ghi 52.96% (measured 2026-11-02, basis: Unit suite, modules+src). Ghi cả podman-coverage method vào `docs/`.
 3. **[M] Backend languages**: sửa violation phát hiện khi check (Go/Python/Kotlin/Rust/Zig — pending results).
-3b. **[M/FE] `frontend/src/lib/services/native/index.ts` WIP từ cycle trước (2026-11-02 ~12:00, chưa commit)**: đã sửa nhiều API Capacitor sai (Camera.readFile → photo.base64String, PushNotifications.getToken via registration event, type-only imports, error format `[ERROR] Component Action - Reason - Suggestion`) NHƯNG **vẫn còn 11 svelte-check errors** (L325:36, L453:17, L477:17, L516:19, L554:75...). Cần: fix nốt → verify svelte-check → commit riêng `fix(native): ...`. KHÔNG xoá WIP (code preservation).
+3b. ✅ **DONE (Cycle 22, 2026-11-02)**: `native/index.ts` + `stores.ts` — fix HẾT 16 svelte-check errors bằng cách align với @capacitor/* API THẬT đã cài (đọc node_modules/@capacitor/**/definitions.d.ts, không đoán):
+- `DeliveredNotifications` type: derive từ `ReturnType<typeof PushNotifications.getDeliveredNotifications>` (package không export type này)
+- `Device.getId()` → `{ identifier }` (DeviceInfo KHÔNG có `uuid` — iOS privacy đã xoá)
+- `App.getInfo().version` cho app version (DeviceInfo không có `appVersion`)
+- `Network.removeListener` → chỉ có `removeAllListeners` → wrapper giữ signature, document hạn chế
+- `Encoding.Base64` không tồn tại (members: UTF8/ASCII/UTF16) → readFileBase64 đọc không set encoding (native trả base64 sẵn)
+- `AppState.state` không tồn tại → synthesize `'active'|'background'` từ `isActive` (giữ contract cho stores.ts)
+- `AppUrlOpen` → `URLOpenListenerEvent`; `Browser.open(options: OpenOptions = {})` → `options?: OpenOptions` (url required trong type nên default `{}` lỗi)
+- `app.removeListener`: thêm listener-handle registry (Map<string, Promise<PluginListenerHandle>>) — real removal qua handle.remove()
+- stores.ts: bỏ local `DeviceInfo` interface drift (uuid/disk*/appVersion...) → import type từ @capacitor/device
+- Verify: eslint 0 errors (2 warnings pre-existing); svelte-check **289 → 273**; vitest **7654 passed / 0 failed** (không regression). Committed.
 4. **[M] Frontend**: 413 type errors (decision clusters: Tabs `bind:activeTab` 11, variant semantics ~10, Card class-forwarding 7), coverage 38.57% → E2E/route pages.
 5. **[S/O] Security & Observability** (root TODO legacy items): input validation all endpoints, rate limiting, JSON logging, Prometheus, OTel.
 

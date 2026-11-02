@@ -1,3 +1,28 @@
+## 2026-11-02 Iteration 624 – Native Capacitor Wrapper WIP Completed (Cycle 22)
+
+### Task
+Hoàn thành WIP `frontend/src/lib/services/native/{index,stores}.ts` (cycle trước để dở, 16 svelte-check errors). Đóng WIP trước khi làm task mới — FE type-gate đang fail.
+
+### Method
+Không đoán API: đọc `node_modules/@capacitor/**/definitions.d.ts` của phiên bản đã cài, align wrapper:
+- push-notifications: `removeDeliveredNotifications()` payload type không export → derive via `ReturnType<>`
+- device: `Device.getId() → {identifier}`; DeviceInfo không có `uuid`/`appVersion`/`disk*` (iOS privacy đã bỏ)
+- app: `AppInfo.version` qua `App.getInfo()`; `AppState` chỉ có `isActive` → synthesize `'active'|'background'`; `URLOpenListenerEvent` (tên mới của AppUrlOpen); thêm `removeListener` dựa trên PluginListenerHandle registry
+- network: plugin chỉ có `removeAllListeners` → document hạn chế, giữ API
+- filesystem: `Encoding` chỉ có UTF8/ASCII/UTF16 → readFileBase64 đọc không set encoding
+- browser: `options?: OpenOptions` (url required nên `= {}` lỗi)
+- stores.ts: xoá local `DeviceInfo` replica-drift, dùng `@capacitor/device` type
+
+### Verification
+- eslint: 0 errors (2 warnings pre-existing, A/B verified qua git stash)
+- svelte-check: **289 → 273 errors**; native service files: 16 → 0 errors
+- vitest full: **7654 passed / 0 failed / 61 skipped** — no regression
+
+### Notes
+- Không có unit test nào cho native services (Capacitor plugin wrappers) → gap ghi vào TODO; runtime behavior chỉ verify được trên device — wrapper chỉ type-align, không đổi runtime logic.
+
+---
+
 ## 2026-11-02 Iteration 623 – Full-Stack Verification Sweep + FE Flaky Test Fix (Cycle 21)
 
 ### Mandate
