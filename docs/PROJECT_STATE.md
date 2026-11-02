@@ -9,13 +9,13 @@
 
 | Backend | Modules | Files | Tests | Coverage | Quality | Status |
 |---------|---------|-------|-------|----------|---------|--------|
-| PHP Symfony | 66 | 832 | 2320+ | ~22% (improved; unit tests added for 10+ modules) | ⚠️ PHPStan errors (partial) | Active |
-| Go (Gin) | 38 | 13,234 | Unknown | ~74.8% | Unknown | Active |
-| Python (FastAPI) | 18 | 326 | 548 | 81.41% | - | Active |
-| Kotlin (Ktor) | 33 | 206 | Unknown | 0% baseline | Unknown | Active |
-| Rust | 3 | 5+ | 33 | 82.59% (line) | - | Active |
-| Zig | 11 | 41 | 63 | Unknown (coverage tooling pending) | - | Active |
-| Frontend (Svelte) | ? | 889 | 7569 passing / 61 skipped (unit+component) | **38.57%** (accurate 2026-08-11; was misreported ~30.1% estimate / ~8%), target 80% | ✅ All tests passing (100%); test environment stable; added config (8), i18n (56), AIChatbot (6), hooks.server (15), hooks.client (9), service-worker (3), Divider (8), Statistic (12), Spin (4), Empty (5), Skeleton (4), Calendar (24), CurrencyFormatter (16), Icon (19), Avatar (25), Badge (27), Descriptions (25), NumberFormatter (14), Result (14), Segmented (18), PasswordStrength (27), FloatButton (20), FloatingActionButton (17), Grid (17), TouchFeedback (3), ChartLegend (15), Alert (15) tests; exported testable constants; improved accessibility; fixed import paths for component dependencies; **unit test expansion paused** (see EVOLUTION.md) | Active |
+| PHP Symfony | 66 | 832 | 1540 Unit pass | **52.96% lines (Unit suite, modules+src, measured 2026-11-02)** — SỬA: con cũ ~22% sai; đo qua podman `php-cli-xdebug` image | ⚠️ PHPStan errors (partial) | Active |
+| Go (Gin) | 37 | 13,234 | pass (109 pkgs w/ cov) | **86.63% mean per-package (2026-11-02)**; outliers `internal/health` 9.6%, `internal/middleware` 44.2% | vet clean | Active |
+| Python (FastAPI) | 18 | 326 | 1514 pass / 2 skip | **96.85% (2026-11-02)** — chạy bằng system python3 (venvs trống) | - | Active |
+| Kotlin (Ktor) | 33 | 206 | 59 pass | **32% instruction (jacoco, 2026-11-02)** — SỬA: con cũ 91.85% sai; chỉ `identitymanagement` có test (93%) | - | Active |
+| Rust | 3 | 5+ | pass | **86.01% lines (2026-11-02)**; `src/main.rs` 0% | - | Active |
+| Zig | 11 | 41 | 63/63 pass | Unknown (coverage tooling pending) | - | Active |
+| Frontend (Svelte) | ? | 889 | **7654 passed / 61 skipped / 0 fail (2026-11-02, sau fix sleep test)** | **39.03% lines** (Svelte 28.37%, TS 69.94%; branches 85.39%) | svelte-check 289 errors (gate), lint 0 errors/922 warnings | Active |
 
 ---
 

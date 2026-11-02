@@ -1,9 +1,123 @@
 # Next Highest-Impact Tasks
 
-**Last updated:** 2026-06-29 (Rounds 468-474)
-**Source:** AUTO-CONTINUE workflow
+**Last updated:** 2026-11-02 (Cycle 21 — Discovery: PHP fresh baseline measured; sequential multi-backend verification in progress)
+**Source:** AUTO-CONTINUE workflow / GOAL.md 5-phase (Analyze → ... → Audit → Verify)
 
 ---
+
+## 🎯 Cycle 21 — Discovery Phase 1 Results (2026-11-02)
+
+### Environment Findings
+- **Host PHP 8.4.17 KHÔNG có coverage driver** (no xdebug/pcov; no phpize; sudo needs password; no phpdbg) → `--coverage-*` fails with "No code coverage driver available".
+- **Solution: podman + local image `localhost/phuongxa-php-cli-xdebug`** (PHP 8.4.20 + Xdebug built in) — coverage measurement works via:
+  ```bash
+  podman run --rm --userns=keep-id -v $PWD:/app -w /app localhost/phuongxa-php-cli-xdebug \
+    php -d xdebug.mode=coverage vendor/bin/phpunit --testsuite "Unit Tests" \
+    --coverage-filter modules --coverage-filter src --coverage-text
+  ```
+- `phpunit.xml` (active) enables ALL 17 testsuites → default run = 8009 tests (very noisy, slow). Unit suite (`tests/Unit`) = 1540 tests, **all pass** (exit=0).
+
+### Fresh Measured Baselines (override stale docs numbers)
+| Backend | Fresh Result (2026-11-02) | Docs Claimed | Status |
+|---------|--------------------------|--------------|--------|
+| PHP | **Lines 52.96% (23835/45003), Methods 51.20%** (Unit suite, modules+src) | ~22% | ⚠️ Docs WRONG — stale/basis mismatch |
+| Go | (kiểm tra tiếp) | 81.1% | ⏳ pending |
+| Python | (kiểm tra tiếp) | 95.76% | ⏳ pending |
+| Kotlin | (kiểm tra tiếp) | 91.85% | ⏳ pending |
+| Rust | (kiểm tra tiếp) | 82.59% | ⏳ pending |
+| Zig | (kiểm tra tiếp) | 63 tests pass, cov tooling pending | ⏳ pending |
+| Frontend | (kiểm tra tiếp) | 38.57% + 413 type errors | ⏳ pending |
+
+### PHP Class-Level Coverage Ranking (by uncovered lines — targets for [T] work)
+| Module | Class | Uncovered | Pct |
+|--------|-------|-----------|-----|
+| Appointment | Infrastructure\Repository\AppointmentRepository | 137 | 12.2% |
+| Appointment | Domain\Entity\Appointment | 119 | 17.9% |
+| Appointment | Application\Service\AppointmentService | 87 | 76.4% |
+| PharmacyDelivery | Service\PharmacyDeliveryService | 178 | 24.3% |
+| Feedback | Infrastructure\Repository\FeedbackRepository | 94 | 29.9% |
+| Feedback | Domain\Entity\Feedback | 61 | 25.6% |
+| Feedback | Application\Service\FeedbackService | 43 | 41.9% |
+| ANTT | Infrastructure\Repository\IncidentRepository | 94 | 21.0% |
+| ANTT | Infrastructure\Repository\SecurityCaseRepository | 59 | 40.4% |
+| ANTT | Domain\Entity\Patrol | 51 | 61.1% |
+| SmartIncidents | Domain\Entity\SmartIncident | 79 | 49.4% |
+| SmartIncidents | Domain\Entity\SmartIncidentActivity | 72 | 12.2% |
+| Government/Message | (xem /tmp/php-cov-unit.txt khi chạy batch) | 403/347 module totals | — |
+
+---
+
+## 📋 Cycle 21 — Check Plan (SEQUENTIAL — user directive: chạy từng ngôn ngữ một, KHÔNG song song)
+
+- [x] **PHP** — Unit suite + coverage đo fresh (52.96%). ✅ xong
+- [x] **Go** ✅ — build OK, vet clean, `go test -race -cover ./...` **exit=0, ALL PASS** (140 pkgs: 109 có coverage, 25 no-test-file, 6 no-statements). **Mean per-package 86.63%**; ≥80%: 82 pkgs; <50%: 3 pkgs. Outliers: `internal/health` **9.6%**, `internal/middleware` 44.2%, `internal/distance` ~3rd-low. No-test-file pkgs chỉ là entity/models structs (chấp nhận được) + `modules/SampleModule/Contracts`, `modules/WalletService/Contracts`.
+- [x] **Python** ✅ — `pytest` **exit=0: 1514 passed, 2 skipped**, **Total coverage 96.85%** (gate 50% pass; docs: 95.76% → fresh tốt hơn). 1314 warnings (deprecation — chưa xử lý). Lưu ý: cả `python/.venv` và root `.venv` đều TRỐNG packages (chỉ có python binary) → test chạy bằng **system python3 (3.12.3, pytest 9.0.2)**.
+- [x] **Kotlin** ✅ — `./gradlew test --rerun` BUILD SUCCESSFUL, **59 tests / 0 fail / 0 error**. NHƯNG jacoco fresh: **Total 32% instruction cov (5,896/8,679 missed), branch 31%** — docs claim 91.85% là SAI (lỗi thời/sai basis). Chỉ `modules.identitymanagement` có test (93%). → [T] Kotlin cần viết test cho toàn bộ module còn lại (gap lớn nhất sau PHP).
+- [x] **Rust** ✅ — `cargo llvm-cov` exit=0: **TOTAL 86.01% lines / 76.69% branch / 84.88% fn** (docs: 82.59% — khớp). `src/main.rs` 0% (binary entry) — [T] minor.
+- [x] **Zig** ✅ — `zig test main_test.zig` exit=0: **63/63 tests passed** (Zig 0.16.0-dev). Coverage tooling vẫn pending (không có Zig coverage driver) — ghi nhận, chấp nhận measure bằng test count.
+- [x] **Frontend** ✅ (3 bước):
+  - `npm run lint` → **0 errors / 922 warnings** (exit=0) ✅
+  - `svelte-check` → **289 errors / 1211 warnings** (exit=1) ⚠️ (docs claim ~413 → thực tế 289, giảm nhưng gate vẫn fail)
+  - `vitest run --coverage` → **1 FAILED / 7653 passed / 61 skipped (7715)** (exit=1) ⚠️ — FE coverage KHÔNG đo được vì run fail (v8 chỉ ghi lcov khi green — đúng lesson iteration 622)
+- [x] ✅ **HẾT CHECK** (2026-11-02): PHP, Go, Python, Kotlin, Rust, Zig, Frontend — bảng kết quả đầy đủ ở mục phía dưới
+
+---
+
+## 📊 Cycle 21 — Kết quả kiểm tra TOÀN BỘ backend + frontend (2026-11-02)
+
+| Ngôn ngữ | Lệnh | Tests | Coverage FRESH | Docs claim | Verdict |
+|----------|------|-------|----------------|------------|---------|
+| PHP | phpunit Unit suite (podman+xdebug) | 1540 pass, 0 fail | **52.96%** lines | ~22% | ⚠️ docs sai, cov <80% |
+| Go | `go test -race -cover ./...` | ALL pass (109 pkgs) | **mean 86.63%** (health pkg 9.6% outlier) | 81.1% | ✅ (1 outlier) |
+| Python | `pytest` | 1514 pass, 2 skip | **96.85%** | 95.76% | ✅ |
+| Kotlin | `gradlew test` | 59 pass, 0 fail | **32%** instr (chỉ identitymanagement 93%) | 91.85% | ⚠️ docs sai nặng |
+| Rust | `cargo llvm-cov` | pass | **86.01%** lines | 82.59% | ✅ |
+| Zig | `zig test` | 63/63 pass | n/a (no tooling) | n/a | ✅ (by test count) |
+| Frontend | lint+check+vitest | 7653 pass, **1 FAIL** | **chưa đo được** (run fail → no lcov) | 38.57%, "100% pass" | ⚠️ test fail, type gate fail |
+
+### Phân loại VIOLATIONS (GOAL.md Phase 1 output)
+| Loại | Phát hiện | Ưu tiên |
+|------|-----------|---------|
+| **TESTING (HIGH)** | FE 1 test fail: `src/lib/utils.test.ts > Misc utilities > sleep > delays execution` (L643) | **P1** — fix đầu tiên, cần green run để đo coverage |
+| **QUALITY (HIGH)** | FE svelte-check 289 errors (gate exit=1) | P1 — decision-heavy (Tabs bind, variant semantics, Card class) |
+| **TESTING (HIGH)** | PHP cov 52.96% < 80% (targets: PharmacyDelivery 178 unc, Appointment 224, Feedback 198, ANTT 153) | P1 |
+| **TESTING (HIGH)** | Kotlin cov 32% < 80% (59 tests only; 32 module chưa có test) | P1/P2 |
+| **DEBT (MED)** | Docs số liệu sai: `docs/PROJECT_STATE.md` (PHP 22%, Kotlin 91.85%, "FE 100% pass", Go 74.8%), root TODO stale | P2 — sửa sau khi P1 xong |
+| **TESTING (LOW)** | Go `internal/health` 9.6%, `internal/middleware` 44.2% | P3 |
+| **TESTING (LOW)** | Rust `src/main.rs` 0% | P3 |
+| **QUALITY (LOW)** | FE 922 lint warnings (no-empty etc.) | P3 |
+
+### Phase 2 Plan (micro-plan, mỗi bước ≤30 phút, test-first)
+```
+Step 1: [T/FE] Fix failing sleep test (red-green: đọc utils.test.ts L600-660 + sleep impl → fix → re-run file) → verify: vitest src/lib/utils.test.ts exit=0 ✅ DONE
+Step 2: [T/FE] Re-run full vitest green → đọc lcov → cập nhật FE coverage thật vào TODO/docs → verify: exit=0 + % ghi nhận ✅ DONE
+Step 3: [T/PHP hoặc M/FE type] batch tiếp theo tuỳ kết quả Step 1-2
+```
+
+### ✅ Step 1-2 Hoàn thành (2026-11-02 ~22:45-22:53)
+- **Root cause test fail**: `elapsed = -482ms` (negative!) → wall-clock `Date.now()` bị clock-skew nhảy ngược trong lúc chạy — test flaky by design, KHÔNG phải bug của `sleep()` (impl `setTimeout(resolve,50)` đúng).
+- **Fix (test-only, KHÔNG đụng production code)**: `src/lib/utils.test.ts` sleep test → dùng `vi.useFakeTimers()` + `advanceTimersByTimeAsync(49/1)` assert chưa-resolve/đã-resolve. Deterministic, không phụ thuộc wall-clock, nhanh hơn (không ngủ thật 50ms). Match pattern đã có trong file (L8/499/514).
+- **Verify**: utils.test.ts 96/96 pass (1.46s) → full suite **green: 7654 passed / 0 failed / 61 skipped (exit=0)**.
+- **FE coverage FRESH (green)**: Lines **39.03%** (67734/173524; Svelte 28.37%, TS 69.94%), Branches 85.39%, Functions 71.03%. (docs 38.57% → vẫn đúng hướng, +0.46pt)
+
+---
+
+## Legacy Check Plan marker (đã hoàn thành toàn bộ)
+
+---
+
+## 🔜 Work Queue (sẽ làm sau khi check xong — Phase 2+)
+
+1. **[T] PHP coverage 52.96% → ≥80%**: bộ test cho targets ở bảng trên (Test-first, mỗi public method ≥1 test, mọi branch, error paths). Ưu tiên: PharmacyDeliveryService (178 unc) → AppointmentService+Repository (224) → Feedback (198) → ANTT repos (153).
+2. **[T] Sửa docs số liệu sai**: `docs/PROJECT_STATE.md` + root TODO claim PHP ~22% → ghi 52.96% (measured 2026-11-02, basis: Unit suite, modules+src). Ghi cả podman-coverage method vào `docs/`.
+3. **[M] Backend languages**: sửa violation phát hiện khi check (Go/Python/Kotlin/Rust/Zig — pending results).
+3b. **[M/FE] `frontend/src/lib/services/native/index.ts` WIP từ cycle trước (2026-11-02 ~12:00, chưa commit)**: đã sửa nhiều API Capacitor sai (Camera.readFile → photo.base64String, PushNotifications.getToken via registration event, type-only imports, error format `[ERROR] Component Action - Reason - Suggestion`) NHƯNG **vẫn còn 11 svelte-check errors** (L325:36, L453:17, L477:17, L516:19, L554:75...). Cần: fix nốt → verify svelte-check → commit riêng `fix(native): ...`. KHÔNG xoá WIP (code preservation).
+4. **[M] Frontend**: 413 type errors (decision clusters: Tabs `bind:activeTab` 11, variant semantics ~10, Card class-forwarding 7), coverage 38.57% → E2E/route pages.
+5. **[S/O] Security & Observability** (root TODO legacy items): input validation all endpoints, rate limiting, JSON logging, Prometheus, OTel.
+
+---
+
+## Legacy TODO (giữ nguyên — code preservation, KHÔNG xóa)
 
 ## 🎯 Current Priority: Increase Frontend Coverage towards 80%
 

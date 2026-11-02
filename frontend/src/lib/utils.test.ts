@@ -637,10 +637,19 @@ describe('Misc utilities', () => {
 
   describe('sleep', () => {
     it('delays execution', async () => {
-      const start = Date.now();
-      await utils.sleep(50);
-      const elapsed = Date.now() - start;
-      expect(elapsed).toBeGreaterThanOrEqual(40);
+      // Fake timers for determinism: wall-clock Date.now() is flaky
+      // (clock skew produced negative elapsed, see Cycle 21 metrics).
+      vi.useFakeTimers();
+      let resolved = false;
+      const promise = utils.sleep(50).then(() => {
+        resolved = true;
+      });
+      await vi.advanceTimersByTimeAsync(49);
+      expect(resolved).toBe(false); // not resolved before the delay elapses
+      await vi.advanceTimersByTimeAsync(1);
+      await promise;
+      expect(resolved).toBe(true); // resolved after the delay
+      vi.useRealTimers();
     });
   });
 

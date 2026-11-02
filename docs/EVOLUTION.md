@@ -1,3 +1,38 @@
+## 2026-11-02 Iteration 623 – Full-Stack Verification Sweep + FE Flaky Test Fix (Cycle 21)
+
+### Mandate
+User yêu cầu: cập nhật TODO.md đầy đủ → kiểm tra TUẦN TỰ từng ngôn ngữ backend (không song song) → cuối cùng frontend → xong hết mới làm.
+
+### Kết quả kiểm tra (tất cả lệnh thật, ngày 2026-11-02)
+| Stack | Tests | Coverage FRESH | Số cũ trong docs | Kết luận |
+|-------|-------|----------------|------------------|----------|
+| PHP | 1540 pass | **52.96%** lines | ~22% | docs sai |
+| Go | ALL pass (109 pkgs) | **86.63%** mean | 81.1% | ok (1 outlier 9.6%) |
+| Python | 1514 pass | **96.85%** | 95.76% | ok |
+| Kotlin | 59 pass | **32%** instr | 91.85% | **docs sai nặng** |
+| Rust | pass | **86.01%** lines | 82.59% | ok |
+| Zig | 63/63 pass | n/a | n/a | ok |
+| Frontend | 7654 pass, 0 fail (sau fix) | **39.03%** lines | 38.57%, "100% pass" | 1 test đã fix; check gate 289 err |
+
+### Production Changes
+- **`frontend/src/lib/utils.test.ts`**: sleep test viết lại bằng fake timers (`vi.useFakeTimers` + `advanceTimersByTimeAsync`) — root cause: wall-clock `Date.now()` skew cho elapsed âm (-482ms). Test-only, không đụng production.
+
+### Toán game: coverage drivder cho PHP
+Host thiếu xdebug/pcov → dùng podman image local `localhost/phuongxa-php-cli-xdebug` (ghi vào TODO.md cho human replicate).
+
+### Next Focus
+1. [T] PHP coverage 52.96% → ≥80% (targets đã xếp hạng trong TODO.md)
+2. [M] FE svelte-check 289 errors (decision clusters)
+3. [T] Kotlin 32% → ≥80% (chỉ 1/33 module có test)
+4. [D] Sửa toàn bộ số liệu stale trong docs/PROJECT_STATE.md + root TODO
+
+### Lessons
+- 3/7 số liệu coverage trong docs đã lỗi thời/sai — mọi claim phải đo lại bằng lệnh thật.
+- Wall-clock timing tests = flaky by design; fake timers bắt buộc.
+- Rootless podman + local dev image workaround tốt cho thiếu hụt toolchain coverage.
+
+---
+
 ## 2026-08-11 Iteration 622 – Frontend: Fixed 6 Failing Tests + Component Test Expansion (P1.2)
 
 ### Discoveries

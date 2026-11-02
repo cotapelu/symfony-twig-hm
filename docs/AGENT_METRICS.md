@@ -1,3 +1,22 @@
+## [2026-11-02 ~22:00-23:00] Cycle 21 — Discovery: full multi-backend verification + FE flaky-test fix (P1)
+- **Type**: Violation Fix (T) + Discovery/Measurement (all backends)
+- **Priority**: HIGH (failing test = quality-gate violation)
+- **Duration**: ~60 phút (checks 6 ngôn ngữ + fix)
+- **Status**: ✅ Success (1 test fixed, all baselines measured)
+- **Coverage Measurement Unblock**: host PHP không có xdebug/pcov (sudo cần password, no phpize, no phpdbg) → phát hiện podman image **`localhost/phuongxa-php-cli-xdebug`** (PHP 8.4.20+Xdebug) → PHP coverage đo lại được qua `podman run --rm --userns=keep-id -v $PWD:/app ... php -d xdebug.mode=coverage vendor/bin/phpunit`.
+- **Fresh baselines (2026-11-02)** — *override stale docs số*:
+  - PHP Unit suite: 1540 pass; **Lines 52.96%** (23835/45003) — docs ~22% SAI. Low targets: PharmacyDelivery 178 unc, Appointment 224, Feedback 198, ANTT repos 153.
+  - Go: build+vet clean, `test -race -cover` ALL pass; **mean 86.63%** (109 pkgs; outliers: internal/health 9.6%, internal/middleware 44.2%) — docs 81.1% ✓.
+  - Python: **1514 pass / 2 skip; 96.85%** — docs 95.76% ✓. (venvs TRỐNG → chạy bằng system python3.12 + pytest 9.0.2)
+  - Kotlin: **59 tests pass; jacoco 32% instruction** — docs 91.85% **SAI NẶNG** (chỉ identitymanagement có test).
+  - Rust: pass; **86.01% lines** — docs 82.59% ✓. Zig: **63/63 pass** (no cov tooling).
+  - Frontend: lint 0 errors/922 warnings; svelte-check **289 errors** (gate fail, giảm từ 413); vitest trước fix: **1 FAIL** (`src/lib/utils.test.ts > sleep > delays execution`, elapsed=**-482ms** = clock-skew trên wall-clock).
+- **Fix (test-only, no production code touched)**: sleep test → `vi.useFakeTimers()` + `advanceTimersByTimeAsync` (deterministic, không ngủ thật). utils 96/96 → full FE suite **green 7654 passed / 0 fail / 61 skip**. FE coverage fresh (green lcov): **39.03% lines** (Svelte 28.37% / TS 69.94%).
+- **Test Delta**: +1 test rewritten (net 7715 suite count); failures 1 → 0.
+- **Lessons**: (1) kiểm tra coverage mọi ngôn ngữ bằng lệnh thật trước khi tin docs — 3/7 số liệu docs đã sai (PHP 22→53, Kotlin 91.9→32, FE "100% pass"→1 fail); (2) wall-clock timing test = flaky by design → fake timers; (3) podman local image giải cứu khi host thiếu coverage driver.
+
+---
+
 ## 2026-11-01 Cycle 20 — Frontend Type-Error Grind #15: Event.images / Restaurant.features on route-used types (420 → 413)
 - **Type**: Fix / Type-Debt (contract/service types) — M-type
 - **Priority**: HIGH (frontend type-check gate)
