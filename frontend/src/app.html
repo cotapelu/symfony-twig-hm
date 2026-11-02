@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#3b82f6" />
+		<meta name="description" content="Ultimate Global Communication Platform" />
+		
+		<!-- PWA Meta Tags -->
+		<link rel="manifest" href="/manifest.json" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="apple-mobile-web-app-title" content="CommUnity" />
+		
+		<!-- Open Graph -->
+		<meta property="og:title" content="CommUnity - Ultimate Communication Platform" />
+		<meta property="og:description" content="Advanced real-time messaging with AI integration" />
+		<meta property="og:image" content="%sveltekit.assets%/og-image.png" />
+		<meta property="og:url" content="%sveltekit.assets%" />
+		
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<!-- Skip links for accessibility -->
+		<a href="#main-content" class="skip-link sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Skip to main content</a>
+		<a href="#navigation" class="skip-link sr-only focus:not-sr-only focus:absolute focus:top-10 focus:left-2 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Skip to navigation</a>
+
+		<div style="display: contents" id="svelte">%sveltekit.body%</div>
+		
+		<!-- PWA Service Worker -->
+		<script>
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('/sw.js')
+					.then(registration => {
+						console.log('SW registered: ', registration);
+					})
+					.catch(registrationError => {
+						console.log('SW registration failed: ', registrationError);
+					});
+			}
+		</script>
+	</body>
+</html>

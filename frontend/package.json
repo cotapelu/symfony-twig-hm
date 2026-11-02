@@ -1,0 +1,163 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build && cp -r build/* ../public/",
+    "build:mobile": "npm run build && npx cap sync",
+    "preview": "vite preview",
+    "cap:add:ios": "npx cap add ios",
+    "cap:add:android": "npx cap add android",
+    "cap:sync": "npx cap sync",
+    "cap:copy": "npx cap copy",
+    "cap:update": "npx cap update",
+    "cap:open:ios": "npx cap open ios",
+    "cap:open:android": "npx cap open android",
+    "cap:run:ios": "npx cap run ios",
+    "cap:run:android": "npx cap run android",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --ext .js,.svelte --fix",
+    "format": "prettier --write src/**/*.{js,svelte}",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json --threshold warning",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "analyze": "npx vite-bundle-analyzer dist",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/app": "^8.1.1",
+    "@capacitor/browser": "^8.0.4",
+    "@capacitor/camera": "^8.2.2",
+    "@capacitor/cli": "^8.5.0",
+    "@capacitor/clipboard": "^8.0.1",
+    "@capacitor/core": "^8.5.0",
+    "@capacitor/device": "^8.0.3",
+    "@capacitor/filesystem": "^8.1.2",
+    "@capacitor/geolocation": "^8.2.1",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.5.0",
+    "@capacitor/keyboard": "^8.0.5",
+    "@capacitor/local-notifications": "^8.2.1",
+    "@capacitor/network": "^8.0.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor/push-notifications": "^8.1.2",
+    "@capacitor/share": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.3",
+    "@sveltejs/adapter-auto": "^7.0.0",
+    "@sveltejs/adapter-static": "^3.0.10",
+    "@sveltejs/kit": "^2.65.0",
+    "dompurify": "^3.3.1",
+    "leaflet": "^1.9.4",
+    "svelte": "^5.45.8",
+    "svelte-i18n": "^4.0.1",
+    "vite": "^6.3.5",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "^5.4.0",
+    "@sveltejs/adapter-static": "^3.0.5",
+    "@sveltejs/vite-plugin-svelte": "^5.1.1",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/svelte": "^5.4.2",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/node": "^25.0.10",
+    "@typescript-eslint/eslint-plugin": "^8.50.0",
+    "@typescript-eslint/parser": "^8.50.0",
+    "@vitest/coverage-v8": "^1.0.4",
+    "@vitest/ui": "^1.0.4",
+    "autoprefixer": "^10.4.22",
+    "eslint": "^9.0.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-boundaries": "^6.0.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-svelte": "^2.0.0",
+    "jsdom": "^23.0.1",
+    "prettier": "^3.0.0",
+    "prettier-plugin-svelte": "^3.0.0",
+    "svelte-check": "^4.0.0",
+    "svelte-preprocess": "^6.0.5",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.4"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "@typescript-eslint/recommended",
+      "plugin:svelte/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module",
+      "extraFileExtensions": [
+        ".svelte"
+      ]
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.svelte"
+        ],
+        "parser": "svelte-eslint-parser",
+        "parserOptions": {
+          "parser": "@typescript-eslint/parser"
+        }
+      }
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "svelte/valid-compile": "warn",
+      "svelte/no-at-html-tags": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/ban-ts-comment": "warn"
+    },
+    "globals": {
+      "window": "readonly",
+      "document": "readonly",
+      "navigator": "readonly",
+      "console": "readonly",
+      "localStorage": "readonly",
+      "fetch": "readonly",
+      "URL": "readonly",
+      "EventSource": "readonly",
+      "CustomEvent": "readonly",
+      "Notification": "readonly",
+      "performance": "readonly",
+      "setTimeout": "readonly",
+      "clearTimeout": "readonly",
+      "setInterval": "readonly",
+      "clearInterval": "readonly",
+      "Request": "readonly",
+      "Response": "readonly",
+      "Headers": "readonly",
+      "FormData": "readonly"
+    }
+  }
+}

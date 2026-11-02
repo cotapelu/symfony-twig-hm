@@ -1,0 +1,147 @@
+	community.local/cmd/api		coverage: 0.0% of statements
+ok  	community.local/cmd/api/middleware	(cached)	coverage: 100.0% of statements
+ok  	community.local/internal/appcore	(cached)	coverage: 97.4% of statements
+ok  	community.local/internal/audit	(cached)	coverage: 88.6% of statements
+ok  	community.local/internal/config	(cached)	coverage: 96.3% of statements
+ok  	community.local/internal/database/schema	(cached)	coverage: 83.1% of statements
+ok  	community.local/internal/distance	(cached)	coverage: 100.0% of statements
+ok  	community.local/internal/domain	(cached)	coverage: [no statements]
+ok  	community.local/internal/eventbus	(cached)	coverage: 94.9% of statements
+ok  	community.local/internal/health	(cached)	coverage: 100.0% of statements
+ok  	community.local/internal/idempotency	(cached)	coverage: 100.0% of statements
+ok  	community.local/internal/middleware	(cached)	coverage: 72.7% of statements
+ok  	community.local/internal/models	(cached)	coverage: [no statements]
+ok  	community.local/internal/pii	(cached)	coverage: 96.4% of statements
+ok  	community.local/internal/ratelimit	(cached)	coverage: 93.6% of statements
+ok  	community.local/internal/repository	(cached)	coverage: 86.1% of statements
+ok  	community.local/internal/search	(cached)	coverage: 93.5% of statements
+ok  	community.local/internal/service	(cached)	coverage: 71.9% of statements
+ok  	community.local/internal/tracing	(cached)	coverage: 82.6% of statements
+ok  	community.local/middleware	(cached)	coverage: 75.0% of statements
+ok  	community.local/modules/Banking	(cached)	coverage: 0.0% of statements
+ok  	community.local/modules/Banking/handler	(cached)	coverage: 61.7% of statements
+ok  	community.local/modules/Banking/internal/models	(cached)	coverage: 26.4% of statements
+ok  	community.local/modules/Banking/repository	(cached)	coverage: 90.5% of statements
+ok  	community.local/modules/Banking/service	(cached)	coverage: 81.8% of statements
+ok  	community.local/modules/BillsPayment	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/BillsPayment/handler	(cached)	coverage: 47.0% of statements
+ok  	community.local/modules/BillsPayment/internal/models	(cached)	coverage: 68.5% of statements
+ok  	community.local/modules/Courier	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/Courier/handler	(cached)	coverage: 68.9% of statements
+	community.local/modules/Courier/internal/models		coverage: 0.0% of statements
+	community.local/modules/CreditLending		coverage: 0.0% of statements
+ok  	community.local/modules/CreditLending/handler	(cached)	coverage: 0.0% of statements
+	community.local/modules/CreditLending/internal/models		coverage: 0.0% of statements
+?   	community.local/modules/Crypto/internal/models	[no test files]
+ok  	community.local/modules/Crypto/service	(cached)	coverage: 100.0% of statements
+?   	community.local/modules/CryptoService/internal/models	[no test files]
+	community.local/modules/DeliveryService		coverage: 0.0% of statements
+?   	community.local/modules/DeliveryService/entity	[no test files]
+ok  	community.local/modules/DeliveryService/handler	(cached)	coverage: 23.4% of statements
+ok  	community.local/modules/DeliveryService/repository	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/DeliveryService/service	(cached)	coverage: 84.2% of statements
+ok  	community.local/modules/Escrow/handler	(cached)	coverage: 44.2% of statements
+	community.local/modules/Escrow/models		coverage: 0.0% of statements
+	community.local/modules/Escrow/repository		coverage: 0.0% of statements
+?   	community.local/modules/Fraud/internal/models	[no test files]
+ok  	community.local/modules/Fraud/service	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/FraudDetection/handler	(cached)	coverage: 0.0% of statements
+?   	community.local/modules/FraudDetection/internal/models	[no test files]
+ok  	community.local/modules/FraudDetection/repository	(cached)	coverage: 91.3% of statements
+ok  	community.local/modules/FraudDetection/service	(cached)	coverage: 68.3% of statements
+?   	community.local/modules/Inventory/internal/models	[no test files]
+ok  	community.local/modules/Inventory/service	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/KafkaEvents	(cached)	coverage: 100.0% of statements
+?   	community.local/modules/Land/internal/models	[no test files]
+ok  	community.local/modules/Land/service	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/LandConstruction	(cached)	coverage: 69.0% of statements
+ok  	community.local/modules/LandConstruction/handler	(cached)	coverage: 100.0% of statements
+?   	community.local/modules/LandConstruction/internal/models	[no test files]
+ok  	community.local/modules/LandConstruction/service	(cached)	coverage: 87.3% of statements
+?   	community.local/modules/Location_legacy/internal/models	[no test files]
+ok  	community.local/modules/Location_legacy/service	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/Marketplace_legacy/handler	(cached)	coverage: 100.0% of statements
+?   	community.local/modules/Marketplace_legacy/internal/models	[no test files]
+ok  	community.local/modules/Marketplace_legacy/service	(cached)	coverage: 100.0% of statements
+?   	community.local/modules/Order/internal/models	[no test files]
+ok  	community.local/modules/Order/service	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/QRPayment	(cached)	coverage: 0.0% of statements
+ok  	community.local/modules/QRPayment/handler	(cached)	coverage: 85.2% of statements
+?   	community.local/modules/QRPayment/internal/models	[no test files]
+ok  	community.local/modules/QRPayment/repository	(cached)	coverage: 46.9% of statements
+ok  	community.local/modules/QRPayment/service	(cached)	coverage: 83.9% of statements
+	community.local/modules/SampleModule/Api		coverage: 0.0% of statements
+ok  	community.local/modules/SampleModule/Application	(cached)	coverage: 100.0% of statements
+?   	community.local/modules/SampleModule/Contracts	[no test files]
+ok  	community.local/modules/SampleModule/Domain	(cached)	coverage: 86.7% of statements
+ok  	community.local/modules/SampleModule/Infrastructure	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/WalletService	(cached)	coverage: 0.0% of statements
+?   	community.local/modules/WalletService/Contracts	[no test files]
+	community.local/modules/WalletService/Domain		coverage: 0.0% of statements
+ok  	community.local/modules/WalletService/handler	(cached)	coverage: 40.1% of statements
+ok  	community.local/modules/WalletService/internal/models	(cached)	coverage: 62.7% of statements
+ok  	community.local/modules/WalletService/repository	(cached)	coverage: 93.9% of statements
+ok  	community.local/modules/WalletService/service	(cached)	coverage: 47.2% of statements
+ok  	community.local/modules/authservice	(cached)	coverage: [no statements]
+?   	community.local/modules/authservice/entity	[no test files]
+ok  	community.local/modules/authservice/handler	(cached)	coverage: 73.7% of statements
+ok  	community.local/modules/authservice/repository	(cached)	coverage: 26.3% of statements
+ok  	community.local/modules/authservice/service	(cached)	coverage: 86.2% of statements
+?   	community.local/modules/certificateauthority/entity	[no test files]
+ok  	community.local/modules/certificateauthority/handler	(cached)	coverage: 0.0% of statements
+ok  	community.local/modules/certificateauthority/service	(cached)	coverage: 19.3% of statements
+ok  	community.local/modules/citizen/handler	(cached)	coverage: 30.4% of statements
+ok  	community.local/modules/common/middleware	(cached)	coverage: 100.0% of statements
+	community.local/modules/coreservices		coverage: 0.0% of statements
+?   	community.local/modules/coreservices/entity	[no test files]
+ok  	community.local/modules/coreservices/handler	(cached)	coverage: 80.2% of statements
+ok  	community.local/modules/coreservices/service	(cached)	coverage: 78.7% of statements
+?   	community.local/modules/events/entity	[no test files]
+ok  	community.local/modules/events/handler	(cached)	coverage: 60.6% of statements
+ok  	community.local/modules/events/service	(cached)	coverage: 93.1% of statements
+	community.local/modules/integration		coverage: 0.0% of statements
+ok  	community.local/modules/keymanagement	(cached)	coverage: [no statements]
+?   	community.local/modules/keymanagement/entity	[no test files]
+ok  	community.local/modules/keymanagement/handler	(cached)	coverage: 0.0% of statements
+ok  	community.local/modules/keymanagement/repository	(cached)	coverage: 88.3% of statements
+ok  	community.local/modules/keymanagement/service	(cached)	coverage: 82.8% of statements
+?   	community.local/modules/livestreaming/entity	[no test files]
+ok  	community.local/modules/livestreaming/handler	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/livestreaming/service	(cached)	coverage: 71.4% of statements
+ok  	community.local/modules/location	(cached)	coverage: [no statements]
+?   	community.local/modules/location/entity	[no test files]
+ok  	community.local/modules/location/handler	(cached)	coverage: 80.1% of statements
+ok  	community.local/modules/location/repository	(cached)	coverage: 70.2% of statements
+ok  	community.local/modules/location/service	(cached)	coverage: 87.1% of statements
+	community.local/modules/locationtracking		coverage: 0.0% of statements
+?   	community.local/modules/locationtracking/entity	[no test files]
+ok  	community.local/modules/locationtracking/handler	(cached)	coverage: 37.8% of statements
+ok  	community.local/modules/locationtracking/service	(cached)	coverage: 79.3% of statements
+?   	community.local/modules/marketplace/entity	[no test files]
+ok  	community.local/modules/marketplace/handler	(cached)	coverage: 91.7% of statements
+ok  	community.local/modules/marketplace/repository	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/marketplace/service	(cached)	coverage: 67.9% of statements
+ok  	community.local/modules/notifications/handler	(cached)	coverage: 49.7% of statements
+ok  	community.local/modules/notifications/service	(cached)	coverage: 95.7% of statements
+	community.local/modules/notificationsrealtime		coverage: 0.0% of statements
+?   	community.local/modules/notificationsrealtime/entity	[no test files]
+ok  	community.local/modules/notificationsrealtime/handler	(cached)	coverage: 0.0% of statements
+ok  	community.local/modules/notificationsrealtime/service	(cached)	coverage: 72.8% of statements
+	community.local/modules/optimized		coverage: 0.0% of statements
+?   	community.local/modules/realtimesync/entity	[no test files]
+ok  	community.local/modules/realtimesync/handler	(cached)	coverage: 57.5% of statements
+ok  	community.local/modules/realtimesync/repository	(cached)	coverage: 93.5% of statements
+ok  	community.local/modules/realtimesync/service	(cached)	coverage: 81.8% of statements
+	community.local/modules/videoconference		coverage: 0.0% of statements
+	community.local/modules/videoconference/entity		coverage: 0.0% of statements
+ok  	community.local/modules/videoconference/handler	(cached)	coverage: 100.0% of statements
+ok  	community.local/modules/videoconference/repository	(cached)	coverage: 98.1% of statements
+ok  	community.local/modules/videoconference/service	(cached)	coverage: 75.3% of statements
+ok  	community.local/platform/database	(cached)	coverage: 40.0% of statements
+ok  	community.local/platform/logger	(cached)	coverage: 80.2% of statements
+ok  	community.local/platform/middleware	(cached)	coverage: 86.7% of statements
+ok  	community.local/shared/circuitbreaker	(cached)	coverage: 91.4% of statements
+ok  	community.local/shared/helpers	(cached)	coverage: 94.4% of statements
+ok  	community.local/shared/otel	(cached)	coverage: 94.7% of statements
+	community.local/testing/helper		coverage: 0.0% of statements
+ok  	community.local/tests/unit	(cached)	coverage: [no statements]

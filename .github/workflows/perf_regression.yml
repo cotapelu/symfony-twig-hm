@@ -1,0 +1,55 @@
+name: Performance Regression
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  k6-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start full stack
+        run: |
+          docker compose -f deployment/docker-compose.full.yml up -d
+          for i in {1..60}; do
+            if curl -s -f http://localhost:8080/platform/health/iam > /dev/null; then
+              echo "App is up"
+              break
+            fi
+            echo "Waiting for app..."
+            sleep 2
+          done
+
+      - name: Obtain test auth token
+        id: token
+        run: |
+          # Perform login to get JWT (adjust credentials)
+          RESPONSE=$(curl -s -X POST http://localhost:8080/api/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"email":"test@example.com","password":"test123"}')
+          TOKEN=$(echo $RESPONSE | jq -r .token)
+          if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
+            echo "Failed to get token, using empty"
+            TOKEN=""
+          fi
+          echo "AUTH_TOKEN=$TOKEN" >> $GITHUB_ENV
+
+      - name: Run k6 smoke test
+        env:
+          BASE_URL: http://localhost:8080
+          AUTH_TOKEN: ${{ env.AUTH_TOKEN }}
+        run: |
+          # Run k6 inside container (k6official/k6)
+          docker run --rm --network host -v $(pwd)/tests/performance:/scripts:ro \
+            -e BASE_URL=$BASE_URL -e AUTH_TOKEN=$AUTH_TOKEN \
+            loadimpact/k6 run /scripts/smoke.js
+
+      - name: Stop stack
+        if: always()
+        run: |
+          docker compose -f deployment/docker-compose.full.yml down

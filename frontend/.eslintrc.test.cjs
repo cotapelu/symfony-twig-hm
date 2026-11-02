@@ -1,0 +1,22 @@
+module.exports = {
+  languageOptions: {
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 2020,
+    sourceType: 'module'
+  },
+  plugins: ['import'],
+  rules: {
+    'import/no-restricted-paths': [
+      'error',
+      {
+        zones: [
+          {
+            from: '*/state/*',
+            target: '*/ui/*',
+            message: 'State layer should not import from UI layer.'
+          }
+        ]
+      }
+    ]
+  }
+};

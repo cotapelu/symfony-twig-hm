@@ -1,0 +1,134 @@
+# PHP Deptrac Configuration
+name: deptrac-check
+version: 1.0.0
+
+paths:
+  - src/Controller/
+  - src/Module/
+  - src/AppCore/
+  - src/Entity/
+  - src/Repository/
+  - src/Service/
+
+# Rules
+universe:
+  layers:
+    Controller:
+      - src/Controller/**:
+        - PHP: 'App\Controller\\'
+    Service:
+      - src/Service/**:
+        - PHP: 'App\\'
+    Repository:
+      - src/Repository/**:
+        - PHP: 'App\\'
+    Entity:
+      - src/Entity/**:
+        - PHP: 'App\\'
+
+# Forbidden patterns
+forbidden:
+  - src/Controller/**:
+    - PHP: 'App\\'\\'
+  - - src/Service/**:
+    - PHP: 'App\\Infrastructure\\'
+  
+  - src/Repository/**:
+    - PHP: 'App\\Infrastructure\\'
+
+# Vendor usage
+allowed:
+  - Doctrine\ORM\
+  - Symfony\\Component\\
+  - Psr\\Log\\
+  - Psr\\Cache\\
+  - Psr\\HttpFoundation\\
+  - Psr\\Container\\
+
+# Cross-cutting restrictions
+  Controller→Other Controller:
+    rule: 'no-direct-dependencies'
+    message: 'Controllers must access only through Services'
+
+  Service→Other Service:
+    rule: 'no-direct-dependencies'
+    message: 'Services must access only through Repositories'
+
+  Service→Entity:
+    rule: 'no-direct-dependencies'
+    message: 'Services must access Entities only through Repositories'
+
+  Service→Infrastructure:
+    rule: 'no-direct-dependencies'
+    message: 'Services must access Infrastructure only through dedicated gateways'
+
+# Additional rules
+code_size:
+  max_complexity: 15
+  max_methods_in_class: 20
+
+naming:
+  classes:
+    'App\\Controller\\':
+      pattern: '[A-Z][a-zA-Z]*Controller$'
+  'App\\Service\\':
+      pattern: '[A-Z][a-zA-Z]*Service$'
+  'App\\Repository\\':
+      pattern: '[A-Z][a-zA-Z]*Repository$'
+  'App\\Entity\\':
+      pattern: '[A-Z][a-zA-Z]*Entity$'
+    methods:
+      - visibility: 'public'
+      - underscore_private: '__'
+      - prefix: 'get|find|create|update|delete|list'
+      - suffix: 'Manager|Service|Interface'
+    properties:
+      - visibility: 'private'
+        - prefix: '_'
+        - type: 'array|Object|callable|iterable'
+        - suffix: '_id'
+
+# Testing
+unit:
+  min_coverage: 80%
+  coverage: src/Unit/
+  report: text
+  failUnder: 70%
+
+# PHPStan
+configuration:
+  parameters:
+    level: 0
+    paths:
+      - src/
+    
+  rules:
+    - no_unreachable_stmts: true
+    - no_unset_properties: true
+    - no_assignments_in_loops: true
+    - no_call_time_pass_by_ref: true
+    - no_mixed_return_type: true
+    no_unparenthesis: true
+    no_construct_and_property: false
+    
+    # Error codes to ignore
+  ignore:
+    - T_UNREACHABLE_CODE: *
+    - T_DEPRECATED
+    - T_PHPDOC_COMMENT_
+
+# Integration with GitHub Actions
+github_checks:
+  - name: Pull Request
+    runs-on:
+      push:
+        branches: [ main, develop ]
+    pull_request:
+      branches: [ main, develop ]
+      - name: PHP Architecture Check
+        run: |
+          vendor/bin/deptrac check --config=deptrac.yaml --fail-on-violation --report=json
+
+        name: Run PHPStan
+        run: |
+          vendor/bin/phpstan analyse --configuration=phpstan.neon --error-format=json

@@ -1,0 +1,47 @@
+# Import-linter configuration for Python backend
+# Enforces layered architecture: Api -> Application -> Domain -> Infrastructure
+# Shared packages can be used by any layer.
+
+root_package: python/app
+
+layers:
+  - name: Api
+    packages:
+      - modules.*.api
+  - name: Application
+    packages:
+      - modules.*.application
+  - name: Domain
+    packages:
+      - modules.*.domain
+  - name: Infrastructure
+    packages:
+      - modules.*.infrastructure
+  - name: Shared
+    packages:
+      - shared.*
+      - appcore.*
+      - common.*
+      - middleware.*
+      - validation.*
+
+rules:
+  - from: Api
+    to: [Application, Domain, Infrastructure, Shared]
+    imports: allowed
+  - from: Application
+    to: [Domain, Infrastructure, Shared]
+    imports: allowed
+  - from: Domain
+    to: [Domain, Shared]
+    imports: allowed
+  - from: Infrastructure
+    to: [Domain, Shared]
+    imports: allowed
+  - from: Shared
+    to: [Shared, Domain]
+    imports: allowed
+
+  - from: *
+    to: *
+    imports: disallowed

@@ -1,0 +1,11 @@
+# config/packages/sentry.yaml
+sentry:
+    dsn: '%env(SENTRY_DSN)%'
+    # Optional: set the environment name (e.g., dev, prod)
+    options:
+        environment: '%env(APP_ENV)%'
+        # More options at https://docs.sentry.io/platforms/php/configuration/
+    register_error_handler: true    # Set to false if you want to use your own error handler
+    messenger:
+        enabled: true               # Enables messenger integration
+        capture_soft_fails: false   # Prevents Sentry from capturing SoftFails

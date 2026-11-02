@@ -1,0 +1,19 @@
+{
+  "eventId": "string",
+  "eventType": "UserRegistered",
+  "version": "1.0",
+  "timestamp": "ISO8601",
+  "correlationId": "string",
+  "causationId": "string",
+  "source": "string",
+  "data": {
+    "userId": "string",
+    "email": "string",
+    "username": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "profile": "object",
+    "registeredAt": "ISO8601",
+    "metadata": "object"
+  }
+}

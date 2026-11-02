@@ -1,0 +1,54 @@
+# Import-linter configuration for Go backend
+# Enforces layered architecture: Api -> Application -> Domain -> Infrastructure
+# Also enforces module boundaries via shared packages.
+
+root_package: go
+
+layers:
+  - name: Api
+    packages:
+      - modules.*.handler
+      - api.*
+  - name: Application
+    packages:
+      - modules.*.service
+      - modules.*.usecase
+      - modules.*.application
+  - name: Domain
+    packages:
+      - modules.*.models
+      - modules.*.domain
+      - modules.*.entity
+  - name: Infrastructure
+    packages:
+      - modules.*.repository
+      - internal.*
+      - platform.*
+      - middleware.*
+  - name: Shared
+    packages:
+      - shared.*
+      - common.*
+
+rules:
+  # Allowed dependencies
+  - from: Api
+    to: [Application, Domain, Infrastructure, Shared]
+    imports: allowed
+  - from: Application
+    to: [Domain, Infrastructure, Shared]
+    imports: allowed
+  - from: Domain
+    to: [Domain, Shared]
+    imports: allowed
+  - from: Infrastructure
+    to: [Domain, Shared]
+    imports: allowed
+  - from: Shared
+    to: [Shared, Domain]
+    imports: allowed
+
+  # Default deny for any other imports (including cross-module violations not covered)
+  - from: *
+    to: *
+    imports: disallowed

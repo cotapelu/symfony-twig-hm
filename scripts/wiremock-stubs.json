@@ -1,0 +1,326 @@
+{
+  "mappings": [
+    {
+      "id": "fcm-send-message",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/fcm/send",
+        "headers": {
+          "Authorization": {
+            "contains": "key="
+          },
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "multicast_id": 1234567890,
+          "success": 1,
+          "failure": 0,
+          "canonical_ids": 0,
+          "results": [
+            {
+              "message_id": "0:1234567890abcdef"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "apns-send-message",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/3/device/[a-zA-Z0-9]+",
+        "headers": {
+          "apns-topic": {
+            "matches": ".*\\.push"
+          },
+          "Authorization": {
+            "contains": "bearer"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "aps": {
+            "alert": "Test notification"
+          }
+        }
+      }
+    },
+    {
+      "id": "openai-completion",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/v1/completions",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          },
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "cmpl-1234567890",
+          "object": "text_completion",
+          "created": 1700000000,
+          "model": "gpt-3.5-turbo-instruct",
+          "choices": [
+            {
+              "text": "This is a mocked response from OpenAI",
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 5,
+            "completion_tokens": 7,
+            "total_tokens": 12
+          }
+        }
+      }
+    },
+    {
+      "id": "openai-chat-completion",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/v1/chat/completions",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          },
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "chatcmpl-1234567890",
+          "object": "chat.completion",
+          "created": 1700000000,
+          "model": "gpt-3.5-turbo",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "This is a mocked ChatGPT response"
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 10,
+            "completion_tokens": 9,
+            "total_tokens": 19
+          }
+        }
+      }
+    },
+    {
+      "id": "stripe-create-charge",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/v1/charges",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          },
+          "Content-Type": {
+            "equalTo": "application/x-www-form-urlencoded"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "ch_1234567890",
+          "object": "charge",
+          "amount": 2000,
+          "currency": "usd",
+          "status": "succeeded",
+          "paid": true,
+          "refunded": false
+        }
+      }
+    },
+    {
+      "id": "aws-s3-put-object",
+      "priority": 1,
+      "request": {
+        "method": "PUT",
+        "urlPathPattern": "/[a-z0-9-]+/[a-zA-Z0-9-_\\+\\.]+"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/xml"
+        },
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><PutObjectResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>\"{1234567890}\"</ETag></PutObjectResult>"
+      }
+    },
+    {
+      "id": "twilio-send-sms",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/2010-04-01/Accounts/[^/]+/Messages.json",
+        "headers": {
+          "Authorization": {
+            "contains": "Basic"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "sid": "SM1234567890abcdef",
+          "date_created": "Fri, 01 Jan 2021 00:00:00 +0000",
+          "date_updated": "Fri, 01 Jan 2021 00:00:00 +0000",
+          "date_sent": null,
+          "account_sid": "AC1234567890abcdef",
+          "to": "+15551234567",
+          "from": "+15557654321",
+          "body": "Test SMS message",
+          "status": "queued",
+          "direction": "outbound-api",
+          "error_code": null,
+          "error_message": null
+        }
+      }
+    },
+    {
+      "id": "sendgrid-send-email",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/v3/mail/send",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          },
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 202,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {}
+      }
+    },
+    {
+      "id": "google-oauth-token",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/oauth2/v4/token",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/x-www-form-urlencoded"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "access_token": "mock-google-access-token",
+          "expires_in": 3600,
+          "token_type": "Bearer",
+          "refresh_token": "mock-google-refresh-token",
+          "scope": "openid email profile"
+        }
+      }
+    },
+    {
+      "id": "facebook-oauth-token",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/oauth/access_token",
+        "queryParameters": {
+          "client_id": {
+            "matches": ".*"
+          },
+          "client_secret": {
+            "matches": ".*"
+          },
+          "grant_type": {
+            "equalTo": "client_credentials"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "access_token": "mock-facebook-access-token",
+          "token_type": "bearer",
+          "expires_in": 5184000
+        }
+      }
+    },
+    {
+      "id": "mercure-hub",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/.well-known/mercure"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "topic": "http://example.com/mercure",
+          "hub": "http://mercure:80/.well-known/mercure",
+          "hub_url": "http://localhost:81/.well-known/mercure/",
+          "jws": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        }
+      }
+    }
+  ]
+}

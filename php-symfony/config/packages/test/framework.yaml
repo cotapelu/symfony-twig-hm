@@ -1,0 +1,12 @@
+framework:
+    cache:
+        pools:
+            cache.rate_limit:
+                adapter: cache.adapter.array
+            cache.app_pool:
+                adapter: cache.adapter.array
+            cache.system_pool:
+                adapter: cache.adapter.array
+            redis_cache:
+                adapter: cache.adapter.array
+                provider: null

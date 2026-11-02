@@ -1,0 +1,35 @@
+{
+  "app": {
+    "title": "Ultimate Communication Platform",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "send": "Send",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save"
+  },
+  "messages": {
+    "conversations": "Conversations",
+    "selectConversation": "Select a conversation to start messaging",
+    "typeMessage": "Type a message...",
+    "noMessages": "No messages yet",
+    "loadingConversations": "Loading conversations...",
+    "attachFiles": "Attach files",
+    "removeFile": "Remove {file}",
+    "sentAt": "Sent at {time}"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications"
+  }
+}

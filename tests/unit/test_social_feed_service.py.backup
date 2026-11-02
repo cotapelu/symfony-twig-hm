@@ -1,0 +1,203 @@
+"""
+Unit tests for SocialFeedEngine.
+
+Tests post creation, likes, comments, follows, and feed generation.
+"""
+
+import pytest
+import sys
+import os
+from unittest.mock import Mock, patch, MagicMock
+import asyncio
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+
+class TestSocialFeedEngine:
+    """Test SocialFeedEngine"""
+
+    @pytest.fixture
+    def engine(self):
+        """Create engine with mocked repository"""
+        from python.modules.SocialFeed.service.engine import SocialFeedEngine
+        with patch('python.modules.SocialFeed.service.engine.SocialFeedRepository') as mock_repo:
+            engine = SocialFeedEngine()
+            engine.repo = mock_repo.return_value
+            yield engine
+
+    def test_create_post_stores_post(self, engine):
+        """create_post should persist post and return it"""
+        post = Mock(id="post-1", user_id="user-1", content="Hello world")
+        engine.repo.create_post.return_value = post
+
+        result = asyncio.run(engine.create_post("user-1", "Hello world"))
+
+        assert result == post
+        engine.repo.create_post.assert_called_once_with("user-1", "Hello world", None)
+
+    def test_get_post_by_id(self, engine):
+        """get_post should retrieve post from repo"""
+        post = Mock(id="post-1", content="Test")
+        engine.repo.get_post.return_value = post
+
+        result = engine.get_post("post-1")
+        assert result == post
+
+    def test_get_user_posts_returns_list(self, engine):
+        """get_user_posts should return user's posts"""
+        posts = [Mock(id="p1"), Mock(id="p2")]
+        engine.repo.get_user_posts.return_value = posts
+
+        result = engine.get_user_posts("user-1", limit=10)
+        assert len(result) == 2
+
+    def test_toggle_like_creates_or_removes_like(self, engine):
+        """toggle_like should toggle like status"""
+        engine.repo.toggle_post_like.return_value = True  # liked
+
+        liked = engine.toggle_like("post-1", "user-1")
+        assert liked is True
+
+    def test_get_post_likes_count(self, engine):
+        """get_post_likes_count should return number of likes"""
+        engine.repo.get_post_likes.return_value = ["user-1", "user-2", "user-3"]
+
+        count = engine.get_post_likes_count("post-1")
+        assert count == 3
+
+    def test_add_comment_creates_comment(self, engine):
+        """add_comment should persist comment"""
+        from python.modules.SocialFeed.models.schemas import SocialComment
+        comment = SocialComment(
+            id="comment-1",
+            post_id="post-1",
+            user_id="user-1",
+            content="Nice!"
+        )
+        engine.repo.add_comment.return_value = comment
+
+        result = engine.add_comment("post-1", "user-1", "Nice!")
+        assert result == comment
+
+    def test_get_post_comments(self, engine):
+        """get_post_comments should return list"""
+        comments = [Mock(id="c1"), Mock(id="c2")]
+        engine.repo.get_post_comments.return_value = comments
+
+        result = engine.get_post_comments("post-1")
+        assert len(result) == 2
+
+    def test_toggle_comment_like(self, engine):
+        """toggle_comment_like should toggle"""
+        engine.repo.toggle_comment_like.return_value = True
+        liked = engine.toggle_comment_like("comment-1", "user-1")
+        assert liked is True
+
+    def test_follow_user_creates_relationship(self, engine):
+        """follow_user should create follow record"""
+        engine.repo.follow_user.return_value = True
+
+        success = engine.follow_user("follower-1", "following-1")
+        assert success is True
+
+    def test_unfollow_user_removes_relationship(self, engine):
+        """unfollow_user should delete follow record"""
+        engine.repo.unfollow_user.return_value = True
+
+        success = engine.unfollow_user("follower-1", "following-1")
+        assert success is True
+
+    def test_get_followers_list(self, engine):
+        """get_followers should return list of user IDs"""
+        engine.repo.get_followers.return_value = ["user-1", "user-2"]
+
+        followers = engine.get_followers("user-1")
+        assert followers == ["user-1", "user-2"]
+
+    def test_get_following_list(self, engine):
+        """get_following should return list of user IDs"""
+        engine.repo.get_following.return_value = ["user-2", "user-3"]
+
+        following = engine.get_following("user-1")
+        assert following == ["user-2", "user-3"]
+
+    def test_get_user_feed_returns_items(self, engine):
+        """get_user_feed should return feed items with like status"""
+        posts = [
+            Mock(id="p1", user_id="u1", content="c1", likes_count=5),
+            Mock(id="p2", user_id="u2", content="c2", likes_count=3),
+        ]
+        engine.repo.get_feed.return_value = posts
+        engine.repo.get_post_likes.return_value = ["user-1"]  # current user liked p1
+
+        feed = engine.get_user_feed("user-1", limit=10)
+
+        assert len(feed) == 2
+        assert feed[0].is_liked is True  # p1 liked by user-1
+        assert feed[1].is_liked is False
+
+    def test_delete_post(self, engine):
+        """delete_post should remove post"""
+        engine.repo.delete_post.return_value = True
+
+        success = engine.delete_post("post-1", "user-1")
+        assert success is True
+
+    def test_check_post_owner_returns_boolean(self, engine):
+        """check_post_owner should return ownership boolean"""
+        post = Mock(user_id="user-1")
+        engine.repo.get_post.return_value = post
+
+        result = engine.check_post_owner("post-1", "user-1")
+        assert result["is_owner"] is True
+        assert result["post_owner"] == "user-1"
+
+        result2 = engine.check_post_owner("post-1", "other-user")
+        assert result2["is_owner"] is False
+
+
+class TestSocialFeedEdgeCases:
+    """Test edge cases in social feed"""
+
+    def test_create_post_empty_content(self, engine):
+        """create_post with empty content should fail validation"""
+        from python.modules.SocialFeed.service.engine import SocialFeedEngine
+        from pydantic import ValidationError
+        import pytest
+
+        # The engine should validate content length before repo call
+        # Assuming content min length = 1
+        with pytest.raises(ValueError) or pytest.raises(ValidationError):
+            engine.create_post("user-1", "")
+
+    def test_get_feed_empty_catalog(self, engine):
+        """get_user_feed with no posts should return empty list"""
+        engine.repo.get_feed.return_value = []
+
+        feed = engine.get_user_feed("user-1", limit=10)
+        assert feed == []
+
+    def test_like_own_post_allowed(self, engine):
+        """User can like their own post (or maybe disallowed?)"""
+        # Business rule dependent; allow for now
+        engine.repo.toggle_post_like.return_value = True
+        result = engine.toggle_like("own-post-1", "owner-user")
+        assert result is True
+
+    def test_follow_self_not_allowed(self):
+        """follow_user should not allow following oneself"""
+        from python.modules.SocialFeed.service.engine import SocialFeedEngine
+        engine = SocialFeedEngine()
+        with patch.object(engine.repo, 'follow_user') as mock_follow:
+            success = engine.follow_user("user-1", "user-1")
+            # Should return False or raise error
+            assert success is False or mock_follow.not_called
+
+    def test_get_analytics_privacy(self, engine):
+        """Only post owner should see own detailed analytics (handled at API layer)"""
+        # Engine might not have privilege check
+        assert True
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

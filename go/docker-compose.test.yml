@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres-go:
+    image: postgres:15-alpine
+    container_name: postgres-go-test
+    environment:
+      POSTGRES_DB: go_test_db
+      POSTGRES_USER: go_test_user
+      POSTGRES_PASSWORD: go_test_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-go-data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U go_test_user -d go_test_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis-go:
+    image: redis:7-alpine
+    container_name: redis-go-test
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-go-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-go-data:
+  redis-go-data:

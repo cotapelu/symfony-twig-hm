@@ -1,0 +1,46 @@
+import { render, screen, fireEvent } from '@testing-library/svelte';
+import LoginPage from '$routes/login/+page.svelte';
+
+describe('Login Page', () => {
+  test('renders login heading', () => {
+    render(LoginPage);
+    expect(screen.getByRole('heading', { name: /login|sign in/i })).toBeInTheDocument();
+  });
+
+  test('displays email and password fields', () => {
+    render(LoginPage);
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+  });
+
+  test('submits form with credentials', () => {
+    render(LoginPage);
+    const email = screen.getByLabelText(/email/i);
+    const password = screen.getByLabelText(/password/i);
+    const submit = screen.getByRole('button', { name: /login|sign in/i });
+
+    fireEvent.input(email, { target: { value: 'user@example.com' } });
+    fireEvent.input(password, { target: { value: 'secret' } });
+    fireEvent.click(submit);
+
+    expect(screen.getByText(/dashboard|welcome/i)).toBeInTheDocument();
+  });
+
+  test('shows error for invalid credentials', () => {
+    render(LoginPage);
+    const email = screen.getByLabelText(/email/i);
+    const password = screen.getByLabelText(/password/i);
+    const submit = screen.getByRole('button', { name: /login|sign in/i });
+
+    fireEvent.input(email, { target: { value: 'wrong@example.com' } });
+    fireEvent.input(password, { target: { value: 'wrong' } });
+    fireEvent.click(submit);
+
+    expect(screen.getByText(/invalid|incorrect/i)).toBeInTheDocument();
+  });
+
+  test('has link to registration page', () => {
+    render(LoginPage);
+    expect(screen.getByRole('link', { name: /register|sign up/i })).toHaveAttribute('href', '/register');
+  });
+});

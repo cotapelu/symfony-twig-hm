@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="App\Tests\Integration\NewsIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" tests="10" assertions="25" errors="2" failures="0" skipped="0" time="0.011251">
+    <testcase name="testArticleEntityCompleteWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="16" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="0" time="0.007407">
+      <error type="TypeError">App\Tests\Integration\NewsIntegrationTest::testArticleEntityCompleteWorkflow
+TypeError: App\News\Entity\Article::setPublishedAt(): Argument #1 ($dt) must be of type DateTimeImmutable, DateTime given, called in /home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php on line 30
+
+/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/modules/News/Entity/Article.php:128
+/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php:30</error>
+    </testcase>
+    <testcase name="testArticleWithNullImageUrl" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="44" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="1" time="0.000373"/>
+    <testcase name="testArticleWithNullViewCount" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="56" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="1" time="0.000302"/>
+    <testcase name="testCategoryEntityCompleteWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="69" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="3" time="0.000247"/>
+    <testcase name="testMultipleArticlesInCategory" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="84" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="1" time="0.000364"/>
+    <testcase name="testArticleCategories" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="108" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="8" time="0.000343"/>
+    <testcase name="testArticlePublishedAtCanBeUpdated" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="124" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="0" time="0.000513">
+      <error type="TypeError">App\Tests\Integration\NewsIntegrationTest::testArticlePublishedAtCanBeUpdated
+TypeError: App\News\Entity\Article::setPublishedAt(): Argument #1 ($dt) must be of type DateTimeImmutable, DateTime given, called in /home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php on line 131
+
+/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/modules/News/Entity/Article.php:128
+/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php:131</error>
+    </testcase>
+    <testcase name="testArticleViewCountIncrements" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="138" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="2" time="0.000528"/>
+    <testcase name="testCategoryDefaultValues" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="158" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="1" time="0.000660"/>
+    <testcase name="testNewsIntegrationFlow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="165" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="8" time="0.000513"/>
+  </testsuite>
+</testsuites>

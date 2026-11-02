@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""Architecture compliance: deptrac, import-linter."""
+import subprocess
+import sys
+import os
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(project_root)
+
+print("🏛️ Running architecture compliance checks...")
+failed = False
+
+# PHP: deptrac
+print("  [PHP] deptrac...")
+# Check if deptrac exists
+result = subprocess.run(["cd", "php-symfony", "&&", "php", "vendor/bin/deptrac", "--version"], shell=True, capture_output=True, text=True)
+if result.returncode == 0:
+    result = subprocess.run(["cd", "php-symfony", "&&", "php", "vendor/bin/deptrac", "analyse", "--config=.deptrac.yaml"], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("    ❌ deptrac violations found")
+        failed = True
+else:
+    print("    ❌ deptrac not installed – it is required for architecture compliance")
+    failed = True
+
+# Go: import-linter
+print("  [Go] import-linter...")
+result = subprocess.run(["which", "import-linter"], capture_output=True, text=True)
+if result.stdout.strip():
+    result = subprocess.run(["cd", "go", "&&", "import-linter", "-config", ".importlinter-go.yaml"], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("    ❌ import-linter violations found")
+        failed = True
+else:
+    print("    ❌ import-linter not installed – required for architecture compliance")
+    failed = True
+
+# Python: import-linter
+print("  [Python] import-linter...")
+result = subprocess.run(["which", "import-linter"], capture_output=True, text=True)
+if result.stdout.strip():
+    result = subprocess.run(["cd", "python", "&&", "import-linter", "-config", ".importlinter-python.yaml"], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("    ❌ import-linter violations found")
+        failed = True
+else:
+    print("    ❌ import-linter not installed – required for architecture compliance")
+    failed = True
+
+# Kotlin: import-linter
+print("  [Kotlin] import-linter...")
+result = subprocess.run(["which", "import-linter"], capture_output=True, text=True)
+if result.stdout.strip():
+    result = subprocess.run(["cd", "kotlin", "&&", "import-linter", "-config", ".importlinter-kotlin.yaml"], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("    ❌ import-linter violations found")
+        failed = True
+else:
+    print("    ❌ import-linter not installed – required for architecture compliance")
+    failed = True
+
+if failed:
+    print("\n❌ Architecture check FAILED (violations detected)")
+    sys.exit(1)
+else:
+    print("\n✅ Architecture check PASSED")
+    sys.exit(0)

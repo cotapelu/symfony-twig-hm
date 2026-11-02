@@ -1,0 +1,81 @@
+# Import Linter Configuration
+name: Import Linter
+language: python
+version: '1.2.0'
+
+paths:
+  - src/
+  - tests/
+
+include:
+  - '**/*.py'
+  - '**/models/**/*.py'
+  - '**/services/**/*.py'
+
+exclude:
+  - '**/migrations/**/*'
+  - '**/venv/**/*'
+  - '**/__pycache__/**/*'
+  - '**/node_modules/**/*'
+
+# Rules for imports
+import_rules:
+  - Forbidden modules:
+      - os
+      - sys
+      - subprocess
+      - pickle
+      - ctypes
+
+  - Forbidden imports:
+    - from __future__ import *
+    - from collections import defaultdict
+    - from json import JSONEncoder
+
+  - Naming conventions:
+    class_names:
+      pattern: '[A-Z][a-z0-9_]*'
+      style: PascalCase
+    function_names:
+        pattern: '[a-z_][a-z0-9_]*'
+        style: snake_case
+    
+    imports:
+      - banned:
+        - 'from .* import *'
+        - 'import \\'
+        - 'import json'
+        - 'import yaml'
+        - 'import xml'
+      - default: allowed
+          - 'json': 'import json as JSON'
+          - 'yaml': 'import yaml as YAML'
+      - required:
+        - 'typing: List, Dict, Optional, Union, Any'
+          - 'collections: defaultdict, Counter, deque'
+
+# Line length and complexity
+line_length:
+  max: 120
+  max_complexity: 15
+  max_doc_line_length: 80
+
+# Type annotations
+type_checking:
+  strict: true
+  disallow_untyped_defs: true
+
+# Error severity
+error_codes:
+  - E401: import.error
+  - E402: import.warning
+  - E501: invalid.syntax
+
+# Configuration
+settings:
+  - profile: black
+  - select: F401, E402, E403, E404, E405, E406, E407, E408, E409, E410, E411
+  E502: f-string-formatting
+  E503: f-string-typo
+  E504: f-string-no-percent-formatting
+  E505: f-string-undefined-name

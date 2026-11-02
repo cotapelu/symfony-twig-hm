@@ -1,0 +1,55 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    csrf_protection:
+        enabled: true
+    #http_method_override: false
+
+    router:
+        utf8: true
+
+    # Enables session support
+    session:
+        handler_id: session.handler.native_file
+        cookie_secure: auto
+        cookie_samesite: lax
+        name: PHUONGXA_SESSION
+        cookie_lifetime: 86400
+        gc_maxlifetime: 86400
+
+    #esi: true
+    #fragments: true
+    php_errors:
+        log: true
+
+    cache:
+        pools:
+            cache.rate_limit:
+                adapter: cache.adapter.redis
+                default_lifetime: 3600
+            cache.app_pool:
+                adapter: cache.adapter.redis
+                default_lifetime: 3600
+            cache.system_pool:
+                adapter: cache.adapter.redis
+                default_lifetime: 3600
+
+    # Development optimizations
+    profiler:
+        enabled: '%kernel.debug%'
+
+when@dev:
+    framework:
+        cache: null
+        session:
+            handler_id: session.handler.native_file
+            cookie_secure: false
+
+when@prod:
+    framework:
+        session:
+            handler_id: session.handler.native_file
+            cookie_secure: true
+            cookie_httponly: true
+            cookie_samesite: strict
+        profiler:
+            enabled: false

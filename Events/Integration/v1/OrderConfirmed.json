@@ -1,0 +1,27 @@
+{
+  "eventId": "string",
+  "eventType": "OrderConfirmed",
+  "version": "1.0",
+  "timestamp": "ISO8601",
+  "correlationId": "string",
+  "causationId": "string",
+  "source": "string",
+  "data": {
+    "orderId": "string",
+    "userId": "string",
+    "items": [
+      {
+        "productId": "string",
+        "quantity": "number",
+        "unitPrice": "number",
+        "totalPrice": "number"
+      }
+    ],
+    "totalAmount": "number",
+    "currency": "string",
+    "shippingAddress": "object",
+    "paymentMethod": "string",
+    "confirmedAt": "ISO8601",
+    "estimatedDelivery": "ISO8601"
+  }
+}

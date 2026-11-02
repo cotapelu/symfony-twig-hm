@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="CLI Arguments" tests="336" assertions="751" errors="0" failures="0" skipped="101" time="5.333675">
+    <testsuite name="App\Tests\Integration\Appointment\AppointmentIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" tests="16" assertions="55" errors="0" failures="0" skipped="0" time="1.050047">
+      <testcase name="testCreateAppointmentSuccess" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="32" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="10" time="0.104651"/>
+      <testcase name="testConfirmAppointmentChangesStatus" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="59" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="3" time="0.059795"/>
+      <testcase name="testCancelAppointmentChangesStatus" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="78" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="2" time="0.058886"/>
+      <testcase name="testGetAppointmentsByWardReturnsOnlyMatching" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="95" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="5" time="0.077076"/>
+      <testcase name="testEnsureCanAccessAppointmentAllowsAdmin" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="139" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="1" time="0.060428"/>
+      <testcase name="testEnsureCanAccessAppointmentDeniesOtherCitizen" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="156" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="2" time="0.055820"/>
+      <testcase name="testCreateAppointmentFailsWhenUnauthenticated" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="174" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="2" time="0.065012"/>
+      <testcase name="testInvalidDateFormatRejected" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="192" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="2" time="0.066269"/>
+      <testcase name="testInvalidPhoneFormatRejected" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="207" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="2" time="0.071810"/>
+      <testcase name="testEmptyWardCodeRejected" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="222" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="2" time="0.056895"/>
+      <testcase name="testStartAppointmentChangesStatusToInProgress" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="237" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="4" time="0.059264"/>
+      <testcase name="testCompleteAppointmentAddsDetails" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="257" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="6" time="0.067860"/>
+      <testcase name="testMarkNoShowChangesStatus" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="289" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="4" time="0.056044"/>
+      <testcase name="testGetTodayAppointmentsFiltersByDate" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="308" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="2" time="0.062561"/>
+      <testcase name="testGetStatisticsReturnsCounts" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="336" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="6" time="0.071154"/>
+      <testcase name="testAssignOfficer" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Appointment/AppointmentIntegrationTest.php" line="367" class="App\Tests\Integration\Appointment\AppointmentIntegrationTest" classname="App.Tests.Integration.Appointment.AppointmentIntegrationTest" assertions="2" time="0.056521"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\AppointmentIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/AppointmentIntegrationTest.php" tests="3" assertions="0" errors="0" failures="0" skipped="3" time="0.000000">
+      <testcase name="testCreateAppointmentRequiresAuthentication" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/AppointmentIntegrationTest.php" line="24" class="App\Tests\Integration\AppointmentIntegrationTest" classname="App.Tests.Integration.AppointmentIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCreateAppointmentSuccess" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/AppointmentIntegrationTest.php" line="44" class="App\Tests\Integration\AppointmentIntegrationTest" classname="App.Tests.Integration.AppointmentIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testListAppointmentsWithPagination" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/AppointmentIntegrationTest.php" line="75" class="App\Tests\Integration\AppointmentIntegrationTest" classname="App.Tests.Integration.AppointmentIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\AuthIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/AuthIntegrationTest.php" tests="2" assertions="0" errors="0" failures="0" skipped="2" time="0.000000">
+      <testcase name="testRegisterAndLoginFlow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/AuthIntegrationTest.php" line="19" class="App\Tests\Integration\AuthIntegrationTest" classname="App.Tests.Integration.AuthIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testLoginFailsWithInvalidCredentials" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/AuthIntegrationTest.php" line="68" class="App\Tests\Integration\AuthIntegrationTest" classname="App.Tests.Integration.AuthIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\BudgetingIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" tests="20" assertions="80" errors="0" failures="0" skipped="0" time="0.025731">
+      <testcase name="testCreateCategoryAndRetrieve" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="105" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="8" time="0.002493"/>
+      <testcase name="testGetUserCategoriesReturnsAll" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="129" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="2" time="0.000811"/>
+      <testcase name="testGetCategoriesByTypeFilter" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="144" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="5" time="0.000781"/>
+      <testcase name="testCreateBudgetAndRetrieve" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="169" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="9" time="0.000985"/>
+      <testcase name="testGetUserBudgetsReturnsAll" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="198" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="2" time="0.000816"/>
+      <testcase name="testGetBudgetProgressEmptyExpenses" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="214" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="5" time="0.000796"/>
+      <testcase name="testGetBudgetProgressWithExpenses" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="229" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="5" time="0.001112"/>
+      <testcase name="testGetBudgetProgressOverBudget" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="265" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="4" time="0.001532"/>
+      <testcase name="testGetBudgetProgressNotFoundThrowsException" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="289" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="2" time="0.000933"/>
+      <testcase name="testCreateExpenseAndRetrieve" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="299" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="8" time="0.001410"/>
+      <testcase name="testGetUserExpensesAll" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="326" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="2" time="0.001332"/>
+      <testcase name="testGetUserExpensesWithDateRange" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="342" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="2" time="0.001355"/>
+      <testcase name="testGetSpendingSummary" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="362" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="6" time="0.001526"/>
+      <testcase name="testBudgetWithZeroAmount" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="395" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="1" time="0.001603"/>
+      <testcase name="testBudgetWithDifferentPeriods" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="403" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="3" time="0.001280"/>
+      <testcase name="testExpenseWithoutDescription" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="423" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="2" time="0.000946"/>
+      <testcase name="testMultipleCategoriesForUser" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="442" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="4" time="0.001295"/>
+      <testcase name="testCategoryIsolationBetweenUsers" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="464" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="4" time="0.001663"/>
+      <testcase name="testBudgetIsolationBetweenUsers" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="480" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="4" time="0.001618"/>
+      <testcase name="testExpenseIsolationBetweenUsers" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BudgetingIntegrationTest.php" line="498" class="App\Tests\Integration\BudgetingIntegrationTest" classname="App.Tests.Integration.BudgetingIntegrationTest" assertions="2" time="0.001445"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\BusinessAccountsIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" tests="16" assertions="33" errors="0" failures="0" skipped="5" time="0.015591">
+      <testcase name="testCreateAndRetrieveAccount" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="58" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="7" time="0.002210"/>
+      <testcase name="testGetUserAccounts" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="74" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="2" time="0.001058"/>
+      <testcase name="testUpdateTaxId" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="87" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="2" time="0.001100"/>
+      <testcase name="testUpdateContact" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="98" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="2" time="0.000850"/>
+      <testcase name="testDeleteAccount" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="107" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="1" time="0.000806"/>
+      <testcase name="testDeleteAccountNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="120" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="1" time="0.000974"/>
+      <testcase name="testVerifyAccount" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="128" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="3" time="0.001073"/>
+      <testcase name="testGetVerifiedAccounts" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="140" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="0" time="0.000723">
+        <skipped/>
+      </testcase>
+      <testcase name="testSearchByName" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="159" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="0" time="0.000740">
+        <skipped/>
+      </testcase>
+      <testcase name="testSearchByNameCaseInsensitive" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="171" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="0" time="0.000949">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetAccountsByType" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="184" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="0" time="0.000716">
+        <skipped/>
+      </testcase>
+      <testcase name="testAccountIsolationBetweenUsers" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="200" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="4" time="0.000901"/>
+      <testcase name="testFindByTaxId" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="214" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="0" time="0.000835">
+        <skipped/>
+      </testcase>
+      <testcase name="testBusinessTypes" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="226" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="5" time="0.000946"/>
+      <testcase name="testSetWhatsappBusiness" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="236" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="1" time="0.000849"/>
+      <testcase name="testOptionalFieldsCanBeNull" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/BusinessAccountsIntegrationTest.php" line="244" class="App\Tests\Integration\BusinessAccountsIntegrationTest" classname="App.Tests.Integration.BusinessAccountsIntegrationTest" assertions="5" time="0.000862"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\CallIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" tests="15" assertions="42" errors="0" failures="0" skipped="0" time="0.118758">
+      <testcase name="testInitiateAndRetrieveCall" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="56" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="7" time="0.002778"/>
+      <testcase name="testVideoCall" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="72" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="1" time="0.001590"/>
+      <testcase name="testAnswerCall" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="79" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="2" time="0.001116"/>
+      <testcase name="testEndCall" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="90" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="4" time="0.001178"/>
+      <testcase name="testEndCallNeverAnswered" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="103" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="2" time="0.000659"/>
+      <testcase name="testMissCall" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="114" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="1" time="0.000616"/>
+      <testcase name="testGetUserCalls" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="126" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="2" time="0.000744"/>
+      <testcase name="testGetRecentCalls" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="139" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="2" time="0.101424"/>
+      <testcase name="testGetMissedCalls" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="151" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="2" time="0.001290"/>
+      <testcase name="testLinkToConversation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="163" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="1" time="0.001499"/>
+      <testcase name="testGetCallStats" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="173" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="8" time="0.001545"/>
+      <testcase name="testCallIsolationBetweenUsers" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="195" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="2" time="0.001739"/>
+      <testcase name="testAudioVsVideoCall" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="207" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="2" time="0.000826"/>
+      <testcase name="testCallStatusTransitions" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="216" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="3" time="0.000904"/>
+      <testcase name="testOptionalFields" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CallIntegrationTest.php" line="228" class="App\Tests\Integration\CallIntegrationTest" classname="App.Tests.Integration.CallIntegrationTest" assertions="3" time="0.000850"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Concurrency\ConcurrentRequestsTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Concurrency/ConcurrentRequestsTest.php" tests="1" assertions="0" errors="0" failures="0" skipped="1" time="0.000000">
+      <testcase name="testMultipleConcurrentHealthRequests" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Concurrency/ConcurrentRequestsTest.php" line="16" class="App\Tests\Integration\Concurrency\ConcurrentRequestsTest" classname="App.Tests.Integration.Concurrency.ConcurrentRequestsTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Conversation\ConversationApiTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Conversation/ConversationApiTest.php" tests="7" assertions="0" errors="0" failures="0" skipped="7" time="0.000000">
+      <testcase name="testCreateConversation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Conversation/ConversationApiTest.php" line="19" class="App\Tests\Integration\Conversation\ConversationApiTest" classname="App.Tests.Integration.Conversation.ConversationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetConversationNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Conversation/ConversationApiTest.php" line="38" class="App\Tests\Integration\Conversation\ConversationApiTest" classname="App.Tests.Integration.Conversation.ConversationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetUserConversations" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Conversation/ConversationApiTest.php" line="45" class="App\Tests\Integration\Conversation\ConversationApiTest" classname="App.Tests.Integration.Conversation.ConversationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testUpdateTitle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Conversation/ConversationApiTest.php" line="65" class="App\Tests\Integration\Conversation\ConversationApiTest" classname="App.Tests.Integration.Conversation.ConversationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testUpdateAvatar" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Conversation/ConversationApiTest.php" line="86" class="App\Tests\Integration\Conversation\ConversationApiTest" classname="App.Tests.Integration.Conversation.ConversationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testDeleteConversation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Conversation/ConversationApiTest.php" line="106" class="App\Tests\Integration\Conversation\ConversationApiTest" classname="App.Tests.Integration.Conversation.ConversationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSearchConversations" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Conversation/ConversationApiTest.php" line="126" class="App\Tests\Integration\Conversation\ConversationApiTest" classname="App.Tests.Integration.Conversation.ConversationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\ConversationIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" tests="16" assertions="34" errors="0" failures="0" skipped="0" time="0.014498">
+      <testcase name="testCreateAndRetrieveConversation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="53" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="5" time="0.002372"/>
+      <testcase name="testCreateGroupConversationWithTitle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="67" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="3" time="0.001501"/>
+      <testcase name="testGetUserConversations" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="76" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="3" time="0.000934"/>
+      <testcase name="testUpdateTitle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="91" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="2" time="0.000669"/>
+      <testcase name="testUpdateAvatar" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="102" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="1" time="0.000623"/>
+      <testcase name="testAddParticipant" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="110" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="1" time="0.001579"/>
+      <testcase name="testRemoveParticipant" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="118" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="2" time="0.000961"/>
+      <testcase name="testDeleteConversation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="127" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="1" time="0.000830"/>
+      <testcase name="testGetDirectConversation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="138" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="2" time="0.000655"/>
+      <testcase name="testGetDirectConversationNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="150" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="1" time="0.000712"/>
+      <testcase name="testSearchConversations" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="161" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="1" time="0.000645"/>
+      <testcase name="testSearchConversationsNoResults" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="172" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="1" time="0.000574"/>
+      <testcase name="testConversationIsolationBetweenUsers" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="183" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="2" time="0.000617"/>
+      <testcase name="testGroupVsDirectConversation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="195" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="4" time="0.000655"/>
+      <testcase name="testSetTitleCanBeNull" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="206" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="2" time="0.000554"/>
+      <testcase name="testOptionalFields" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ConversationIntegrationTest.php" line="216" class="App\Tests\Integration\ConversationIntegrationTest" classname="App.Tests.Integration.ConversationIntegrationTest" assertions="3" time="0.000618"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\CustomerServiceIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" tests="13" assertions="34" errors="0" failures="0" skipped="0" time="0.011359">
+      <testcase name="testCreateAndRetrieveTicket" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="50" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="8" time="0.001284"/>
+      <testcase name="testGetUserTickets" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="67" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="2" time="0.000858"/>
+      <testcase name="testUpdateStatus" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="80" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="2" time="0.000649"/>
+      <testcase name="testAssignTicket" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="92" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="1" time="0.000601"/>
+      <testcase name="testSetPriority" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="100" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="1" time="0.000832"/>
+      <testcase name="testLinkToOrder" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="108" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="1" time="0.000731"/>
+      <testcase name="testGetOpenTickets" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="116" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="1" time="0.001207"/>
+      <testcase name="testGetAssignedTickets" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="127" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="1" time="0.001468"/>
+      <testcase name="testGetTicketStats" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="138" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="4" time="0.000838"/>
+      <testcase name="testTicketIsolationBetweenUsers" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="157" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="4" time="0.000779"/>
+      <testcase name="testAllPriorityLevels" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="171" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="4" time="0.000858"/>
+      <testcase name="testAllStatusTransitions" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="182" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="4" time="0.000702"/>
+      <testcase name="testDescriptionAndOptionalFields" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/CustomerServiceIntegrationTest.php" line="197" class="App\Tests\Integration\CustomerServiceIntegrationTest" classname="App.Tests.Integration.CustomerServiceIntegrationTest" assertions="1" time="0.000552"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\DiscoverIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/DiscoverIntegrationTest.php" tests="6" assertions="8" errors="0" failures="0" skipped="0" time="0.002104">
+      <testcase name="testFullItemLifecycle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/DiscoverIntegrationTest.php" line="18" class="App\Tests\Integration\DiscoverIntegrationTest" classname="App.Tests.Integration.DiscoverIntegrationTest" assertions="3" time="0.000832"/>
+      <testcase name="testItemSearch" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/DiscoverIntegrationTest.php" line="34" class="App\Tests\Integration\DiscoverIntegrationTest" classname="App.Tests.Integration.DiscoverIntegrationTest" assertions="1" time="0.000277"/>
+      <testcase name="testNearbyItems" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/DiscoverIntegrationTest.php" line="45" class="App\Tests\Integration\DiscoverIntegrationTest" classname="App.Tests.Integration.DiscoverIntegrationTest" assertions="1" time="0.000321"/>
+      <testcase name="testTrendingItems" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/DiscoverIntegrationTest.php" line="58" class="App\Tests\Integration\DiscoverIntegrationTest" classname="App.Tests.Integration.DiscoverIntegrationTest" assertions="1" time="0.000231"/>
+      <testcase name="testItemScore" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/DiscoverIntegrationTest.php" line="71" class="App\Tests\Integration\DiscoverIntegrationTest" classname="App.Tests.Integration.DiscoverIntegrationTest" assertions="1" time="0.000214"/>
+      <testcase name="testUserItems" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/DiscoverIntegrationTest.php" line="83" class="App\Tests\Integration\DiscoverIntegrationTest" classname="App.Tests.Integration.DiscoverIntegrationTest" assertions="1" time="0.000229"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\EcommerceIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" tests="11" assertions="0" errors="0" failures="0" skipped="11" time="0.000000">
+      <testcase name="testProductPersistence" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="21" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testUpdateProduct" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="46" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testDeleteProduct" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="69" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetProductsBySeller" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="87" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetProductsByCategory" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="100" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSearchProducts" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="110" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetFeaturedProductsSortedByPriceDesc" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="123" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCountActiveProducts" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="136" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testActivateAndDeactivate" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="146" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testUpdateStock" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="158" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetProductsWithPagination" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EcommerceIntegrationTest.php" line="173" class="App\Tests\Integration\EcommerceIntegrationTest" classname="App.Tests.Integration.EcommerceIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Education\EducationApiTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" tests="9" assertions="0" errors="0" failures="0" skipped="9" time="0.000000">
+      <testcase name="testCreateCourse" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="18" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetCourseNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="41" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetInstructorCourses" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="48" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetCoursesByCategory" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="71" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSearchCourses" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="89" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testUpdateCourse" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="107" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testPublishAndArchive" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="133" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testDeleteCourse" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="160" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetFeaturedCourses" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Education/EducationApiTest.php" line="180" class="App\Tests\Integration\Education\EducationApiTest" classname="App.Tests.Integration.Education.EducationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\EducationIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EducationIntegrationTest.php" tests="6" assertions="12" errors="0" failures="0" skipped="0" time="0.002101">
+      <testcase name="testFullCourseLifecycle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EducationIntegrationTest.php" line="18" class="App\Tests\Integration\EducationIntegrationTest" classname="App.Tests.Integration.EducationIntegrationTest" assertions="4" time="0.001035"/>
+      <testcase name="testCourseSearchAndFilter" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EducationIntegrationTest.php" line="34" class="App\Tests\Integration\EducationIntegrationTest" classname="App.Tests.Integration.EducationIntegrationTest" assertions="2" time="0.000239"/>
+      <testcase name="testCoursePublishing" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EducationIntegrationTest.php" line="47" class="App\Tests\Integration\EducationIntegrationTest" classname="App.Tests.Integration.EducationIntegrationTest" assertions="2" time="0.000211"/>
+      <testcase name="testCourseDeletion" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EducationIntegrationTest.php" line="58" class="App\Tests\Integration\EducationIntegrationTest" classname="App.Tests.Integration.EducationIntegrationTest" assertions="1" time="0.000199"/>
+      <testcase name="testFeaturedCourses" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EducationIntegrationTest.php" line="69" class="App\Tests\Integration\EducationIntegrationTest" classname="App.Tests.Integration.EducationIntegrationTest" assertions="1" time="0.000200"/>
+      <testcase name="testInstructorCourses" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/EducationIntegrationTest.php" line="82" class="App\Tests\Integration\EducationIntegrationTest" classname="App.Tests.Integration.EducationIntegrationTest" assertions="2" time="0.000216"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\FeatureFlags\FeatureFlagIntegrationDbTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/FeatureFlags/FeatureFlagIntegrationDbTest.php" tests="4" assertions="9" errors="0" failures="0" skipped="0" time="0.241962">
+      <testcase name="testCreateFeatureFlagAndPersist" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/FeatureFlags/FeatureFlagIntegrationDbTest.php" line="19" class="App\Tests\Integration\FeatureFlags\FeatureFlagIntegrationDbTest" classname="App.Tests.Integration.FeatureFlags.FeatureFlagIntegrationDbTest" assertions="4" time="0.069588"/>
+      <testcase name="testFindFeatureFlagById" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/FeatureFlags/FeatureFlagIntegrationDbTest.php" line="35" class="App\Tests\Integration\FeatureFlags\FeatureFlagIntegrationDbTest" classname="App.Tests.Integration.FeatureFlags.FeatureFlagIntegrationDbTest" assertions="2" time="0.058318"/>
+      <testcase name="testUpdateFeatureFlag" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/FeatureFlags/FeatureFlagIntegrationDbTest.php" line="52" class="App\Tests\Integration\FeatureFlags\FeatureFlagIntegrationDbTest" classname="App.Tests.Integration.FeatureFlags.FeatureFlagIntegrationDbTest" assertions="2" time="0.055280"/>
+      <testcase name="testDeleteFeatureFlag" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/FeatureFlags/FeatureFlagIntegrationDbTest.php" line="72" class="App\Tests\Integration\FeatureFlags\FeatureFlagIntegrationDbTest" classname="App.Tests.Integration.FeatureFlags.FeatureFlagIntegrationDbTest" assertions="1" time="0.058776"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Feedback\FeedbackIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Feedback/FeedbackIntegrationTest.php" tests="5" assertions="28" errors="0" failures="0" skipped="0" time="0.286302">
+      <testcase name="testSubmitFeedbackCreatesFeedback" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Feedback/FeedbackIntegrationTest.php" line="28" class="App\Tests\Integration\Feedback\FeedbackIntegrationTest" classname="App.Tests.Integration.Feedback.FeedbackIntegrationTest" assertions="14" time="0.059492"/>
+      <testcase name="testComplaintGetsHighPriorityAndDeadline" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Feedback/FeedbackIntegrationTest.php" line="67" class="App\Tests\Integration\Feedback\FeedbackIntegrationTest" classname="App.Tests.Integration.Feedback.FeedbackIntegrationTest" assertions="3" time="0.052054"/>
+      <testcase name="testServiceRatingBelow3GetsHighPriority" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Feedback/FeedbackIntegrationTest.php" line="82" class="App\Tests\Integration\Feedback\FeedbackIntegrationTest" classname="App.Tests.Integration.Feedback.FeedbackIntegrationTest" assertions="3" time="0.053955"/>
+      <testcase name="testGetFeedbackByWardReturnsOnlyMatching" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Feedback/FeedbackIntegrationTest.php" line="98" class="App\Tests\Integration\Feedback\FeedbackIntegrationTest" classname="App.Tests.Integration.Feedback.FeedbackIntegrationTest" assertions="5" time="0.063747"/>
+      <testcase name="testGetFeedbackByNumber" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Feedback/FeedbackIntegrationTest.php" line="136" class="App\Tests\Integration\Feedback\FeedbackIntegrationTest" classname="App.Tests.Integration.Feedback.FeedbackIntegrationTest" assertions="3" time="0.057054"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\GDPR\GdprIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/GDPR/GdprIntegrationTest.php" tests="3" assertions="0" errors="0" failures="0" skipped="3" time="0.000000">
+      <testcase name="testExportUserDataReturnsCorrectStructure" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/GDPR/GdprIntegrationTest.php" line="54" class="App\Tests\Integration\GDPR\GdprIntegrationTest" classname="App.Tests.Integration.GDPR.GdprIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testDeleteUserDataAnonymizesUser" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/GDPR/GdprIntegrationTest.php" line="81" class="App\Tests\Integration\GDPR\GdprIntegrationTest" classname="App.Tests.Integration.GDPR.GdprIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testDeleteUserDataWhenUserNotFoundDoesNothing" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/GDPR/GdprIntegrationTest.php" line="101" class="App\Tests\Integration\GDPR\GdprIntegrationTest" classname="App.Tests.Integration.GDPR.GdprIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Government\CitizenIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/CitizenIntegrationTest.php" tests="4" assertions="23" errors="0" failures="0" skipped="0" time="0.269468">
+      <testcase name="testCreateCitizenSuccess" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/CitizenIntegrationTest.php" line="28" class="App\Tests\Integration\Government\CitizenIntegrationTest" classname="App.Tests.Integration.Government.CitizenIntegrationTest" assertions="15" time="0.068329"/>
+      <testcase name="testCreateCitizenFailsWhenIdentityNumberDuplicate" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/CitizenIntegrationTest.php" line="61" class="App\Tests\Integration\Government\CitizenIntegrationTest" classname="App.Tests.Integration.Government.CitizenIntegrationTest" assertions="2" time="0.064692"/>
+      <testcase name="testUpdateCitizenChangesOptionalFields" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/CitizenIntegrationTest.php" line="89" class="App\Tests\Integration\Government\CitizenIntegrationTest" classname="App.Tests.Integration.Government.CitizenIntegrationTest" assertions="4" time="0.064784"/>
+      <testcase name="testFindByIdentityNumberReturnsCitizen" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/CitizenIntegrationTest.php" line="118" class="App\Tests\Integration\Government\CitizenIntegrationTest" classname="App.Tests.Integration.Government.CitizenIntegrationTest" assertions="2" time="0.071663"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Government\WardIntegrationDbTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/WardIntegrationDbTest.php" tests="4" assertions="12" errors="0" failures="0" skipped="0" time="0.247404">
+      <testcase name="testCreateWardAndPersist" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/WardIntegrationDbTest.php" line="19" class="App\Tests\Integration\Government\WardIntegrationDbTest" classname="App.Tests.Integration.Government.WardIntegrationDbTest" assertions="5" time="0.067863"/>
+      <testcase name="testFindWardById" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/WardIntegrationDbTest.php" line="39" class="App\Tests\Integration\Government\WardIntegrationDbTest" classname="App.Tests.Integration.Government.WardIntegrationDbTest" assertions="3" time="0.054199"/>
+      <testcase name="testUpdateWard" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/WardIntegrationDbTest.php" line="60" class="App\Tests\Integration\Government\WardIntegrationDbTest" classname="App.Tests.Integration.Government.WardIntegrationDbTest" assertions="3" time="0.060150"/>
+      <testcase name="testDeleteWard" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Government/WardIntegrationDbTest.php" line="85" class="App\Tests\Integration\Government\WardIntegrationDbTest" classname="App.Tests.Integration.Government.WardIntegrationDbTest" assertions="1" time="0.065192"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Health\HealthApiTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Health/HealthApiTest.php" tests="7" assertions="0" errors="0" failures="0" skipped="7" time="0.000000">
+      <testcase name="testCreateProfile" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Health/HealthApiTest.php" line="26" class="App\Tests\Integration\Health\HealthApiTest" classname="App.Tests.Integration.Health.HealthApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetProfileNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Health/HealthApiTest.php" line="41" class="App\Tests\Integration\Health\HealthApiTest" classname="App.Tests.Integration.Health.HealthApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetUserProfileNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Health/HealthApiTest.php" line="48" class="App\Tests\Integration\Health\HealthApiTest" classname="App.Tests.Integration.Health.HealthApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testUpdateProfile" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Health/HealthApiTest.php" line="55" class="App\Tests\Integration\Health\HealthApiTest" classname="App.Tests.Integration.Health.HealthApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testAddAllergy" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Health/HealthApiTest.php" line="81" class="App\Tests\Integration\Health\HealthApiTest" classname="App.Tests.Integration.Health.HealthApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCalculateBMI" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Health/HealthApiTest.php" line="98" class="App\Tests\Integration\Health\HealthApiTest" classname="App.Tests.Integration.Health.HealthApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetHealthSummary" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Health/HealthApiTest.php" line="118" class="App\Tests\Integration\Health\HealthApiTest" classname="App.Tests.Integration.Health.HealthApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\HealthControllerTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthControllerTest.php" tests="1" assertions="7" errors="0" failures="0" skipped="0" time="0.075795">
+      <testcase name="testIamHealthEndpoint" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthControllerTest.php" line="11" class="App\Tests\Integration\HealthControllerTest" classname="App.Tests.Integration.HealthControllerTest" assertions="7" time="0.075795">
+        <system-out>{"timestamp":"2026-07-01T00:34:19+00:00","service":"IAM","status":"healthy","error":null}
+</system-out>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\HealthIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthIntegrationTest.php" tests="6" assertions="13" errors="0" failures="0" skipped="0" time="0.002417">
+      <testcase name="testFullHealthProfileLifecycle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthIntegrationTest.php" line="18" class="App\Tests\Integration\HealthIntegrationTest" classname="App.Tests.Integration.HealthIntegrationTest" assertions="4" time="0.000754"/>
+      <testcase name="testBMI" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthIntegrationTest.php" line="36" class="App\Tests\Integration\HealthIntegrationTest" classname="App.Tests.Integration.HealthIntegrationTest" assertions="1" time="0.000318"/>
+      <testcase name="testHealthSummary" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthIntegrationTest.php" line="48" class="App\Tests\Integration\HealthIntegrationTest" classname="App.Tests.Integration.HealthIntegrationTest" assertions="4" time="0.000277"/>
+      <testcase name="testAddMedications" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthIntegrationTest.php" line="66" class="App\Tests\Integration\HealthIntegrationTest" classname="App.Tests.Integration.HealthIntegrationTest" assertions="1" time="0.000464"/>
+      <testcase name="testProfileDeletion" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthIntegrationTest.php" line="76" class="App\Tests\Integration\HealthIntegrationTest" classname="App.Tests.Integration.HealthIntegrationTest" assertions="1" time="0.000360"/>
+      <testcase name="testUserProfileRetrieval" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/HealthIntegrationTest.php" line="87" class="App\Tests\Integration\HealthIntegrationTest" classname="App.Tests.Integration.HealthIntegrationTest" assertions="2" time="0.000244"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Insurance\InsuranceIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" tests="20" assertions="53" errors="0" failures="0" skipped="0" time="1.211350">
+      <testcase name="testCreatePolicySuccess" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="85" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="8" time="0.069281"/>
+      <testcase name="testCreatePolicyFailsWhenPolicyNumberDuplicate" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="107" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.059734"/>
+      <testcase name="testCreatePolicyFailsWhenInvalidType" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="131" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.049530"/>
+      <testcase name="testGetPolicyReturnsNullWhenNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="145" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="1" time="0.057361"/>
+      <testcase name="testGetAllPolicies" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="151" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="1" time="0.060590"/>
+      <testcase name="testGetUserPolicies" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="173" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="3" time="0.054116"/>
+      <testcase name="testGetPoliciesByType" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="209" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="3" time="0.065495"/>
+      <testcase name="testSearchPoliciesAppliesTypeFilter" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="223" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.066203"/>
+      <testcase name="testSearchPoliciesAppliesProviderFilter" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="233" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.053161"/>
+      <testcase name="testSearchPoliciesAppliesStatusFilter" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="243" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.056704"/>
+      <testcase name="testUpdatePolicyChangesFields" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="253" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="5" time="0.050832"/>
+      <testcase name="testDeletePolicy" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="282" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.061952"/>
+      <testcase name="testGetUserClaims" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="300" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="3" time="0.069862"/>
+      <testcase name="testCountUserClaims" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="332" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="1" time="0.057966"/>
+      <testcase name="testDeleteClaim" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="350" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.060735"/>
+      <testcase name="testCreatePolicyFailsWhenProviderEmpty" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="372" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.063340"/>
+      <testcase name="testCreatePolicyFailsWhenCoverageAmountInvalid" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="386" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.065976"/>
+      <testcase name="testCreatePolicyFailsWhenPremiumInvalid" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="400" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.056147"/>
+      <testcase name="testGetExpiringPolicies" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="414" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="2" time="0.071719"/>
+      <testcase name="testGetStatistics" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Insurance/InsuranceIntegrationTest.php" line="460" class="App\Tests\Integration\Insurance\InsuranceIntegrationTest" classname="App.Tests.Integration.Insurance.InsuranceIntegrationTest" assertions="6" time="0.060646"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\InsuranceIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/InsuranceIntegrationTest.php" tests="6" assertions="10" errors="0" failures="0" skipped="0" time="0.378944">
+      <testcase name="testFullPolicyLifecycle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/InsuranceIntegrationTest.php" line="19" class="App\Tests\Integration\InsuranceIntegrationTest" classname="App.Tests.Integration.InsuranceIntegrationTest" assertions="3" time="0.075383"/>
+      <testcase name="testPolicyActivation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/InsuranceIntegrationTest.php" line="35" class="App\Tests\Integration\InsuranceIntegrationTest" classname="App.Tests.Integration.InsuranceIntegrationTest" assertions="2" time="0.059323"/>
+      <testcase name="testPolicyRenewal" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/InsuranceIntegrationTest.php" line="46" class="App\Tests\Integration\InsuranceIntegrationTest" classname="App.Tests.Integration.InsuranceIntegrationTest" assertions="1" time="0.052544"/>
+      <testcase name="testPolicySearch" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/InsuranceIntegrationTest.php" line="57" class="App\Tests\Integration\InsuranceIntegrationTest" classname="App.Tests.Integration.InsuranceIntegrationTest" assertions="2" time="0.067919"/>
+      <testcase name="testPolicyCancellation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/InsuranceIntegrationTest.php" line="70" class="App\Tests\Integration\InsuranceIntegrationTest" classname="App.Tests.Integration.InsuranceIntegrationTest" assertions="1" time="0.059443"/>
+      <testcase name="testUserPolicies" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/InsuranceIntegrationTest.php" line="82" class="App\Tests\Integration\InsuranceIntegrationTest" classname="App.Tests.Integration.InsuranceIntegrationTest" assertions="1" time="0.064331"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\LoyaltyControllerTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/LoyaltyControllerTest.php" tests="4" assertions="0" errors="0" failures="0" skipped="4" time="0.000000">
+      <testcase name="testCreateProgram" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/LoyaltyControllerTest.php" line="58" class="App\Tests\Integration\LoyaltyControllerTest" classname="App.Tests.Integration.LoyaltyControllerTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetPrograms" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/LoyaltyControllerTest.php" line="70" class="App\Tests\Integration\LoyaltyControllerTest" classname="App.Tests.Integration.LoyaltyControllerTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCreateMember" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/LoyaltyControllerTest.php" line="77" class="App\Tests\Integration\LoyaltyControllerTest" classname="App.Tests.Integration.LoyaltyControllerTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testAddPointsValidation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/LoyaltyControllerTest.php" line="100" class="App\Tests\Integration\LoyaltyControllerTest" classname="App.Tests.Integration.LoyaltyControllerTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Maps\PlaceIntegrationDbTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Maps/PlaceIntegrationDbTest.php" tests="4" assertions="11" errors="0" failures="0" skipped="0" time="0.250066">
+      <testcase name="testCreatePlaceAndPersist" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Maps/PlaceIntegrationDbTest.php" line="19" class="App\Tests\Integration\Maps\PlaceIntegrationDbTest" classname="App.Tests.Integration.Maps.PlaceIntegrationDbTest" assertions="4" time="0.066161"/>
+      <testcase name="testFindPlaceById" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Maps/PlaceIntegrationDbTest.php" line="43" class="App\Tests\Integration\Maps\PlaceIntegrationDbTest" classname="App.Tests.Integration.Maps.PlaceIntegrationDbTest" assertions="3" time="0.057284"/>
+      <testcase name="testUpdatePlace" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Maps/PlaceIntegrationDbTest.php" line="62" class="App\Tests\Integration\Maps\PlaceIntegrationDbTest" classname="App.Tests.Integration.Maps.PlaceIntegrationDbTest" assertions="3" time="0.067495"/>
+      <testcase name="testDeletePlace" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Maps/PlaceIntegrationDbTest.php" line="84" class="App\Tests\Integration\Maps\PlaceIntegrationDbTest" classname="App.Tests.Integration.Maps.PlaceIntegrationDbTest" assertions="1" time="0.059126"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\MediaIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" tests="18" assertions="0" errors="0" failures="0" skipped="18" time="0.000000">
+      <testcase name="testMediaFileEntityCanBeCreated" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="42" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testMediaFileEntityWithUpdatedAt" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="61" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceValidatesFileSizeWithinLimit" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="71" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceValidatesFilenameWithSpecialChars" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="78" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceGeneratesUniqueFilenames" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="85" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceRejectsPhpExtension" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="96" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceRejectsScriptTags" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="103" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceRejectsPathTraversal" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="110" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceAcceptsValidFilename" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="117" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceValidatesJpegMagicNumber" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="124" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceValidatesPngMagicNumber" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="138" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceValidatesPdfMagicNumber" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="151" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceRejectsMimeTypeMismatch" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="164" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceValidatesNonExistentFile" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="177" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceValidatesImageDimensions" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="183" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceRejectsNonImageFileForDimensions" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="200" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testFileValidationServiceValidatesNonExistentFileForDimensions" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="213" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testIntegrationFlow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MediaIntegrationTest.php" line="229" class="App\Tests\Integration\MediaIntegrationTest" classname="App.Tests.Integration.MediaIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\MessageApiIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" tests="11" assertions="0" errors="0" failures="0" skipped="11" time="0.000000">
+      <testcase name="testGetMessagesList" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="55" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSendMessage" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="65" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSendMessageValidationError" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="85" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSendMessageTooLong" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="97" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetConversationMessages" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="109" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetConversationMessagesAccessDenied" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="126" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testUnauthenticatedAccess" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="137" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSendMessageWithAttachments" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="147" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSendMessageWithTooManyFiles" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="169" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSendMessageWithLargeFile" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="188" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSendMessageWithInvalidFileType" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MessageApiIntegrationTest.php" line="207" class="App\Tests\Integration\MessageApiIntegrationTest" classname="App.Tests.Integration.MessageApiIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\MetricsControllerTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MetricsControllerTest.php" tests="1" assertions="8" errors="0" failures="0" skipped="0" time="0.022033">
+      <testcase name="testMetricsEndpointReturnsPrometheusFormat" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MetricsControllerTest.php" line="11" class="App\Tests\Integration\MetricsControllerTest" classname="App.Tests.Integration.MetricsControllerTest" assertions="8" time="0.022033"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\MiniProgramsIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" tests="8" assertions="25" errors="0" failures="0" skipped="0" time="0.003548">
+      <testcase name="testCompleteMiniProgramWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" line="15" class="App\Tests\Integration\MiniProgramsIntegrationTest" classname="App.Tests.Integration.MiniProgramsIntegrationTest" assertions="4" time="0.001036"/>
+      <testcase name="testMultipleMiniPrograms" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" line="39" class="App\Tests\Integration\MiniProgramsIntegrationTest" classname="App.Tests.Integration.MiniProgramsIntegrationTest" assertions="3" time="0.000462"/>
+      <testcase name="testMiniProgramActivationDeactivation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" line="67" class="App\Tests\Integration\MiniProgramsIntegrationTest" classname="App.Tests.Integration.MiniProgramsIntegrationTest" assertions="3" time="0.000412"/>
+      <testcase name="testMiniProgramCategories" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" line="86" class="App\Tests\Integration\MiniProgramsIntegrationTest" classname="App.Tests.Integration.MiniProgramsIntegrationTest" assertions="9" time="0.000444"/>
+      <testcase name="testMiniProgramLaunchUrl" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" line="110" class="App\Tests\Integration\MiniProgramsIntegrationTest" classname="App.Tests.Integration.MiniProgramsIntegrationTest" assertions="1" time="0.000257"/>
+      <testcase name="testMiniProgramImages" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" line="121" class="App\Tests\Integration\MiniProgramsIntegrationTest" classname="App.Tests.Integration.MiniProgramsIntegrationTest" assertions="2" time="0.000246"/>
+      <testcase name="testMiniProgramDescription" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" line="134" class="App\Tests\Integration\MiniProgramsIntegrationTest" classname="App.Tests.Integration.MiniProgramsIntegrationTest" assertions="1" time="0.000315"/>
+      <testcase name="testMiniProgramDeveloperIsolation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/MiniProgramsIntegrationTest.php" line="145" class="App\Tests\Integration\MiniProgramsIntegrationTest" classname="App.Tests.Integration.MiniProgramsIntegrationTest" assertions="2" time="0.000377"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\News\NewsIntegrationDbTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/News/NewsIntegrationDbTest.php" tests="4" assertions="12" errors="0" failures="0" skipped="0" time="0.262832">
+      <testcase name="testCreateArticleAndPersist" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/News/NewsIntegrationDbTest.php" line="19" class="App\Tests\Integration\News\NewsIntegrationDbTest" classname="App.Tests.Integration.News.NewsIntegrationDbTest" assertions="5" time="0.070601"/>
+      <testcase name="testFindArticleById" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/News/NewsIntegrationDbTest.php" line="38" class="App\Tests\Integration\News\NewsIntegrationDbTest" classname="App.Tests.Integration.News.NewsIntegrationDbTest" assertions="3" time="0.063615"/>
+      <testcase name="testUpdateArticle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/News/NewsIntegrationDbTest.php" line="57" class="App\Tests\Integration\News\NewsIntegrationDbTest" classname="App.Tests.Integration.News.NewsIntegrationDbTest" assertions="3" time="0.060711"/>
+      <testcase name="testDeleteArticle" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/News/NewsIntegrationDbTest.php" line="80" class="App\Tests\Integration\News\NewsIntegrationDbTest" classname="App.Tests.Integration.News.NewsIntegrationDbTest" assertions="1" time="0.067905"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\NewsIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" tests="10" assertions="36" errors="0" failures="0" skipped="0" time="0.003467">
+      <testcase name="testArticleEntityCompleteWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="16" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="9" time="0.000442"/>
+      <testcase name="testArticleWithNullImageUrl" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="44" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="1" time="0.000345"/>
+      <testcase name="testArticleWithNullViewCount" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="56" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="1" time="0.000372"/>
+      <testcase name="testCategoryEntityCompleteWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="69" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="3" time="0.000347"/>
+      <testcase name="testMultipleArticlesInCategory" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="84" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="1" time="0.000386"/>
+      <testcase name="testArticleCategories" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="108" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="8" time="0.000355"/>
+      <testcase name="testArticlePublishedAtCanBeUpdated" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="124" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="2" time="0.000341"/>
+      <testcase name="testArticleViewCountIncrements" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="138" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="2" time="0.000287"/>
+      <testcase name="testCategoryDefaultValues" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="158" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="1" time="0.000258"/>
+      <testcase name="testNewsIntegrationFlow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NewsIntegrationTest.php" line="165" class="App\Tests\Integration\NewsIntegrationTest" classname="App.Tests.Integration.NewsIntegrationTest" assertions="8" time="0.000335"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Notification\NotificationApiTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Notification/NotificationApiTest.php" tests="6" assertions="0" errors="0" failures="0" skipped="6" time="0.000000">
+      <testcase name="testSendNotification" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Notification/NotificationApiTest.php" line="24" class="App\Tests\Integration\Notification\NotificationApiTest" classname="App.Tests.Integration.Notification.NotificationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetUserNotifications" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Notification/NotificationApiTest.php" line="44" class="App\Tests\Integration\Notification\NotificationApiTest" classname="App.Tests.Integration.Notification.NotificationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testMarkAsRead" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Notification/NotificationApiTest.php" line="76" class="App\Tests\Integration\Notification\NotificationApiTest" classname="App.Tests.Integration.Notification.NotificationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testMarkAllAsRead" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Notification/NotificationApiTest.php" line="97" class="App\Tests\Integration\Notification\NotificationApiTest" classname="App.Tests.Integration.Notification.NotificationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testDeleteNotification" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Notification/NotificationApiTest.php" line="126" class="App\Tests\Integration\Notification\NotificationApiTest" classname="App.Tests.Integration.Notification.NotificationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testSetAndGetPreferences" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Notification/NotificationApiTest.php" line="151" class="App\Tests\Integration\Notification\NotificationApiTest" classname="App.Tests.Integration.Notification.NotificationApiTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Notification\NotificationIntegrationDbTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NotificationIntegrationDbTest.php" tests="4" assertions="0" errors="0" failures="0" skipped="4" time="0.000000">
+      <testcase name="testSendNotificationPersistsToDatabase" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NotificationIntegrationDbTest.php" line="22" class="App\Tests\Integration\Notification\NotificationIntegrationDbTest" classname="App.Tests.Integration.Notification.NotificationIntegrationDbTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetUserNotificationsFromDatabase" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NotificationIntegrationDbTest.php" line="51" class="App\Tests\Integration\Notification\NotificationIntegrationDbTest" classname="App.Tests.Integration.Notification.NotificationIntegrationDbTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testMarkAsReadUpdatesDatabase" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NotificationIntegrationDbTest.php" line="69" class="App\Tests\Integration\Notification\NotificationIntegrationDbTest" classname="App.Tests.Integration.Notification.NotificationIntegrationDbTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testDeleteNotificationRemovesFromDatabase" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/NotificationIntegrationDbTest.php" line="85" class="App\Tests\Integration\Notification\NotificationIntegrationDbTest" classname="App.Tests.Integration.Notification.NotificationIntegrationDbTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Poll\PollIntegrationDbTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Poll/PollIntegrationDbTest.php" tests="3" assertions="15" errors="0" failures="0" skipped="0" time="0.195291">
+      <testcase name="testCreatePollAndPersist" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Poll/PollIntegrationDbTest.php" line="26" class="App\Tests\Integration\Poll\PollIntegrationDbTest" classname="App.Tests.Integration.Poll.PollIntegrationDbTest" assertions="7" time="0.074668"/>
+      <testcase name="testPollVoteRecorded" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Poll/PollIntegrationDbTest.php" line="50" class="App\Tests\Integration\Poll\PollIntegrationDbTest" classname="App.Tests.Integration.Poll.PollIntegrationDbTest" assertions="5" time="0.056602"/>
+      <testcase name="testFindPollById" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Poll/PollIntegrationDbTest.php" line="79" class="App\Tests\Integration\Poll\PollIntegrationDbTest" classname="App.Tests.Integration.Poll.PollIntegrationDbTest" assertions="3" time="0.064021"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\PollIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" tests="11" assertions="37" errors="0" failures="0" skipped="0" time="0.003128">
+      <testcase name="testCompletePollWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="20" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="8" time="0.000369"/>
+      <testcase name="testMultiSelectPollWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="62" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="3" time="0.000249"/>
+      <testcase name="testAnonymousPoll" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="81" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="2" time="0.000261"/>
+      <testcase name="testPollWithExpiration" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="100" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="2" time="0.000475"/>
+      <testcase name="testMultiplePollsInConversation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="118" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="4" time="0.000284"/>
+      <testcase name="testPollResultsCalculation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="151" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="3" time="0.000249"/>
+      <testcase name="testPollVoteEntity" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="179" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="5" time="0.000232"/>
+      <testcase name="testPollVoteEntityMultiSelect" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="195" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="1" time="0.000218"/>
+      <testcase name="testPollIntegrationWithVotes" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="207" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="5" time="0.000248"/>
+      <testcase name="testEmptyPollResults" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="245" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="2" time="0.000318"/>
+      <testcase name="testPollWithAllOptionsVoted" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/PollIntegrationTest.php" line="260" class="App\Tests\Integration\PollIntegrationTest" classname="App.Tests.Integration.PollIntegrationTest" assertions="2" time="0.000225"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Queue\QueueIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" tests="9" assertions="42" errors="0" failures="0" skipped="0" time="0.624035">
+      <testcase name="testCreateQueueAndPersist" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="33" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="5" time="0.066150"/>
+      <testcase name="testActivateAndDeactivateQueue" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="55" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="3" time="0.056338"/>
+      <testcase name="testJoinQueueCreatesTicket" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="76" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="5" time="0.059151"/>
+      <testcase name="testGetQueueStatistics" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="107" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="5" time="0.074364"/>
+      <testcase name="testCancelWaitingTicket" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="164" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="4" time="0.062190"/>
+      <testcase name="testGetTicketByNumber" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="189" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="3" time="0.064018"/>
+      <testcase name="testGetTicketsByPhone" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="212" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="3" time="0.083944"/>
+      <testcase name="testCallNextTicketAndStart" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="236" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="8" time="0.092973"/>
+      <testcase name="testSkipTicket" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Queue/QueueIntegrationTest.php" line="276" class="App\Tests\Integration\Queue\QueueIntegrationTest" classname="App.Tests.Integration.Queue.QueueIntegrationTest" assertions="6" time="0.064906"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\RideHailingIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" tests="11" assertions="42" errors="0" failures="0" skipped="0" time="0.004866">
+      <testcase name="testCompleteRideWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="18" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="8" time="0.001003"/>
+      <testcase name="testRideWithPayment" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="88" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="2" time="0.000539"/>
+      <testcase name="testDriverLocationTracking" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="112" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="4" time="0.000301"/>
+      <testcase name="testMultipleRideTypes" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="134" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="3" time="0.000270"/>
+      <testcase name="testRideCancellation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="171" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="3" time="0.000328"/>
+      <testcase name="testRideRatings" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="189" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="4" time="0.000555"/>
+      <testcase name="testDriverAvailability" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="214" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="8" time="0.000517"/>
+      <testcase name="testPaymentStatusTransitions" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="241" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="4" time="0.000637"/>
+      <testcase name="testRideNotes" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="258" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="1" time="0.000266"/>
+      <testcase name="testRideWithRiderInfo" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="273" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="2" time="0.000237"/>
+      <testcase name="testDriverRideStatistics" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/RideHailingIntegrationTest.php" line="291" class="App\Tests\Integration\RideHailingIntegrationTest" classname="App.Tests.Integration.RideHailingIntegrationTest" assertions="3" time="0.000212"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\ServicesMarketplaceIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" tests="10" assertions="31" errors="0" failures="0" skipped="0" time="0.003617">
+      <testcase name="testCompleteServiceProviderWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="23" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="3" time="0.001110"/>
+      <testcase name="testCompleteBookingWorkflow" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="47" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="5" time="0.000322"/>
+      <testcase name="testProviderWithMultipleServices" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="94" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="3" time="0.000348"/>
+      <testcase name="testBookingWithDiscount" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="124" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="2" time="0.000286"/>
+      <testcase name="testReviewAfterBooking" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="155" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="2" time="0.000258"/>
+      <testcase name="testCategoryBrowsing" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="193" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="8" time="0.000244"/>
+      <testcase name="testProviderLocationSearch" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="214" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="2" time="0.000237"/>
+      <testcase name="testBookingCancellation" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="233" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="2" time="0.000327"/>
+      <testcase name="testProviderVerification" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="265" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="2" time="0.000245"/>
+      <testcase name="testMultipleReviewsForProvider" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/ServicesMarketplaceIntegrationTest.php" line="279" class="App\Tests\Integration\ServicesMarketplaceIntegrationTest" classname="App.Tests.Integration.ServicesMarketplaceIntegrationTest" assertions="2" time="0.000241"/>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" tests="10" assertions="0" errors="0" failures="0" skipped="10" time="0.000000">
+      <testcase name="testCreateSubscriptionSuccess" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="114" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCreateSubscriptionFailsWhenPlanNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="145" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCancelSubscriptionChangesStatus" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="157" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testRenewSubscriptionChangesStatus" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="182" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetSubscriptionReturnsNullWhenNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="201" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetUserSubscriptionReturnsActiveSubscription" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="207" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testGetAllPlansReturnsAllActivePlans" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="230" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCreatePlanSuccess" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="238" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCreatePlanFailsWhenPriceIsNegative" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="265" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+      <testcase name="testCreatePlanFailsWhenIdMissing" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/Subscription/SubscriptionIntegrationTest.php" line="277" class="App\Tests\Integration\Subscription\SubscriptionIntegrationTest" classname="App.Tests.Integration.Subscription.SubscriptionIntegrationTest" assertions="0" time="0.000000">
+        <skipped/>
+      </testcase>
+    </testsuite>
+    <testsuite name="App\Tests\Integration\UserIntegrationTest" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" tests="11" assertions="39" errors="0" failures="0" skipped="0" time="0.006959">
+      <testcase name="testCreateAndRetrieveProfile" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="51" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="4" time="0.001167"/>
+      <testcase name="testGetUserProfile" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="64" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="2" time="0.000566"/>
+      <testcase name="testGetUserProfileNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="74" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="1" time="0.000493"/>
+      <testcase name="testUpdateProfile" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="81" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="4" time="0.000593"/>
+      <testcase name="testDeleteProfile" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="99" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="2" time="0.000723"/>
+      <testcase name="testDeleteProfileNotFound" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="111" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="1" time="0.000495"/>
+      <testcase name="testProfileIsolationBetweenUsers" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="119" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="4" time="0.000624"/>
+      <testcase name="testAllFieldsCanBeUpdated" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="133" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="8" time="0.000564"/>
+      <testcase name="testOptionalFieldsAreNullByDefault" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="157" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="8" time="0.000608"/>
+      <testcase name="testGetProfileById" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="171" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="2" time="0.000573"/>
+      <testcase name="testUpdateNonExistentProfileCreatesNew" file="/home/quangtynu/Qcoder/symfony-twig-hm/php-symfony/tests/Integration/UserIntegrationTest.php" line="182" class="App\Tests\Integration\UserIntegrationTest" classname="App.Tests.Integration.UserIntegrationTest" assertions="3" time="0.000553"/>
+    </testsuite>
+  </testsuite>
+</testsuites>

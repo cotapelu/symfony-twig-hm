@@ -1,0 +1,51 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    increment_build_number(xcodeproj: "CommunityApp.xcodeproj")
+    build_app(
+      workspace: "CommunityApp.xcworkspace",
+      scheme: "CommunityApp",
+      export_method: "app-store"
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Build and upload to Firebase App Distribution"
+  lane :firebase do
+    build_app(
+      workspace: "CommunityApp.xcworkspace",
+      scheme: "CommunityApp",
+      export_method: "ad-hoc"
+    )
+    firebase_app_distribution(
+      app: "com.community.ios",
+      testers: "qa@community.example",
+      release_notes: "Automated build from fastlane"
+    )
+  end
+end
+
+platform :android do
+  desc "Build and upload to internal test track"
+  lane :internal do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store(
+      track: 'internal',
+      aab: 'android/app/build/outputs/bundle/release/app-release.aab'
+    )
+  end
+
+  desc "Build and upload to Firebase App Distribution (Android)"
+  lane :firebase do
+    gradle(task: "clean assembleRelease")
+    firebase_app_distribution(
+      app: "com.community.android",
+      testers: "qa@community.example",
+      release_notes: "Automated build from fastlane"
+    )
+  end
+end

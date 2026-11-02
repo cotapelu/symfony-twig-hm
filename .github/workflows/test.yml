@@ -1,0 +1,151 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, gsd/M001/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [php, go, python, kotlin, frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        if: matrix.service == 'php'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite
+          ini-values: memory_limit=512M
+          tools: composer
+
+      - name: PHP dependencies
+        if: matrix.service == 'php'
+        run: |
+          cd php-symfony
+          composer install --no-interaction --prefer-dist --no-progress
+          cp .env.local .env || true
+          php bin/console --env=test doctrine:database:create || true
+          php bin/console --env=test doctrine:schema:create || true
+
+      - name: PHP tests
+        if: matrix.service == 'php'
+        run: |
+          cd php-symfony
+          php bin/phpunit --coverage-clover ../../coverage/php-coverage.xml --coverage-text
+
+      - name: Set up Go
+        if: matrix.service == 'go'
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Go dependencies
+        if: matrix.service == 'go'
+        run: |
+          cd go
+          go mod download
+
+      - name: Go tests
+        if: matrix.service == 'go'
+        run: |
+          cd go
+          go test -coverprofile=../../coverage/go-coverage.out ./...
+
+      - name: Set up Python
+        if: matrix.service == 'python'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Python dependencies
+        if: matrix.service == 'python'
+        run: |
+          cd python
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Python tests
+        if: matrix.service == 'python'
+        run: |
+          cd python
+          pytest --cov --cov-report=xml:../../coverage/python-coverage.xml
+
+      - name: Set up Java (for Kotlin)
+        if: matrix.service == 'kotlin'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Kotlin dependencies
+        if: matrix.service == 'kotlin'
+        run: |
+          cd kotlin
+          chmod +x gradlew
+          ./gradlew dependencies
+
+      - name: Kotlin tests
+        if: matrix.service == 'kotlin'
+        run: |
+          cd kotlin
+          ./gradlew test jacocoTestReport
+          cp build/reports/jacoco/jacoco.xml ../../coverage/kotlin-coverage.xml || true
+
+      - name: Set up Node.js
+        if: matrix.service == 'frontend'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Frontend dependencies
+        if: matrix.service == 'frontend'
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Frontend unit tests
+        if: matrix.service == 'frontend'
+        run: |
+          cd frontend
+          npm run test -- --run --coverage
+
+      - name: Upload coverage to Codecov
+        if: matrix.service != 'zig' && always()
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/*-coverage.xml,./coverage/lcov.info,./frontend/coverage/lcov.info
+          flags: ${{ matrix.service }}
+          fail_ci_if_error: false
+
+      - name: Archive coverage artifacts
+        if: matrix.service != 'zig'
+        run: |
+          tar -czf coverage-${{ matrix.service }}.tar.gz coverage/
+          ls -la coverage/
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.service }}-test-results
+          path: |
+            php-symfony/var/log/
+            go/test-results/
+            python/.pytest_cache/
+            kotlin/build/test-results/
+            frontend/test-results/
+
+  aggregate:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check documentation
+        run: |
+          echo "All services tested. Coverage uploaded to Codecov."
+          echo "Check PR comments for per-service coverage reports."

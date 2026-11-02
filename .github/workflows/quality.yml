@@ -1,0 +1,117 @@
+name: Quality Gate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            php-cli php-xml php-mbstring php-curl php-zip php-sqlite3 php-intl \
+            python3 python3-pip python3-venv python3-dev \
+            nodejs npm \
+            golang-go \
+            rustc cargo \
+            unzip git curl \
+            sqlite3 libsqlite3-dev
+
+          # PHP extensions
+          sudo phpenmod mbstring
+          sudo phpenmod intl
+
+      - name: Install PHP dependencies
+        run: |
+          cd php-symfony
+          composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install Go tools
+        run: |
+          export PATH=$HOME/go/bin:$PATH
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: Install Python tools
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install mypy pylint safety
+
+      - name: Install Rust tools
+        run: |
+          cargo install cargo-audit cargo-tarpaulin
+
+      - name: Install Go dependencies
+        run: |
+          cd go
+          go mod download
+
+      - name: Install Python dependencies
+        run: |
+          cd python
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Install Kotlin dependencies
+        run: |
+          cd kotlin
+          ./gradlew dependencies --no-daemon
+
+      - name: Install Rust dependencies
+        run: |
+          cd rust
+          cargo fetch
+
+      - name: Install Frontend dependencies
+        run: |
+          cd frontend
+          npm ci --no-audit --no-fund
+
+      - name: Run Full Quality Gate
+        run: |
+          export PATH=$HOME/go/bin:$HOME/.local/bin:$PATH
+          source python/.venv/bin/activate
+          make quality
+        continue-on-error: false
+
+      - name: Upload quality gate logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-logs
+          path: |
+            coverage/
+            *.log
+          retention-days: 7
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            coverage/php-coverage.xml
+            coverage/go-coverage.out
+            coverage/python-coverage.xml
+            coverage/kotlin/build/reports/jacoco/
+            coverage/frontend/lcov-report/
+          retention-days: 14

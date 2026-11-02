@@ -1,0 +1,397 @@
+# config/routes.yaml
+# Routes defined in controllers with attributes
+
+# API Routes
+api_login:
+    path: /api/login
+    controller: App\User\Controller\UserController::login
+    methods: [POST]
+
+api_register:
+    path: /api/register
+    controller: App\User\Controller\UserController::register
+    methods: [POST]
+
+# api_user_profile:
+#     path: /api/user/profile
+#     controller: App\User\Controller\UserProfileController::getProfile
+#     methods: [GET]
+#
+# api_update_profile:
+#     path: /api/user/profile
+#     controller: App\User\Controller\UserProfileController::updateProfile
+#     methods: [PUT]
+
+api_messages_get:
+    path: /api/messages
+    controller: App\Message\Controller\MessageController::getMessages
+    methods: [GET]
+
+api_messages_send:
+    path: /api/messages
+    controller: App\Message\Controller\MessageController::sendMessage
+    methods: [POST]
+
+api_messages_conversation:
+    path: /api/messages/{conversationId}
+    controller: App\Message\Controller\MessageController::getConversationMessages
+    methods: [GET]
+
+api_messages_thread:
+    path: /api/messages/{messageId}/thread
+    controller: App\Message\Controller\MessageController::createThread
+    methods: [POST]
+
+api_messages_read:
+    path: /api/messages/{messageId}/read
+    controller: App\Message\Controller\MessageController::markMessageRead
+    methods: [POST]
+
+api_messages_upload:
+    path: /api/messages/upload
+    controller: App\Message\Controller\MessageController::uploadFile
+    methods: [POST]
+
+api_messages_reaction:
+    path: /api/messages/reaction
+    controller: App\Message\Controller\MessageController::addReaction
+    methods: [POST]
+
+api_messages_read_old:
+    path: /api/messages/read
+    controller: App\Message\Controller\MessageController::markMessagesRead
+    methods: [POST]
+
+api_messages_read_status:
+    path: /api/messages/{messageId}/read-status
+    controller: App\Message\Controller\MessageController::getMessageReadStatus
+    methods: [GET]
+
+api_ai_smart_replies:
+    path: /api/ai/smart-replies
+    controller: App\Message\Controller\AIController::generateSmartReplies
+    methods: [POST]
+
+api_ai_moderate:
+    path: /api/ai/moderate
+    controller: App\Message\Controller\AIController::moderateContent
+    methods: [POST]
+
+api_ai_translate:
+    path: /api/ai/translate
+    controller: App\Message\Controller\AIController::translateContent
+    methods: [POST]
+
+api_conversations:
+    path: /api/conversations
+    controller: App\Conversation\Controller\ConversationController::getConversations
+    methods: [GET]
+
+api_conversations_create:
+    path: /api/conversations
+    controller: App\Conversation\Controller\ConversationController::createConversation
+    methods: [POST]
+
+api_groups_create:
+    path: /api/groups
+    controller: App\Conversation\Controller\ConversationController::createGroup
+    methods: [POST]
+
+api_groups_list:
+    path: /api/groups
+    controller: App\Conversation\Controller\ConversationController::getGroups
+    methods: [GET]
+
+# Note: Join endpoint is handled by attribute route in ConversationController
+# Leave endpoint needs to be implemented
+
+api_files_list:
+    path: /api/files
+    controller: App\Media\Controller\FileController::getFiles
+    methods: [GET]
+
+api_files_upload:
+    path: /api/files/upload
+    controller: App\Media\Controller\FileController::uploadFile
+    methods: [POST]
+
+api_files_delete:
+    path: /api/files/{fileId}
+    controller: App\Media\Controller\FileController::deleteFile
+    methods: [DELETE]
+
+api_calls_list:
+    path: /api/calls
+    controller: App\Call\Controller\CallController::getActiveCalls
+    methods: [GET]
+
+api_calls_initiate:
+    path: /api/calls/initiate
+    controller: App\Call\Controller\CallController::initiateCall
+    methods: [POST]
+
+api_calls_join:
+    path: /api/calls/{callId}/join
+    controller: App\Call\Controller\CallController::joinCall
+    methods: [POST]
+
+api_polls_create:
+    path: /api/polls
+    controller: App\Poll\Controller\PollController::createPoll
+    methods: [POST]
+
+api_notifications_list:
+    path: /api/notifications
+    controller: App\Notification\Controller\NotificationController::getNotifications
+    methods: [GET]
+
+api_presence_online:
+    path: /api/presence/online
+    controller: App\Realtime\Controller\PresenceController::setUserOnline
+    methods: [POST]
+
+api_dashboard_stats:
+    path: /api/dashboard/stats
+    controller: App\Service\DashboardController::getDashboardStats
+    methods: [GET]
+
+api_typing_start:
+    path: /api/typing/start
+    controller: App\Realtime\Controller\TypingController::startTyping
+    methods: [POST]
+
+api_typing_stop:
+    path: /api/typing/stop
+    controller: App\Realtime\Controller\TypingController::stopTyping
+    methods: [POST]
+
+api_typing_status:
+    path: /api/typing/status/{conversationId}
+    controller: App\Realtime\Controller\TypingController::getTypingStatus
+    methods: [GET]
+
+api_contact:
+    path: /api/contact
+    controller: App\Controller\ContactController::submitContact
+    methods: [POST]
+
+api_ai_conversation_insights:
+    path: /api/ai/conversation-insights/{conversationId}
+    controller: App\Message\Controller\MessageController::getConversationInsights
+    methods: [GET]
+
+api_groups_add_participant:
+    path: /api/groups/{groupId}/add-participant
+    controller: App\Conversation\Controller\ConversationController::addParticipant
+    methods: [POST]
+
+# Deprecated: Use UserController logout instead
+#api_logout:
+#    path: /api/logout
+#    controller: Symfony\Bundle\SecurityBundle\Controller\AuthenticationController::logoutAction
+#    methods: [POST]
+
+# Public logout endpoint
+logout:
+    path: /logout
+    controller: App\User\Controller\UserController::logout
+    methods: [POST]
+
+app_homepage:
+    path: /
+    controller: App\Shared\Controller\DefaultController::index
+
+messages:
+    path: /messages
+    controller: App\Shared\Controller\DefaultController::messages
+
+groups:
+    path: /groups
+    controller: App\Shared\Controller\DefaultController::groups
+
+calls:
+    path: /calls
+    controller: App\Shared\Controller\DefaultController::calls
+
+files:
+    path: /files
+    controller: App\Shared\Controller\DefaultController::files
+
+app_login:
+    path: /login
+    controller: Symfony\Bundle\SecurityBundle\Controller\AuthenticationController::loginAction
+
+# Deprecated: Use UserController logout instead
+#app_logout:
+#    path: /logout
+#    controller: Symfony\Bundle\SecurityBundle\Controller\AuthenticationController::logoutAction
+
+# Digital Wallet API
+api_wallet_create:
+    path: /api/wallet/create
+    controller: App\DigitalWallet\Controller\DigitalWalletController::createWallet
+    methods: [POST]
+
+api_wallet_deposit:
+    path: /api/wallet/{walletId}/deposit
+    controller: App\DigitalWallet\Controller\DigitalWalletController::deposit
+    requirements:
+        walletId: \\d+
+    methods: [POST]
+
+api_wallet_withdraw:
+    path: /api/wallet/{walletId}/withdraw
+    controller: App\DigitalWallet\Controller\DigitalWalletController::withdraw
+    requirements:
+        walletId: \\d+
+    methods: [POST]
+
+api_wallet_transfer:
+    path: /api/wallet/{fromWalletId}/transfer
+    controller: App\DigitalWallet\Controller\DigitalWalletController::transfer
+    requirements:
+        fromWalletId: \\d+
+    methods: [POST]
+
+api_wallet_balance:
+    path: /api/wallet/{walletId}/balance
+    controller: App\DigitalWallet\Controller\DigitalWalletController::getBalance
+    requirements:
+        walletId: \\d+
+    methods: [GET]
+
+api_wallet_transactions:
+    path: /api/wallet/{walletId}/transactions
+    controller: App\DigitalWallet\Controller\DigitalWalletController::getTransactions
+    requirements:
+        walletId: \\d+
+    methods: [GET]
+
+# Loyalty API
+api_loyalty_create_program:
+    path: /api/loyalty/programs
+    controller: App\Loyalty\Controller\LoyaltyController::createProgram
+    methods: [POST]
+
+api_loyalty_get_programs:
+    path: /api/loyalty/programs
+    controller: App\Loyalty\Controller\LoyaltyController::getPrograms
+    methods: [GET]
+
+api_loyalty_get_program:
+    path: /api/loyalty/programs/{id}
+    controller: App\Loyalty\Controller\LoyaltyController::getProgram
+    methods: [GET]
+
+api_loyalty_update_program:
+    path: /api/loyalty/programs/{id}
+    controller: App\Loyalty\Controller\LoyaltyController::updateProgram
+    methods: [PUT]
+
+api_loyalty_enroll_member:
+    path: /api/loyalty/members
+    controller: App\Loyalty\Controller\LoyaltyController::enrollMember
+    methods: [POST]
+
+api_loyalty_get_my_memberships:
+    path: /api/loyalty/members/me
+    controller: App\Loyalty\Controller\LoyaltyController::getMyMemberships
+    methods: [GET]
+
+api_loyalty_get_member:
+    path: /api/loyalty/members/{id}
+    controller: App\Loyalty\Controller\LoyaltyController::getMember
+    methods: [GET]
+
+api_loyalty_add_points:
+    path: /api/loyalty/members/{id}/points
+    controller: App\Loyalty\Controller\LoyaltyController::addPoints
+    methods: [POST]
+
+api_loyalty_deduct_points:
+    path: /api/loyalty/members/{id}/deduct
+    controller: App\Loyalty\Controller\LoyaltyController::deductPoints
+    methods: [PUT]
+
+api_loyalty_create_reward:
+    path: /api/loyalty/rewards
+    controller: App\Loyalty\Controller\LoyaltyController::createReward
+    methods: [POST]
+
+api_loyalty_get_rewards:
+    path: /api/loyalty/rewards
+    controller: App\Loyalty\Controller\LoyaltyController::getRewards
+    methods: [GET]
+
+api_loyalty_get_reward:
+    path: /api/loyalty/rewards/{id}
+    controller: App\Loyalty\Controller\LoyaltyController::getReward
+    methods: [GET]
+
+api_loyalty_redeem_reward:
+    path: /api/loyalty/rewards/{id}/redeem
+    controller: App\Loyalty\Controller\LoyaltyController::redeemReward
+    methods: [POST]
+
+api_loyalty_get_my_redemptions:
+    path: /api/loyalty/redemptions/me
+    controller: App\Loyalty\Controller\LoyaltyController::getMyRedemptions
+    methods: [GET]
+
+# Notifications API (v1)
+api_v1_notifications_list:
+    path: /api/v1/notifications
+    controller: App\Notifications\Api\Controller\NotificationsController::getMyNotifications
+    methods: [GET]
+
+api_v1_notifications_mark_read:
+    path: /api/v1/notifications/{notificationId}/read
+    controller: App\Notifications\Api\Controller\NotificationsController::markRead
+    methods: [POST]
+
+api_v1_notifications_process_scheduled:
+    path: /api/v1/notifications/admin/process-scheduled
+    controller: App\Notifications\Api\Controller\NotificationsController::processScheduled
+    methods: [POST]
+
+api_v1_notifications_subscribe:
+    path: /api/v1/notifications/subscriptions
+    controller: App\Notifications\Api\Controller\NotificationsController::subscribe
+    methods: [POST]
+
+api_v1_notifications_unsubscribe:
+    path: /api/v1/notifications/subscriptions/{subscriptionId}
+    controller: App\Notifications\Api\Controller\NotificationsController::unsubscribe
+    methods: [DELETE]
+
+api_v1_notifications_list_subscriptions:
+    path: /api/v1/notifications/subscriptions
+    controller: App\Notifications\Api\Controller\NotificationsController::getMySubscriptions
+    methods: [GET]
+
+# Platform Health Check Endpoints
+platform_health_iam:
+    path: /platform/health/iam
+    controller: App\PlatformHealth\Controller\PlatformHealthController::iamHealth
+    methods: [GET]
+
+platform_health_mdm:
+    path: /platform/health/mdm
+    controller: App\PlatformHealth\Controller\PlatformHealthController::mdmHealth
+    methods: [GET]
+
+platform_health_eventing:
+    path: /platform/health/eventing
+    controller: App\PlatformHealth\Controller\PlatformHealthController::eventingHealth
+    methods: [GET]
+
+platform_health_config:
+    path: /platform/health/config
+    controller: App\PlatformHealth\Controller\PlatformHealthController::configHealth
+    methods: [GET]
+
+# Prometheus Metrics Endpoint
+metrics:
+    path: /metrics
+    controller: App\Shared\Controller\MetricsController::index
+    methods: [GET]

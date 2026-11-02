@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#3b82f6" />
+		<meta name="description" content="Ultimate Global Communication Platform" />
+		
+		<!-- PWA Meta Tags -->
+		<link rel="manifest" href="/manifest.json" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="apple-mobile-web-app-title" content="CommUnity" />
+		
+		<!-- Open Graph -->
+		<meta property="og:title" content="CommUnity - Ultimate Communication Platform" />
+		<meta property="og:description" content="Advanced real-time messaging with AI integration" />
+		<meta property="og:image" content="/og-image.png" />
+		<meta property="og:url" content="" />
+		
+		<link href="/_app/immutable/entry/start.CTzrbFe6.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/CirHoYEL.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/C2HGgvAU.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/D4IoEui6.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/BSu6r1fl.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/BmB4ZWgJ.js" rel="modulepreload">
+		<link href="/_app/immutable/entry/app.Bq2RaS5K.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/BDha2VBF.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/DZLuNMJq.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/DnpsOBKI.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/D1KrfVkE.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/C_bTLa6e.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/lhWncaVt.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/BG8t_ycI.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/qC_-n8i9.js" rel="modulepreload">
+		<link href="/_app/immutable/nodes/0.BgncrOq8.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/DJbfbJuR.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/2yiFz7Ua.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/B79LgCJy.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/BiwjoU2l.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/og15XG4l.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/CRUs_tr5.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/CLBHoPtN.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/CPUTf0kJ.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/B5IfEses.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/sAsj6CNf.js" rel="modulepreload">
+		
+		<link href="/_app/immutable/assets/Button.D_voyC_e.css" rel="stylesheet">
+		<link href="/_app/immutable/assets/0.Cw1fzOj_.css" rel="stylesheet">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<!-- Skip links for accessibility -->
+		<a href="#main-content" class="skip-link sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Skip to main content</a>
+		<a href="#navigation" class="skip-link sr-only focus:not-sr-only focus:absolute focus:top-10 focus:left-2 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">Skip to navigation</a>
+
+		<div style="display: contents" id="svelte">
+			<script>
+				{
+					__sveltekit_15896mz = {
+						base: ""
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/_app/immutable/entry/start.CTzrbFe6.js"),
+						import("/_app/immutable/entry/app.Bq2RaS5K.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+
+					if ('serviceWorker' in navigator) {
+						const script_url = '/service-worker.js';
+						const policy = globalThis?.window?.trustedTypes?.createPolicy(
+							'sveltekit-trusted-url',
+							{ createScriptURL(url) { return url; } }
+						);
+						const sanitised = policy?.createScriptURL(script_url) ?? script_url;
+						addEventListener('load', function () {
+							navigator.serviceWorker.register(sanitised);
+						});
+					}
+				}
+			</script>
+		</div>
+		
+		<!-- PWA Service Worker -->
+		<script>
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('/sw.js')
+					.then(registration => {
+						console.log('SW registered: ', registration);
+					})
+					.catch(registrationError => {
+						console.log('SW registration failed: ', registrationError);
+					});
+			}
+		</script>
+	</body>
+</html>

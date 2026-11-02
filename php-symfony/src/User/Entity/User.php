@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\User\Entity;
+
+class User
+{
+    private string $id;
+    private string $email;
+    private array $roles;
+
+    public function __construct(string $id, string $email, array $roles = [])
+    {
+        $this->id = $id;
+        $this->email = $email;
+        $this->roles = $roles;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+}

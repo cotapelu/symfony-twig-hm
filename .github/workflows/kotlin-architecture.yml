@@ -1,0 +1,25 @@
+name: Kotlin Architecture Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (for import-linter)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install import-linter
+        run: npm install -g import-linter
+
+      - name: Run import-linter (Kotlin)
+        run: import-linter --config .importlinter-kotlin.yaml

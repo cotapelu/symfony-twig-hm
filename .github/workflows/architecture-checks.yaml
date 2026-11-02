@@ -1,0 +1,258 @@
+# Go Static Analysis Configuration
+name: Static Analysis
+
+# Tools to install
+tools:
+  - golangci-lint: 'golangci-lint@v1.55.0'
+  - golangci-misspell: 'golangci-misspell@latest'
+  - golangci-staticcheck: 'golangci-staticcheck@latest'
+  - golangci-cyclo: 'golangci-cyclo@latest'
+
+# Configuration
+golangci:
+  run:
+    timeout: '10m'
+  test:
+    timeout: '5m'
+    skip-dirs:
+      - vendor
+      - node_modules
+      - .git
+    
+    settings:
+      skip-dirs:
+        - vendor
+        - node_modules
+        - .git
+      timeout: '5m'
+      max-issues-per-run: 3
+
+  # Build checks
+    build:
+      timeout: '3m'
+      
+  # Security checks
+    vulnerabilities:
+    run: |
+      go list -json='{ "Type": "security", "Mode": "binary", "Output": "json" }' ./...
+      
+  # Performance checks
+    run: |
+      go list -f . -json='{ "Type": "performance", "Mode": "complexity", "Threshold": "10" }' ./...
+
+# Name: Run all checks
+    run: |
+      go vet ./...
+      
+  # Name: Check for clean architecture
+    run: |
+      go list -f . -json='{ "Type": "maintainability", "Mode": "complexity", "Threshold": "5" }' ./...
+
+# Configuration
+analysis:
+  all:
+    timeout: '20m'
+    output: verbose
+    
+    # Custom rules
+custom_rules:
+  - no-cross-module-imports:
+    rule:
+      description: 'No cross-module imports allowed'
+      implementation: 'ModuleAnalysis'
+    
+  - clean-architecture:
+    rule:
+      description: 'Ensure clean architecture without violations'
+      severity: error
+      
+  - custom:
+    rule:
+      rule: 'no-implicit-dependencies'
+      description: 'All dependencies should be explicit'
+      severity: error
+      message: 'Dependencies must be explicitly defined'
+    
+  - naming-conventions:
+    rule:
+      description: 'Follow Go naming conventions'
+      implementation: 'NamingAnalysis'
+      
+  - dependency-management:
+    rule:
+      description: 'Prefer minimal external dependencies'
+      severity: warning
+      message: 'Prefer external dependencies over internal'
+    
+  - module-structure:
+    rule:
+      description: 'Maintain clean module boundaries'
+      severity: error
+      message: 'Modules should have clear boundaries'
+
+# Build configuration
+build:
+  tags: ['build', 'test', 'analyze']
+  cache-dependencies: 'linux'
+
+# Kotlin Static Analysis
+name: Static Analysis
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Kotlin Architecture Check
+  kotlin-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Kotlin
+        uses: actions/setup-kotlin@v1
+        with:
+          kotlin-version: '1.9.20'
+
+      - name: Run Detekt
+        run: |
+          ./gradlew detekt --build --baseline
+
+      - name: Run ArchUnit tests
+        run: |
+          ./gradlew test --tests "*ArchitectureTest*"
+
+      - name: Run Kotlin Lint
+        run: |
+          ./gradlew ktlint --continue-on-error --all-warnings-as-errors
+
+  # Test configuration
+kotest:
+  run:
+    timeout: '10m'
+    code_coverage:
+      minimum: 75
+      
+  linting:
+    autoCorrect: true
+    
+    reports:
+      xml: stdout
+      html: false
+
+  # Configuration
+detekt:
+    autoCorrect: true
+    build_report_baseline: true
+    report:
+      html: true
+
+  # Lint configuration
+ktlint:
+    autoCorrect: true
+  
+  rules:
+    custom:
+      - ModuleLayer: Check
+      rule: no-cross-module-imports
+      message: 'No cross-module imports allowed'
+        
+      - Clean Architecture: Check
+      rule: no-implicit-dependencies
+        message: 'All dependencies should be explicit'
+        
+      - Single Responsibility: Check
+      rule: each-module: 'Service' | 'Repository' | 'Controller'
+      implementation: 'ModuleLayerCheck'
+        message: 'Each module should have single responsibility'
+
+# Kotlin Architecture Check
+jvm:
+  jvm:
+    timeout: '1024m'
+    heap: '512m'
+
+# Test configuration
+kotest:
+  jvm:
+    jvmargs: '-Xmx1024m'
+    testInstrumentation: 'true'
+
+# Zig Static Analysis
+name: Zig Architecture Check
+
+on:
+  run: ubuntu-latest
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  # Zig Architecture Check
+  zig-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Zig
+        uses: goto-bus/setup-zig@v1
+        with:
+          zig-version: '0.11.0'
+
+      - name: Build with dependency graph
+        run: |
+          zig build --fetch-opt build-dependencies-graph
+
+      - name: Run build-time checks
+        run: |
+          zig build --dep-tree || echo "No dependency tree generated"
+
+# Configuration
+analysis:
+  all:
+    timeout: '15m'
+    output: verbose
+
+  # Custom rules
+  custom:
+    - module-dependency-graph:
+      rule:
+        description: 'Prefer explicit dependency management'
+      level: error
+      message: 'Dependencies should be explicitly managed'
+        
+  - clean-architecture:
+      rule:
+        description: 'Ensure clean architecture without violations'
+      severity: error
+        
+      - no-circular-dependencies
+        level: warning
+        message: 'No circular dependencies allowed'
+        
+  - no-interface-crossing:
+        level: error
+        message: 'Interfaces should not cross reference'
+        
+      - no-cross-layering:
+        level: error
+        message: 'Layers should only access immediate layers'
+
+  # Security rules
+  security:
+      input-validation:
+        enabled: true
+        sql_injection_protection: true
+        xss_protection: true
+        
+  # Performance rules
+    memory-usage:
+      max_memory_usage: '100MB'
+      max_complexity: 'medium'
+
+# Build-time checks
+  timeout: '10m'
+  output: verbose

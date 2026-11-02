@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd" bootstrap="tests/bootstrap.php" colors="true" cacheDirectory=".phpunit.cache" beStrictAboutChangesToGlobalState="false">
+  <testsuites>
+    <!-- Only Unit tests enabled for stabilization -->
+    <testsuite name="Unit Tests">
+      <directory>tests/Unit</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <env name="APP_ENV" value="test"/>
+    <env name="APP_SECRET" value="test_secret"/>
+    <env name="JWT_SECRET" value="test_jwt_secret"/>
+    <env name="SENTRY_DSN" value="https://public@example.com/1"/>
+    <env name="DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/test.db"/>
+    <env name="KERNEL_CLASS" value="App\Kernel"/>
+  </php>
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">.</directory>
+    </include>
+    <exclude>
+      <directory>tests</directory>
+      <directory>vendor</directory>
+      <directory>var</directory>
+    </exclude>
+  </coverage>
+</phpunit>

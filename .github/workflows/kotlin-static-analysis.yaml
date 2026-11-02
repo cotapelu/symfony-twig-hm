@@ -1,0 +1,123 @@
+# Kotlin Static Analysis Configuration
+name: Static Analysis
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Kotlin Architecture Check
+  kotlin-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Kotlin
+        uses: actions/setup-kotlin@v1
+        with:
+          kotlin-version: '1.9.20'
+
+      - name: Run Detekt
+        run: |
+          ./gradlew detekt --build --analysis-baseline --report-type=txt
+        run: |
+          ./gradlew detekt --baseline
+          ./gradlew detekt --report-type=txt
+
+      - name: Run ArchUnit tests
+        run: |
+          ./gradlew test --tests "*ArchitectureTest*"
+
+      - name: Run Kotlin Lint
+        run: |
+          ./gradlew ktlint --continue-on-error --all-warnings-as-errors
+          
+  name: Run Custom Checks
+        run: |
+          ./gradlew checkArchitecture
+          ./gradlew checkCodeStyle
+
+# Kotlin Lint Configuration
+detekt:
+  autoCorrect: true
+  build:
+    warningsAsErrors: false
+  
+ktlint:
+  autoCorrect: true
+  reporters:
+    - plain: output=stdout
+    - checkstyle: output=stdout
+
+# Check configuration
+checks:
+  - type: architecture
+    severity: error
+    custom_rules:
+      - 'no-controller-layer-crossing':
+        rule:
+          description: 'Controllers should not depend on other controllers'
+          implementation: 'ModuleReferenceAnalysis'
+          
+      - 'no-service-layer-crossing':
+        rule:
+          description: 'Services should not depend on other services'
+          implementation: 'LayerCrossingAnalysis'
+          
+      - 'no-entity-layer-crossing':
+        rule:
+          description: 'Entities should not depend on other entities'
+          implementation: 'LayerCrossingAnalysis'
+          
+      - 'clean-architecture':
+        rule:
+          description: 'All packages should be clean'
+          implementation: 'PackageAnalysis'
+          
+      - 'no-circular-dependencies':
+        rule:
+          description: 'No circular dependencies between modules'
+          implementation: 'DependencyAnalysis'
+
+# Custom rules configuration
+custom_rules:
+  'module-dependency-graph':
+    rule:
+      description: 'Enforces proper module dependency graph without cycles'
+      severity: error
+      
+  'clean-architecture':
+    rule:
+      description: 'Ensures clean architecture without violations'
+      severity: error
+      
+  'naming-conventions':
+    rule:
+      description: 'Follows Kotlin naming conventions'
+      implementation: 'NamingConventionAnalysis'
+      
+  'module-organization':
+    rule:
+      description: 'Proper module organization'
+      implementation: 'ModuleOrganizationAnalysis'
+
+# Build configuration
+build:
+  tasks:
+    - test
+    - check
+    
+  compile:
+      - options:
+        warningsAsErrors: false
+        failOnWarning: true
+      
+  test:
+      - testClasses:
+        includes:
+          - "**/*ArchitectureTest*"
+        excludes:
+          - "**/*IntegrationTest*"

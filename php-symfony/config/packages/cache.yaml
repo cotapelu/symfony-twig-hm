@@ -1,0 +1,11 @@
+framework:
+    cache:
+        app: cache.adapter.filesystem
+        system: cache.adapter.filesystem
+        directory: '%kernel.cache_dir%/pools'
+        # Redis cache pool for high-performance data caching
+        pools:
+            redis_cache:
+                adapter: cache.adapter.redis
+                provider: 'redis://%env(REDIS_URL)%'
+                default_lifetime: 3600

@@ -1,0 +1,43 @@
+# Pre-commit hooks for Quality Gate enforcement
+# Run: pre-commit install
+
+repos:
+  - repo: local
+    hooks:
+      - id: quality-gate
+        name: "Quality Gate (make quality)"
+        entry: make quality
+        language: system
+        pass_filenames: false
+        always_run: true
+        require_serial: true
+        stages: [commit, push]
+        verbose: true
+        fail_fast: true
+
+      - id: eslint
+        name: "ESLint (Frontend)"
+        entry: |
+          bash -c 'cd frontend && npm run lint'
+        language: system
+        files: \.(js|ts|svelte)$
+        pass_filenames: true
+        stages: [commit]
+
+      - id: php-cs-fixer
+        name: "PHP Code Style (php-cs-fixer)"
+        entry: |
+          bash -c 'cd php-symfony && php vendor/bin/php-cs-fixer fix --dry-run --diff'
+        language: system
+        files: \.php$
+        pass_filenames: true
+        stages: [commit]
+
+      - id: mypy
+        name: "Python Type Check (mypy)"
+        entry: |
+          bash -c 'cd python && mypy .'
+        language: system
+        files: \.py$
+        pass_filenames: false
+        stages: [commit]

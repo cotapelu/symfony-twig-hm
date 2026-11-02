@@ -1,0 +1,23 @@
+monolog:
+  handlers:
+    main:
+      type: stream
+      path: 'php://stdout'
+      level: debug
+      formatter: monolog.formatter.json
+      channels: ["!event"]
+
+    # Doctrine logs (optional, adjust level as needed)
+    doctrine:
+      type: stream
+      path: 'php://stdout'
+      level: debug
+      formatter: monolog.formatter.json
+      channels: ["doctrine"]
+
+    # Console handler for CLI
+    console:
+      type: console
+      process_psr_3_messages: false
+      formatter: monolog.formatter.json
+      channels: ["!event"]

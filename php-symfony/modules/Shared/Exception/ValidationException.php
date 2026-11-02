@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Shared\Exception;
+
+/**
+ * Validation exception.
+ */
+class ValidationException extends AppException
+{
+    private array $errors;
+
+    public function __construct(array $errors, string $message = 'Validation failed')
+    {
+        $this->errors = $errors;
+        parent::__construct($message, 400);
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+}

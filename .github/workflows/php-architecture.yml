@@ -1,0 +1,42 @@
+name: PHP Architecture Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (for import-linter)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install import-linter
+        run: npm install -g import-linter
+
+      - name: Run import-linter (PHP modules)
+        run: import-linter --config .importlinter-php.yaml
+        continue-on-error: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-scripts
+        working-directory: ./php-symfony
+
+      - name: Run deptrac
+        run: |
+          cd php-symfony
+          vendor/bin/deptrac analyse --config=deptrac.yaml --fail-on-violation

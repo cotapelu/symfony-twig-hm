@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""Kotlin quality gate: detekt, ktlint, tests, jacoco ≥80%"""
+import subprocess
+import sys
+import os
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(project_root)
+
+print("🔍 Running Kotlin quality gate...")
+
+# 1. detekt (static analysis)
+print("  → detekt...")
+result = subprocess.run(["cd", "kotlin", "&&", "./gradlew", "detekt"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ detekt failed")
+    sys.exit(1)
+
+# 2. ktlint
+print("  → ktlint...")
+result = subprocess.run(["cd", "kotlin", "&&", "./gradlew", "ktlintCheck"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ ktlint failed")
+    sys.exit(1)
+
+# 3. Unit tests (Jacoco coverage verification included)
+print("  → Running tests with coverage verification...")
+result = subprocess.run(["cd", "kotlin", "&&", "./gradlew", "test", "jacocoTestCoverageVerification"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ Kotlin tests or coverage <80% failed")
+    sys.exit(1)
+
+print("✅ Kotlin quality gate PASSED")
+sys.exit(0)

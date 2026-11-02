@@ -1,0 +1,372 @@
+# config/services.yaml
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: false
+
+    # Provide PDO from Doctrine DBAL connection for PDO-based repositories
+    PDO:
+        class: PDO
+        factory: ['@doctrine.dbal.default_connection', 'getNativeConnection']
+
+    # Monolog JSON formatter for structured logging
+    monolog.formatter.json:
+        class: Monolog\Formatter\JsonFormatter
+
+    # Alias for container injection in controllers
+    Psr\Container\ContainerInterface: '@service_container'
+
+    # Only enable autoconfiguration for specific services that need it
+    Symfony\Bundle\FrameworkBundle\Controller\AbstractController:
+        autoconfigure: true
+
+    App\:
+        resource: '../modules/'
+        exclude:
+            - '../modules/DependencyInjection/'
+            - '../modules/Kernel.php'
+            - '../modules/Command/'
+            - '../modules/Migrations/'
+            - '../modules/**/Entity/'
+            - '../modules/Platform/'
+            - '../modules/Government/'
+            - '../modules/Government/**'
+
+            - '../modules/Queue/'
+            - '../modules/Queue/**'
+            - '../modules/SampleModule/'
+            - '../modules/SampleModule/**'
+            - '../modules/BusinessAccounts/'
+            - '../modules/BusinessAccounts/**'
+            - '../modules/Call/'
+            - '../modules/Call/**'
+            - '../modules/Notification/'
+            - '../modules/Notification/**'
+            - '../modules/Groups/'
+            - '../modules/Groups/**'
+            - '../modules/Shared/Service/DashboardService.php'
+            - '../modules/Shared/Controller/DefaultController.php'
+            - '../modules/Poll/'
+            - '../modules/Poll/**'
+            - '../modules/CustomerService/'
+            - '../modules/CustomerService/**'
+            - '../modules/Notifications/Infrastructure/**'
+        autowire: true
+        autoconfigure: true
+
+    App\Platform\ApiGateway\Controller\GatewayController:
+        autowire: false
+        arguments:
+            - '@App\Platform\ApiGateway\Service\GatewayService'
+
+    # Domain Services
+    # (Pure business logic, no dependencies)
+
+    # Application Services (moved to modules)
+
+    # Infrastructure Services
+    App\Conversation\Repository\ConversationRepositoryImpl:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    App\Message\Repository\MessageRepositoryImpl:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    App\Message\Repository\PollRepositoryImpl:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    App\Message\Service\ReadReceiptService:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@App\Message\Repository\MessageRepositoryInterface'
+
+    App\Message\Service\GetMessagesUseCase:
+
+    App\Shared\Infrastructure\RateLimitService:
+        arguments:
+            - '@cache.rate_limit'
+
+    # App\Shared\Service\DashboardService:
+    #     arguments:
+    #         - '@doctrine.orm.entity_manager'
+    #         - '@App\Call\Repository\CallRepository'
+    #         - '@App\Conversation\Repository\GroupRepository'
+
+    App\Media\Service\FileStorageService:
+        arguments:
+            $uploadDir: '%kernel.project_dir%/public/uploads/communication'
+            $projectDir: '%kernel.project_dir%'
+
+    App\Message\Service\BackgroundJobService:
+        arguments:
+            - '@messenger.bus.default'
+
+    App\User\Repository\UserProfileRepositoryImpl:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    App\User\Repository\UserRepositoryImpl:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    App\Stories\Repository\StoryRepositoryImpl:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    App\Message\Repository\ThreadRepositoryImpl:
+
+    App\Realtime\Service\TypingIndicatorService:
+        arguments:
+            - '@App\Conversation\Repository\ConversationRepositoryInterface'
+
+    # Security
+    App\Shared\Security\JwtAuthenticator: ~
+
+    # Observability
+    App\Shared\Middleware\MetricsMiddleware:
+        tags:
+            - { name: kernel.event_subscriber }
+    App\Shared\Middleware\TracingMiddleware:
+        tags:
+            - { name: kernel.event_subscriber }
+    App\Shared\Middleware\RequestSizeLimitMiddleware:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Soft Delete Filter
+    App\Shared\EventListener\DoctrineSoftDeleteSubscriber:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    # Monlog processor to inject trace ID into logs
+    App\Shared\Service\TraceLogProcessor:
+        tags:
+            - { name: monolog.processor, processor: trace_processor }
+
+    # Encryption Service
+    App\Shared\Service\EncryptionService:
+        arguments:
+            $encryptionKey: '%env(ENCRYPTION_KEY)%'
+
+    # GDPR
+    App\GDPR\Service\GdprService: ~
+    App\GDPR\Controller\GdprController:
+        public: true
+
+    # Audit Logging
+    App\Audit\Service\SimpleAuditLogger:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+    App\Audit\EventSubscriber\AuditSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
+        arguments:
+            - '@App\\Audit\\Service\\SimpleAuditLogger'
+
+    # User Encryption Listener
+    App\Shared\EventListener\UserEncryptionListener:
+        tags:
+            - { name: doctrine.event_subscriber }
+        arguments:
+            - '@App\\Shared\\Service\\EncryptionService'
+
+    # Aliases for interfaces
+    App\Conversation\Repository\ConversationRepositoryInterface: '@App\Conversation\Repository\ConversationRepositoryImpl'
+    App\Conversation\Service\ConversationAccessVerifierInterface: '@App\Conversation\Service\ConversationAccessVerifier'
+    App\Conversation\Service\ConversationService: ~
+    App\Message\Repository\MessageRepositoryInterface: '@App\Message\Repository\MessageRepositoryImpl'
+    App\Message\Repository\PollRepositoryInterface: '@App\Message\Repository\PollRepositoryImpl'
+    App\User\Repository\UserProfileRepositoryInterface: '@App\User\Repository\UserProfileRepositoryImpl'
+    App\User\Repository\UserRepositoryInterface: '@App\User\Repository\UserRepositoryImpl'
+    App\Message\Repository\ThreadRepositoryInterface: '@App\Message\Repository\ThreadRepositoryImpl'
+
+    # FeatureFlags
+    App\FeatureFlags\Repository\FeatureFlagRepositoryInterface: '@App\FeatureFlags\Repository\FeatureFlagRepository'
+    App\Stories\Repository\StoryRepositoryInterface: '@App\Stories\Repository\StoryRepositoryImpl'
+
+    # Government Module Aliases
+    App\Government\Domain\Repository\DocumentRepositoryInterface: '@App\Government\Infrastructure\Repository\DocumentRepository'
+    App\Government\Domain\Repository\OfficerRepositoryInterface: '@App\Government\Infrastructure\Repository\OfficerRepository'
+    App\Government\Domain\Repository\CitizenRepositoryInterface: '@App\Government\Infrastructure\Repository\CitizenRepository'
+    App\Government\Domain\Repository\AdministrativeProcedureRepositoryInterface: '@App\Government\Infrastructure\Repository\AdministrativeProcedureRepository'
+    App\Government\Domain\Repository\ProcedureApplicationRepositoryInterface: '@App\Government\Infrastructure\Repository\ProcedureApplicationRepository'
+    App\Government\Domain\Repository\WardRepositoryInterface: '@App\Government\Infrastructure\Repository\WardRepository'
+
+    # ANTT Module Aliases
+    App\ANTT\Domain\Repository\IncidentRepositoryInterface: '@App\ANTT\Infrastructure\Repository\IncidentRepository'
+    App\ANTT\Domain\Repository\PatrolRepositoryInterface: '@App\ANTT\Infrastructure\Repository\PatrolRepository'
+    App\ANTT\Domain\Repository\SecurityCaseRepositoryInterface: '@App\ANTT\Infrastructure\Repository\SecurityCaseRepository'
+
+    # ANTT Services
+    App\ANTT\Application\Service\IncidentService: ~
+    App\ANTT\Application\Service\GovernmentIntegrationService:
+        arguments:
+            $incidentRepository: '@App\ANTT\Domain\Repository\IncidentRepositoryInterface'
+            $patrolRepository: '@App\ANTT\Domain\Repository\PatrolRepositoryInterface'
+            $securityCaseRepository: '@App\ANTT\Domain\Repository\SecurityCaseRepositoryInterface'
+            $officerRepository: '@App\Government\Domain\Repository\OfficerRepositoryInterface'
+            $wardRepository: '@App\Government\Domain\Repository\WardRepositoryInterface'
+
+    App\Message\Service\MessageService: ~
+
+    App\Message\Service\ConversationInsightsService:
+        arguments:
+            - '@App\Message\Repository\MessageRepositoryInterface'
+            - '@logger'
+
+
+    App\Shared\Infrastructure\CacheService:
+        arguments:
+            - '@cache.app_pool'
+
+    # JWT Service
+    App\Shared\Service\JwtService:
+        arguments:
+            $secretKey: '%env(JWT_SECRET)%'
+            $algorithm: 'HS256'
+            $expirationHours: 24
+
+    # Biometric Encryption Service
+    App\Shared\Service\BiometricEncryptionService:
+        arguments:
+            - '%env(BIOMETRIC_ENCRYPTION_KEY)%'
+
+    # Domain Event Publisher
+    App\Shared\DomainEvent\DomainEventPublisherInterface: '@App\Shared\DomainEvent\DomainEventPublisher'
+
+    # CSRF Protection Service
+    App\Shared\Security\CsrfProtectionService: ~
+
+    # CSRF Protection Middleware
+    App\Shared\Middleware\CsrfProtectionMiddleware:
+        arguments:
+            $trustedOrigins: '%env(TRUSTED_ORIGINS)%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 28 }
+
+    # Graceful Shutdown Middleware
+    App\Shared\Middleware\GracefulShutdownMiddleware: ~
+
+    # Retry Service
+    App\Shared\Service\RetryService: ~
+
+    # Circuit Breaker Service
+    App\Shared\Service\CircuitBreakerService: ~
+
+    # Controllers
+    App\User\Controller\UserController:
+        public: true
+
+    App\User\Controller\UserProfileController:
+        public: true
+
+    App\User\Controller\AuthController:
+        public: true
+
+    App\Message\Controller\MessageController:
+        public: true
+        tags: ['controller.service_arguments']
+
+    App\Conversation\Controller\ConversationController:
+        public: true
+
+    App\Media\Controller\FileController:
+        public: true
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    App\Notification\Controller\NotificationController:
+        public: true
+
+    App\Notifications\Api\Controller\NotificationsController:
+        public: true
+
+    App\Realtime\Controller\TypingController:
+        public: true
+
+    App\Realtime\Controller\WebRTCController:
+        public: true
+
+    # App\Call\Controller\CallController:
+    #     public: true
+
+    # App\Poll\Controller\PollController:
+    #     public: true
+
+    App\DigitalWallet\Controller\DigitalWalletController:
+        public: true
+
+    App\Loyalty\Controller\LoyaltyController:
+        public: true
+
+    App\Search\Controller\SearchController:
+        public: true
+
+    # Platform API Gateway
+    App\Platform\ApiGateway\Service\GatewayService:
+        public: true
+
+    # Notifications Repository Services
+    App\Notifications\Infrastructure\Repository\PushNotificationRepository:
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'App\Notifications\Domain\Entity\PushNotification'
+
+    App\Notifications\Infrastructure\Repository\PushSubscriptionRepository:
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'App\Notifications\Domain\Entity\PushSubscription'
+
+    # EntityRepository-based repositories (Doctrine ORM)
+    App\Feedback\Infrastructure\Repository\FeedbackRepository:
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'App\Feedback\Domain\Entity\Feedback'
+
+    App\Appointment\Infrastructure\Repository\AppointmentRepository:
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'App\Appointment\Domain\Entity\Appointment'
+
+    App\Queue\Infrastructure\Repository\QueueRepository:
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'App\Queue\Domain\Entity\Queue'
+
+    App\Queue\Infrastructure\Repository\QueueTicketRepository:
+        factory: ['@doctrine', 'getRepository']
+        arguments:
+            - 'App\Queue\Domain\Entity\QueueTicket'
+
+    # Notifications Service Aliases
+    App\Notifications\Domain\Repository\PushNotificationRepositoryInterface: '@App\Notifications\Infrastructure\Repository\PushNotificationRepository'
+    App\Notifications\Domain\Repository\PushSubscriptionRepositoryInterface: '@App\Notifications\Infrastructure\Repository\PushSubscriptionRepository'
+
+    App\Notifications\Application\Service\PushNotificationService: ~
+
+    App\Notifications\Application\Service\DeviceSenderRegistry:
+        arguments:
+            $senders: []
+
+    # Notification module services (singular)
+    App\Notification\Service\NotificationService: ~
+    App\Notification\Repository\NotificationRepositoryInterface: '@App\Notification\Repository\NotificationRepository'
+    App\Notification\Repository\NotificationRepository:
+        arguments:
+            $connection: '@doctrine.dbal.default_connection'
+
+when@prod:
+    # Redis Session Handler for horizontal scaling
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments:
+            - '@Symfony\Component\Cache\Adapter\RedisAdapter'
+            - prefix: 'session_'
+              ttl: 86400
+
+    # Redis adapter for sessions and cache
+    Symfony\Component\Cache\Adapter\RedisAdapter:
+        arguments:
+            - '%env(REDIS_URL)%'
+

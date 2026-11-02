@@ -1,0 +1,49 @@
+name: Weekly Chaos Engineering
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # Mondays at 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  chaos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start full stack
+        run: |
+          docker compose -f deployment/docker-compose.full.yml up -d
+          for i in {1..30}; do
+            if curl -s -f http://localhost:8080/platform/health/iam > /dev/null; then
+              echo "App is up"
+              break
+            fi
+            echo "Waiting for app..."
+            sleep 2
+          done
+
+      - name: Run chaos tests
+        run: |
+          chmod +x ./scripts/chaos_test.sh
+          BASE_URL=http://localhost:8080 SERVICES_TO_KILL="redis wallet-service" NETWORK_LATENCY_MS=200 CPU_STRESS_DURATION=10 DURATION_DOWN=10 ./scripts/chaos_test.sh
+
+      - name: Collect metrics & logs
+        if: always()
+        run: |
+          mkdir -p artifacts
+          curl -s http://localhost:9090/metrics > artifacts/prometheus_metrics.txt || true
+          docker compose -f deployment/docker-compose.full.yml logs > artifacts/docker_logs.txt || true
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chaos-artifacts
+          path: artifacts/
+
+      - name: Notify Slack (optional)
+        if: ${{ secrets.SLACK_WEBHOOK != '' }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Weekly chaos test completed. Check artifacts for results."}' ${{ secrets.SLACK_WEBHOOK }}

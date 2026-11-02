@@ -1,0 +1,202 @@
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver: pdo_sqlite
+                url: 'sqlite:///%kernel.project_dir%/var/test.db'
+                charset: UTF8
+                server_version: '3.34.0'
+    orm:
+        entity_managers:
+            default:
+                connection: default
+                auto_mapping: false
+                mappings:
+                    User:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/User/Entity'
+                        prefix: 'App\User\Entity'
+                        alias: User
+                    Core:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Core/Entity'
+                        prefix: 'App\Core\Entity'
+                        alias: Core
+                    Government:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Government/Domain'
+                        prefix: 'App\Government\Domain'
+                        alias: Government
+                    Queue:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Queue/Domain/Entity'
+                        prefix: 'App\Queue\Domain\Entity'
+                        alias: Queue
+                    Feedback:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Feedback/Domain/Entity'
+                        prefix: 'App\Feedback\Domain\Entity'
+                        alias: Feedback
+                    Appointment:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Appointment/Domain/Entity'
+                        prefix: 'App\Appointment\Domain\Entity'
+                        alias: Appointment
+                    Subscription:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Subscription/Entity'
+                        prefix: 'App\Subscription\Entity'
+                        alias: Subscription
+                    SubscriptionPlan:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Subscription/Entity'
+                        prefix: 'App\Subscription\Entity'
+                        alias: SubscriptionPlan
+                    Insurance:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Insurance/Entity'
+                        prefix: 'App\Insurance\Entity'
+                        alias: Insurance
+                    Poll:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Poll/Entity'
+                        prefix: 'App\Poll\Entity'
+                        alias: Poll
+                    Maps:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Maps/Entity'
+                        prefix: 'App\Maps\Entity'
+                        alias: Maps
+                    FeatureFlags:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/FeatureFlags/Entity'
+                        prefix: 'App\FeatureFlags\Entity'
+                        alias: FeatureFlags
+                    News:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/News/Entity'
+                        prefix: 'App\News\Entity'
+                        alias: News
+                    Ecommerce:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Ecommerce/Entity'
+                        prefix: 'App\Ecommerce\Entity'
+                        alias: Ecommerce
+                    Notifications:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Notifications/Domain/Entity'
+                        prefix: 'App\Notifications\Domain\Entity'
+                        alias: Notifications
+                    Search:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Search/Entity'
+                        prefix: 'App\Search\Entity'
+                        alias: Search
+                    Rewards:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Rewards/Entity'
+                        prefix: 'App\Rewards\Entity'
+                        alias: Rewards
+                    Population:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Population/Entity'
+                        prefix: 'App\Population\Entity'
+                        alias: Population
+                    Investment:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Investment/Entity'
+                        prefix: 'App\Investment\Entity'
+                        alias: Investment
+                    SecurityEmergency:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/SecurityEmergency/Entity'
+                        prefix: 'App\SecurityEmergency\Entity'
+                        alias: SecurityEmergency
+                    Discover:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Discover/Entity'
+                        prefix: 'App\Discover\Entity'
+                        alias: Discover
+                    Citizen:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Citizen/Domain/Entity'
+                        prefix: 'App\Citizen\Domain\Entity'
+                        alias: Citizen
+
+                    Notification:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Notification/Entity'
+                        prefix: 'App\Notification\Entity'
+                        alias: Notification
+                    Utility:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Utility/Entity'
+                        prefix: 'App\Utility\Entity'
+                        alias: Utility
+                    Health:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Health/Entity'
+                        prefix: 'App\Health\Entity'
+                        alias: Health
+                    ANTT:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/ANTT/Domain/Entity'
+                        prefix: 'App\ANTT\Domain\Entity'
+                        alias: ANTT
+                    Message:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Message/Entity'
+                        prefix: 'App\Message\Entity'
+                        alias: Message
+                    Conversation:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Conversation/Entity'
+                        prefix: 'App\Conversation\Entity'
+                        alias: Conversation
+
+                    Social:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Social/Entity'
+                        prefix: 'App\Social\Entity'
+                        alias: Social
+
+                    Delivery:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/modules/Delivery/Entity'
+                        prefix: 'App\Delivery\Entity'
+                        alias: Delivery
+
+                filters:
+                    soft_deleteable:
+                        class: App\Shared\Doctrine\SoftDeleteableFilter

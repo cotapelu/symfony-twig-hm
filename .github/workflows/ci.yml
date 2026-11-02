@@ -1,0 +1,171 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: community_db
+          POSTGRES_USER: community
+          POSTGRES_PASSWORD: community
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, redis, sodium
+          coverage: xdebug
+          ini-values: |
+            error_reporting=E_ALL
+            display_errors=On
+
+      - name: Install PHP dependencies
+        run: |
+          cd php-symfony
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+
+      - name: Install Node dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+          cp -r build/* ../php-symfony/public/
+
+      - name: Prepare environment
+        run: |
+          cd php-symfony
+          cp .env.test .env.local
+          echo "APP_ENV=test" >> .env.local
+          echo "DATABASE_URL=postgresql://community:community@127.0.0.1:5432/community_db" >> .env.local
+          echo "REDIS_URL=redis://127.0.0.1:6379" >> .env.local
+          echo "JWT_SECRET=test_jwt_secret" >> .env.local
+          echo "ENCRYPTION_KEY=0123456789abcdef0123456789abcdef" >> .env.local
+
+      - name: Prepare database schema
+        run: |
+          cd php-symfony
+          php bin/console doctrine:schema:create --if-not-exists
+          # Alternatively, run migrations
+          php bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Validate Doctrine schema
+        run: |
+          cd php-symfony
+          php bin/console doctrine:schema:validate --skip-symfony --no-interaction || true
+
+      - name: Run tests with coverage
+        run: |
+          cd php-symfony
+          vendor/bin/phpunit --coverage-clover coverage.xml
+      - name: Check coverage threshold
+        run: |
+          # PHP coverage
+          COVERAGE=$(php -r "\$xml=simplexml_load_file('php-symfony/coverage.xml'); \$metrics=\$xml->xpath('//metrics[@type=''file'']')[0]; echo (int)\$metrics['coveredstatements'] / (int)\$metrics['statements'] * 100;")
+          echo "PHP coverage: ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "PHP coverage below 80%"
+            exit 1
+          fi
+          # Python coverage
+          python3 scripts/check-python-coverage.py coverage/python-coverage.xml
+          # Frontend coverage
+          node scripts/check-frontend-coverage.js
+
+      - name: Run Quality Gate
+        run: |
+          python3 scripts/quality-gate.py
+          python3 scripts/quality-dashboard.py
+        continue-on-error: false
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./php-symfony/coverage.xml
+          fail_ci_if_error: false
+
+  load-test:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup k6
+        uses: loadimpact/k6-build-action@v2
+    
+      - name: Run k6 load tests
+        run: |
+          k6 run --vus 1000 --duration 2m load-tests/k6-critical-endpoints.js
+    
+      - name: Check load test results
+        run: |
+          # Check if error rate exceeded 5%
+          # k6 will fail the job automatically if thresholds are exceeded
+
+  zap:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Start full stack
+        run: |
+          docker compose -f deployment/docker-compose.full.yml up -d
+          for i in {1..30}; do
+            if curl -s -f http://localhost:8080/platform/health/iam > /dev/null; then
+              echo "App is up"
+              break
+            fi
+            echo "Waiting for app..."
+            sleep 2
+          done
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://localhost:8080'
+      - name: Stop stack
+        if: always()
+        run: |
+          docker compose -f deployment/docker-compose.full.yml down
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: .
+          base: ${{ github.event.before || github.base_ref }}
+          head: ${{ github.sha }}

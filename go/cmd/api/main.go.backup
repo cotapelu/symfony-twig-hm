@@ -1,0 +1,365 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+
+	_ "github.com/lib/pq"
+
+<<<<<<< HEAD
+	"community.local/modules/Banking"
+	"community.local/modules/Banking/handler"
+	"community.local/modules/BillsPayment"
+	"community.local/modules/BillsPayment/handler"
+	"community.local/modules/QRPayment"
+	"community.local/modules/QRPayment/handler"
+	"community.local/modules/WalletService"
+	"community.local/modules/WalletService/handler"
+=======
+	// authservicehandler "community.local/modules/authservice/handler"
+	authserviceservice "community.local/modules/authservice/service"
+	banking "community.local/modules/Banking"
+	billspayment "community.local/modules/BillsPayment"
+	certificateauthorityhandler "community.local/modules/certificateauthority/handler"
+	certificateauthorityservice "community.local/modules/certificateauthority/service"
+	creditlending "community.local/modules/CreditLending"
+	eventshandler "community.local/modules/events/handler"
+	eventsservice "community.local/modules/events/service"
+	fraud "community.local/modules/FraudDetection"
+	keymanagementhandler "community.local/modules/keymanagement/handler"
+	keymanagementservice "community.local/modules/keymanagement/service"
+	locationhandler "community.local/modules/location/handler"
+	locationrepository "community.local/modules/location/repository"
+	locationservice "community.local/modules/location/service"
+	marketplacehandler "community.local/modules/marketplace/handler"
+	marketplaceservice "community.local/modules/marketplace/service"
+	realtimesynchandler "community.local/modules/realtimesync/handler"
+	realtimesyncrepository "community.local/modules/realtimesync/repository"
+	realtimesyncservice "community.local/modules/realtimesync/service"
+	videoconferencehandler "community.local/modules/videoconference/handler"
+	courier "community.local/modules/Courier"
+
+	// Additional modules
+
+	// Additional modules
+	coreservices "community.local/modules/coreservices"
+	delivery "community.local/modules/DeliveryService"
+	locationtracking "community.local/modules/locationtracking"
+	notificationsrealtime "community.local/modules/notificationsrealtime"
+	qrcpayment "community.local/modules/QRPayment"
+	wallet "community.local/modules/WalletService"
+>>>>>>> dev
+
+	"community.local/platform/database"
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+<<<<<<< HEAD
+	// Open in-memory SQLite database
+	db, err := sql.Open("sqlite3", ":memory:")
+	if err != nil {
+		log.Fatalf("Failed to open database: %v", err)
+=======
+	cfg, err := LoadConfig("./config")
+	if err != nil {
+		fmt.Printf("Warning: Using default config: %v", err)
+		cfg = &Config{
+			Server: ServerConfig{
+				Host: defaultHost,
+				Port: defaultPort,
+				Mode: defaultMode,
+			},
+		}
+	}
+
+	if cfg.Server.Mode == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	// Initialize PostgreSQL database
+	db, err := database.GetDefaultDBConnection()
+	if err != nil {
+		fmt.Printf("ERROR: Failed to connect to PostgreSQL: %v\n", err)
+		os.Exit(1)
+>>>>>>> dev
+	}
+	defer database.CloseDatabase(db)
+
+	// Create tables
+<<<<<<< HEAD
+	if err := createTables(db); err != nil {
+		log.Fatalf("Failed to create tables: %v", err)
+	}
+
+	// Initialize services
+	walletService := walletservice.NewWalletService(
+		walletmodels.NewWalletRepository(db),
+		walletmodels.NewTransactionRepository(db),
+=======
+	if err := database.CreateTables(db); err != nil {
+		fmt.Fprintf(os.Stderr, "ERROR: Failed to create tables: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Fprintln(os.Stderr, "PostgreSQL database tables created")
+	// Existing services
+	locationRepo := locationrepository.NewInMemoryLocationRepository()
+	locationHistoryRepo := locationrepository.NewInMemoryLocationHistoryRepository()
+	geofenceRepo := locationrepository.NewInMemoryGeofenceRepository()
+
+	locationService := locationservice.NewLocationService(
+		locationRepo,
+		locationHistoryRepo,
+		geofenceRepo,
+>>>>>>> dev
+		nil,
+	)
+	walletHandler := walletservicehandler.NewWalletHandler(walletService)
+
+	qrPaymentService := qrpayment.NewQRPaymentService(
+		qrpayment.NewQRCRepository(db),
+		qrpayment.NewPaymentRepository(db),
+		nil,
+	)
+	qrPaymentHandler := qrpaymenthandler.NewQRPaymentHandler(qrPaymentService)
+
+<<<<<<< HEAD
+	bankingService := banking.NewSQLiteBankingService(db)
+	bankingHandler := bankinghandler.NewBankingHandler(bankingService)
+
+=======
+	authService := authserviceservice.NewAuthService("your-256-bit-secret")
+	if authService == nil {
+		fmt.Printf("ERROR: Failed to initialize auth service\n")
+	}
+	if err != nil {
+		fmt.Printf("ERROR: Failed to initialize auth service: %v\n", err)
+		authService = nil
+	}
+	// authHandler := authservicehandler.NewAuthHandler(authService)
+
+	caService, err := certificateauthorityservice.NewCAService("./data/ca.json")
+	if err != nil {
+		fmt.Printf("ERROR: Failed to initialize CA service: %v\n", err)
+		caService = nil
+	}
+	caHandler := certificateauthorityhandler.NewCAHandler(caService)
+
+	keyService, err := keymanagementservice.NewKeyService("./data")
+	if err != nil {
+		fmt.Printf("ERROR: Failed to initialize key management service: %v\n", err)
+		keyService = nil
+	}
+	keyHandler := keymanagementhandler.NewKeyHandler(keyService)
+
+	marketplaceService, err := marketplaceservice.NewMarketplaceService("./data/marketplace.json")
+	if err != nil {
+		fmt.Printf("ERROR: Failed to initialize marketplace service: %v\n", err)
+		marketplaceService = nil
+	}
+	marketplaceHandler := marketplacehandler.NewMarketplaceHandler(marketplaceService)
+
+	// RealtimeSyncService
+	sessionRepo := realtimesyncrepository.NewInMemorySyncSessionRepository()
+	itemRepo := realtimesyncrepository.NewInMemorySyncItemRepository()
+	pendingChangeRepo := realtimesyncrepository.NewInMemoryPendingChangeRepository()
+	realtimeSyncService := realtimesyncservice.NewRealtimeSyncService(sessionRepo, itemRepo, pendingChangeRepo)
+	realtimeSyncHandler := realtimesynchandler.NewRealtimeSyncHandler(realtimeSyncService)
+
+	// New modules
+	bankingHandler := banking.NewHandler(db)
+>>>>>>> dev
+	billsPaymentHandler := billspayment.NewHandler(db)
+
+	// Set up router
+	router := gin.Default()
+	router.Use(gin.Recovery())
+	router.Use(gin.Logger())
+<<<<<<< HEAD
+
+	// Register routes
+	walletHandler.RegisterRoutes(router)
+	qrPaymentHandler.RegisterRoutes(router)
+=======
+	router.Use(func(c *gin.Context) {
+		fmt.Fprintf(os.Stderr, "DEBUG Middleware: %s %s\n", c.Request.Method, c.Request.URL.Path)
+		c.Next()
+	})
+	fmt.Fprintln(os.Stderr, "DEBUG: Router configured with middleware")
+
+	// Register routes
+	// Register routes
+	eventsHandler.RegisterRoutes(router)
+	locationHandler.RegisterRoutes(router)
+	// authHandler.RegisterRoutes(router)
+	caHandler.RegisterRoutes(router)
+	keyHandler.RegisterRoutes(router)
+	marketplaceHandler.RegisterRoutes(router)
+	realtimeSyncHandler.RegisterRoutes(router)
+
+>>>>>>> dev
+	bankingHandler.RegisterRoutes(router)
+	billsPaymentHandler.RegisterRoutes(router)
+
+	// Start server
+	port := 8080
+	log.Printf("Starting server on :%d", port)
+	if err := router.Run(fmt.Sprintf(":%d", port)); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
+}
+
+// createTables creates the necessary tables for the modules.
+func createTables(db *sql.DB) error {
+	// We'll create the tables we know are needed for the modules we are using.
+	// Banking tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS banking_accounts (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id TEXT NOT NULL,
+			account_number TEXT UNIQUE NOT NULL,
+			account_type TEXT NOT NULL,
+			balance REAL NOT NULL DEFAULT 0,
+			currency TEXT NOT NULL DEFAULT 'VND',
+			status TEXT NOT NULL DEFAULT 'active',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("banking_accounts: %w", err)
+	}
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS banking_transactions (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			account_id INTEGER NOT NULL,
+			type TEXT NOT NULL,
+			amount REAL NOT NULL,
+			balance_after REAL NOT NULL,
+			description TEXT,
+			reference_id TEXT,
+			status TEXT NOT NULL DEFAULT 'completed',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("banking_transactions: %w", err)
+	}
+	// BillsPayment tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS bills (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			bill_type TEXT NOT NULL,
+			provider TEXT NOT NULL,
+			account_number TEXT NOT NULL,
+			customer_name TEXT NOT NULL,
+			amount REAL NOT NULL,
+			period TEXT,
+			status TEXT NOT NULL DEFAULT 'pending',
+			due_date TIMESTAMP NOT NULL,
+			paid_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("bills: %w", err)
+	}
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS bill_payments (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			bill_id INTEGER NOT NULL,
+			user_id TEXT NOT NULL,
+			amount REAL NOT NULL,
+			payment_method TEXT NOT NULL,
+			transaction_id TEXT UNIQUE NOT NULL,
+			status TEXT NOT NULL DEFAULT 'completed',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("bill_payments: %w", err)
+	}
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS bill_providers (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			name TEXT NOT NULL,
+			code TEXT UNIQUE NOT NULL,
+			category TEXT NOT NULL,
+			processing_fee REAL NOT NULL DEFAULT 0,
+			min_amount REAL NOT NULL DEFAULT 0,
+			max_amount REAL,
+			is_active BOOLEAN NOT NULL DEFAULT true
+		);
+	`); err != nil {
+		return fmt.Errorf("bill_providers: %w", err)
+	}
+	// QRPayment tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS qr_codes (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			code TEXT NOT NULL,
+			code_type TEXT NOT NULL,
+			merchant_id TEXT NOT NULL,
+			merchant_name TEXT NOT NULL,
+			amount REAL NOT NULL,
+			currency TEXT NOT NULL,
+			description TEXT,
+			status TEXT NOT NULL DEFAULT 'active',
+			expires_at TIMESTAMP NOT NULL,
+			used_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("qr_codes: %w", err)
+	}
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS qr_payments (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			qr_code_id INTEGER NOT NULL,
+			payer_id TEXT NOT NULL,
+			amount REAL NOT NULL,
+			fee REAL NOT NULL,
+			net_amount REAL NOT NULL,
+			currency TEXT NOT NULL,
+			payment_method TEXT NOT NULL,
+			reference_id TEXT NOT NULL,
+			bank_code TEXT NOT NULL,
+			status TEXT NOT NULL DEFAULT 'pending',
+			completed_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("qr_payments: %w", err)
+	}
+	// WalletService tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS wallets (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id TEXT NOT NULL,
+			balance REAL NOT NULL DEFAULT 0,
+			currency TEXT NOT NULL,
+			status TEXT NOT NULL DEFAULT 'active',
+			is_default BOOLEAN NOT NULL DEFAULT 1,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("wallets: %w", err)
+	}
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS wallet_transactions (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			wallet_id INTEGER NOT NULL,
+			type TEXT NOT NULL,
+			amount REAL NOT NULL,
+			balance_after REAL NOT NULL,
+			description TEXT,
+			reference_id TEXT,
+			metadata TEXT,
+			status TEXT NOT NULL DEFAULT 'completed',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("wallet_transactions: %w", err)
+	}
+
+	return nil
+}

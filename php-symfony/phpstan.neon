@@ -1,0 +1,53 @@
+parameters:
+    level: max
+    paths:
+        - modules
+    excludePaths:
+        - modules/Migrations/*
+        - modules/DependencyInjection/*
+        - modules/*/Entity/App/*
+        - modules/*/Event/App/*
+        - modules/*/Controller/App/*
+        - modules/*/Repository/App/*
+        - modules/*/Controller/*Controller.php
+        - modules/*/Event/*.php
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - '#Attribute class .* does not exist#'
+        - '#Call to an undefined method .*#'
+        - '#Access to an undefined property .*#'
+        - '#Call to method .* on an unknown class .*#'
+        - '#Instantiated class .* not found#'
+        - '#Class .* not found#'
+        - '#Repository class .* not found#'
+        - '#Invalid type .*#'
+        - '#has unknown class#'
+        - '#has invalid return type#'
+        - '#has invalid type#'
+        - '#Constant .* is unused#'
+        - '#Property .* is never written, only read#'
+        - '#Property .* is unused#'
+        - '#expects string.*null.*given#'
+        - '#should return array but returns null#'
+        - '#Deprecated in PHP.*#'
+        - '#invoked with [0-9]+ parameters, [0-9]+ required#'
+        - '#is not nullable#'
+        - '#Strict comparison#'
+        - '#Regex pattern is invalid#'
+        - '#Array has.*duplicate keys#'
+        - '#Offset.*on left side of \?\? always exists#'
+        - '#Cannot call method.*on array#'
+        - '#Anonymous function has an unused use#'
+        - '#Method.*is unused#'
+        - '#Access to constant .* on an unknown class#'
+        - '#EventBus.*dispatch.*expects#'
+        - '#no value type specified in iterable type#'
+        - '#has no value type specified in iterable type#'
+        - '#Parameter.*with no value type specified in iterable type#'
+        - '#extends generic class.*does not specify its types#'
+        - '#with generic interface.*does not specify its types#'
+    reportUnmatchedIgnoredErrors: false
+
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon

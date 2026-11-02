@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Phase 2 - Drive Coverage to 30%",
+      "tasks": [
+        {
+          "id": "task-1",
+          "content": "Analyze integration test failures: categorize common root causes",
+          "status": "in_progress"
+        },
+        {
+          "id": "task-2",
+          "content": "Fix NotificationIntegrationTest constructor mismatch (use mock repository)",
+          "status": "pending"
+        },
+        {
+          "id": "task-3",
+          "content": "Fix other integration tests with similar patterns (service constructors)",
+          "status": "pending"
+        },
+        {
+          "id": "task-4",
+          "content": "Add unit tests for Feedback module (high-statement untested)",
+          "status": "pending"
+        },
+        {
+          "id": "task-5",
+          "content": "Add unit tests for Fitness module",
+          "status": "pending"
+        },
+        {
+          "id": "task-6",
+          "content": "Add unit tests for Investment module",
+          "status": "pending"
+        },
+        {
+          "id": "task-7",
+          "content": "Add unit tests for LiveSupport module",
+          "status": "pending"
+        },
+        {
+          "id": "task-8",
+          "content": "Re-run PHP coverage and verify >=30% threshold",
+          "status": "pending"
+        },
+        {
+          "id": "task-9",
+          "content": "Update PROJECT_STATE.md, AGENT_METRICS.md, EVOLUTION.md with new numbers",
+          "status": "pending"
+        }
+      ]
+    }
+  ],
+  "nextTaskId": 10,
+  "nextPhaseId": 2,
+  "updatedAt": "2026-06-10T11:50:25.467Z"
+}

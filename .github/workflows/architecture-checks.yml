@@ -1,0 +1,110 @@
+name: Architecture Checks
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # PHP Architecture Check
+  php-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Install Deptrac
+        run: |
+          composer require --dev qossmi/deptrac
+
+      - name: Run Deptrac
+        run: |
+          vendor/bin/deptrac check --config=deptrac.yaml --fail-on-violation
+
+      - name: Run PHPStan
+        run: |
+          composer require --dev phpstan/phpstan
+          vendor/bin/phpstan analyse --configuration=phpstan.neon --error-format=json
+
+  # Python Architecture Check
+  python-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install import-linter
+        run: |
+          pip install import-linter[cli]
+
+      - name: Run import-linter
+        run: |
+          import-linter --strict --config .importlinter.yaml src/
+
+  # Go Architecture Check
+  go-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Run go vet
+        run: |
+          go vet ./...
+
+      - name: Run staticcheck
+        run: |
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+          staticcheck -tags architecture ./...
+
+  # Kotlin Architecture Check
+  kotlin-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Kotlin
+        uses: actions/setup-kotlin@v1
+        with:
+          kotlin-version: '1.9.20'
+
+      - name: Run ArchUnit tests
+        run: |
+          ./gradlew test --tests "*ArchitectureTest*"
+
+      - name: Run Detekt
+        run: |
+          ./gradlew detekt
+
+  # Zig Architecture Check
+  zig-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Zig
+        uses: goto-bus/setup-zig@v1
+        with:
+          zig-version: '0.11.0'
+
+      - name: Build Zig with dependency graph
+        run: |
+          zig build --fetch-opt build-dependencies-graph

@@ -1,0 +1,63 @@
+# Zig Architecture Check
+name: Zig Architecture Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Zig Architecture Check
+  zig-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Zig
+        uses: goto-bus/setup-zig@v1
+        with:
+          zig-version: '0.11.0'
+
+      - name: Build with dependency graph
+        run: |
+          zig build --fetch-opt build-dependencies-graph
+          zig build
+
+      - name: Run build-time checks
+        run: |
+          zig build --check-build-verbose || echo "Build-time checks completed"
+
+# Build configuration
+build:
+  options:
+    - reference-trace: true
+    - build-summary: false
+    
+  check:
+    name: All
+      summary: true
+      skip-executables: false
+
+# Custom rules
+rules:
+  - enforce-dependencies:
+    description: 'Enforce proper dependency management'
+    level: error
+    
+  - enforce-modular-structure:
+    description: 'Maintain clean modular architecture'
+    level: error
+    
+  - enforce-interface-segregation:
+    description: 'Proper interface segregation'
+    level: warning
+    
+  - enforce-single-responsibility:
+    description: 'Each module should have single responsibility'
+    level: info
+    
+  - enforce-decoupling:
+    description: 'Maintain loose coupling between modules'
+    level: info

@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Go quality gate: vet, test, coverage ≥80%"""
+import subprocess
+import sys
+import os
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(project_root)
+
+print("🔍 Running Go quality gate...")
+
+# 1. go vet
+print("  → go vet...")
+result = subprocess.run(["cd", "go", "&&", "go", "vet", "./..."], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ go vet failed")
+    sys.exit(1)
+
+# 2. staticcheck (if available, else skip with warning)
+print("  → staticcheck...")
+result = subprocess.run(["which", "staticcheck"], capture_output=True, text=True)
+if result.stdout.strip():
+    result = subprocess.run(["cd", "go", "&&", "staticcheck", "./..."], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("❌ staticcheck failed")
+        sys.exit(1)
+else:
+    print("  ⚠️  staticcheck not installed, skipping")
+
+# 3. Unit tests with coverage
+print("  → Running tests with coverage...")
+result = subprocess.run(["cd", "go", "&&", "go", "test", "./...", "-coverprofile=../coverage/go-coverage.out", "-covermode=atomic"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ Go tests failed")
+    sys.exit(1)
+
+# 4. Coverage check
+print("  → Checking coverage ≥80%...")
+result = subprocess.run(["bash", "scripts/check-go-coverage.sh", "coverage/go-coverage.out", "80"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ Go coverage below 80%")
+    sys.exit(1)
+
+print("✅ Go quality gate PASSED")
+sys.exit(0)

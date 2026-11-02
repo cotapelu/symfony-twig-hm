@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""Frontend quality gate: lint, type-check, tests, coverage ≥80%"""
+import subprocess
+import sys
+import os
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(project_root)
+
+print("🔍 Running Frontend quality gate...")
+
+# 1. Lint (ESLint)
+print("  → ESLint...")
+result = subprocess.run(["cd", "frontend", "&&", "npm", "run", "lint"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ ESLint failed")
+    sys.exit(1)
+
+# 2. Type check (TypeScript)
+print("  → TypeScript type check...")
+result = subprocess.run(["cd", "frontend", "&&", "npm", "run", "typecheck"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ TypeScript type check failed")
+    sys.exit(1)
+
+# 3. Tests with coverage
+print("  → Running tests with coverage...")
+result = subprocess.run(["cd", "frontend", "&&", "npm", "run", "test", "--", "--coverage"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ Frontend tests failed")
+    sys.exit(1)
+
+# 4. Coverage check (JavaScript-specific threshold)
+print("  → Checking coverage ≥80%...")
+result = subprocess.run("node scripts/check-frontend-coverage.js", shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ Frontend coverage below 80%")
+    sys.exit(1)
+
+print("✅ Frontend quality gate PASSED")
+sys.exit(0)

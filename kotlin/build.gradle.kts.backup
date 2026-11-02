@@ -1,0 +1,167 @@
+plugins {
+    kotlin("jvm") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
+    application
+    jacoco
+}
+
+group = "com.qcoder.kotlin"
+version = "1.0.0"
+
+repositories {
+    mavenCentral()
+    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven") }
+}
+
+dependencies {
+    // Kotlin stdlib
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.0.0")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.8.0")
+
+    // Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+    // HTTP Server (Ktor)
+    implementation("io.ktor:ktor-server-core:3.0.0")
+    implementation("io.ktor:ktor-server-netty:3.0.0")
+    implementation("io.ktor:ktor-server-content-negotiation:3.0.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.0")
+
+    // HTTP Client (Ktor)
+    implementation("io.ktor:ktor-client-core:3.0.0")
+    implementation("io.ktor:ktor-client-cio:3.0.0")
+    implementation("io.ktor:ktor-client-content-negotiation:3.0.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.0")
+
+    // Logging
+    implementation("ch.qos.logback:logback-classic:1.5.3")
+
+    // Database
+    implementation("org.jetbrains.exposed:exposed-core:0.50.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.50.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.50.1")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.50.1")
+    implementation("org.postgresql:postgresql:42.7.3")
+
+    // JWT
+    implementation("com.auth0:java-jwt:4.4.0")
+
+    // Testing
+    testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:2.0.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
+    // SQLite JDBC for in-memory integration tests
+    testImplementation("org.xerial:sqlite-jdbc:3.45.3.0")
+}
+
+application {
+    mainClass.set("app.ApplicationKt")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
+kotlin {
+    jvmToolchain(21)
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = "21"
+        }
+    }
+}
+
+sourceSets {
+    main {
+        kotlin.srcDirs(
+            "src/main/kotlin",
+            "modules/peertopeer",
+            "modules/credentialmanager",
+            "modules/objectstorage",
+            "modules/samplemodule",
+            "modules/automation"
+        )
+    }
+    test {
+        kotlin.srcDir("src/test/kotlin")
+    }
+}
+
+// JaCoCo coverage configuration
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/jacoco.xml"))
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/html"))
+    }
+
+    // Include all classes except tests and generated code
+    classDirectories.setFrom(
+        fileTree(layout.buildDirectory.dir("classes/kotlin/main")) {
+            include("**/*.class")
+            exclude("**/META-INF/**")
+            exclude("**/module-info.class")
+        }
+    )
+    sourceDirectories.setFrom(
+        fileTree("src/main/kotlin") {
+            include("**/*.kt")
+        }
+    )
+}
+
+// Coverage verification task to enforce minimum thresholds
+tasks.register<org.gradle.testing.jacoco.tasks.JacocoCoverageVerification>("jacocoTestCoverageVerification") {
+    dependsOn(tasks.test)
+
+    executionData.setFrom(layout.buildDirectory.file("jacoco/test.exec"))
+
+    // Enforce at least 80% line coverage
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.80".toBigDecimal()
+            }
+        }
+        // Optional: branch coverage
+        // rule {
+        //     limit {
+        //         minimum = "0.70".toBigDecimal()
+        //     }
+        // }
+    }
+
+    // Include all classes
+    classDirectories.setFrom(
+        fileTree(layout.buildDirectory.dir("classes/kotlin/main")) {
+            include("**/*.class")
+            exclude("**/META-INF/**")
+            exclude("**/module-info.class")
+        }
+    )
+    sourceDirectories.setFrom(
+        fileTree("src/main/kotlin") {
+            include("**/*.kt")
+        }
+    )
+}
+
+// Make check depend on coverage verification
+tasks.check {
+    dependsOn(tasks.jacocoTestCoverageVerification)
+}

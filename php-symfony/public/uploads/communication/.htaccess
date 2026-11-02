@@ -1,0 +1,22 @@
+# Prevent script execution in upload directory
+<FilesMatch "\.(php|php3|php4|php5|phtml|pl|py|cgi|scr|exe|bat|cmd|jar)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Prevent access to sensitive files
+<FilesMatch "(^\.|#.*#$|\.bak$|\.old$|\.orig$|\.tmp$|\.temp$)">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Allow image files only for direct access
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Force download for other files
+<FilesMatch "\.(pdf|txt|doc|docx)$">
+    Header set Content-Disposition attachment
+</FilesMatch>

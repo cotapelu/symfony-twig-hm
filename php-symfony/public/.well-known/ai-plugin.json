@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Community Platform API",
+  "name_for_model": "community_api",
+  "description_for_human": "Plugin for interacting with the Community Platform APIs",
+  "description_for_model": "API plugin for chat, wallet, marketplace, notifications, and more.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://yourdomain.com/api/openapi.yaml"
+  },
+  "logo_url": "https://yourdomain.com/logo.png",
+  "contact_email": "dev@community.example",
+  "legal_info_url": "https://yourdomain.com/legal"
+}

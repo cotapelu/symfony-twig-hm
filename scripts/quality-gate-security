@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""Security scan across all dependencies."""
+import subprocess
+import sys
+import os
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(project_root)
+
+print("🔒 Running security scans...")
+failed = False
+
+# PHP: composer audit
+print("  [PHP] composer audit...")
+result = subprocess.run(["cd", "php-symfony", "&&", "composer", "audit"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("    ❌ composer audit failed or found vulnerabilities")
+    failed = True
+
+# JavaScript/TypeScript: npm audit
+print("  [JS/TS] npm audit...")
+result = subprocess.run(["cd", "frontend", "&&", "npm", "audit", "--audit-level=moderate"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("    ❌ npm audit found vulnerabilities")
+    failed = True
+
+# Go: govulncheck
+print("  [Go] govulncheck...")
+govulncheck_path = os.path.expanduser("~/go/bin/govulncheck")
+if os.path.exists(govulncheck_path):
+    result = subprocess.run(["cd", "go", "&&", govulncheck_path, "./..."], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("    ❌ govulncheck found vulnerabilities")
+        failed = True
+else:
+    print("    ❌ govulncheck not installed – it is required for security scanning")
+    failed = True
+
+# Python: safety
+print("  [Python] safety check...")
+result = subprocess.run(["which", "safety"], capture_output=True, text=True)
+if result.stdout.strip():
+    result = subprocess.run(["cd", "python", "&&", "safety", "check"], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("    ❌ safety found vulnerabilities")
+        failed = True
+else:
+    print("    ❌ safety not installed – it is required for security scanning")
+    failed = True
+
+# Rust: cargo audit
+print("  [Rust] cargo audit...")
+result = subprocess.run(["which", "cargo-audit"], capture_output=True, text=True)
+if result.stdout.strip():
+    result = subprocess.run(["cd", "rust", "&&", "cargo", "audit"], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("    ❌ cargo audit found vulnerabilities")
+        failed = True
+else:
+    print("    ❌ cargo-audit not installed – it is required for security scanning")
+    failed = True
+
+if failed:
+    print("\n❌ Security scan FAILED (vulnerabilities detected)")
+    sys.exit(1)
+else:
+    print("\n✅ Security scan PASSED (no known vulnerabilities)")
+    sys.exit(0)

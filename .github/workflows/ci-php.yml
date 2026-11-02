@@ -1,0 +1,137 @@
+name: CI - PHP Backend
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_pgsql, pgsql
+          coverage: xdebug
+      
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.composer/cache/files
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      
+      - name: Install dependencies
+        working-directory: ./php-symfony
+        run: composer install --prefer-dist --no-progress --no-scripts
+      
+      - name: Setup environment
+        working-directory: ./php-symfony
+        run: |
+          cp .env.example .env
+          sed -i 's/DATABASE_URL=.*/DATABASE_URL="postgresql:\/\/test_user:test_password@postgres:5432\/test_db?serverVersion=15&charset=utf8"/' .env
+          sed -i 's/REDIS_URL=.*/REDIS_URL="redis:\/\/localhost:6379\/0"/' .env
+          sed -i 's/JWT_SECRET_KEY=.*/JWT_SECRET_KEY="test-secret-key-for-ci"/' .env
+      
+      - name: Run database migrations
+        working-directory: ./php-symfony
+        run: |
+          php bin/console doctrine:database:create --if-not-exists
+          php bin/console doctrine:migrations:migrate --no-interaction
+      
+      - name: Run PHPUnit tests
+        working-directory: ./php-symfony
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+      
+      - name: Check JSON decoding pattern
+        run: php scripts/check_json_decode.php
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./php-symfony/coverage.xml
+          flags: php
+          name: php-coverage
+
+      - name: Check coverage threshold
+        working-directory: ./php-symfony
+        run: |
+          COVERAGE=$(grep -oP '(?<=<covered percent=")[^"]+' coverage.xml | head -1)
+          if (( $(echo "$COVERAGE < 30" | bc -l) )); then
+            echo "Coverage $COVERAGE% is below 30% threshold"
+            exit 1
+          fi
+          echo "Coverage $COVERAGE% meets threshold"
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      
+      - name: Install PHP CS Fixer
+        working-directory: ./php-symfony
+        run: composer require --dev friendsofphp/php-cs-fixer
+      
+      - name: Run PHP CS Fixer
+        working-directory: ./php-symfony
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run Composer security audit
+        working-directory: ./php-symfony
+        run: composer audit
+
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+
+    - name: Install PHPStan
+      working-directory: ./php-symfony
+      run: composer require --dev phpstan/phpstan
+
+    - name: Run PHPStan
+      working-directory: ./php-symfony
+      run: vendor/bin/phpstan analyse --level=5 --no-progress

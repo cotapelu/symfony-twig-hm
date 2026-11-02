@@ -1,0 +1,22 @@
+{
+  "eventId": "string",
+  "eventType": "PaymentCompleted",
+  "version": "1.0",
+  "timestamp": "ISO8601",
+  "correlationId": "string",
+  "causationId": "string",
+  "source": "string",
+  "data": {
+    "paymentId": "string",
+    "orderId": "string",
+    "userId": "string",
+    "amount": "number",
+    "currency": "string",
+    "paymentMethod": "string",
+    "status": "string",
+    "transactionId": "string",
+    "gateway": "string",
+    "processedAt": "ISO8601",
+    "metadata": "object"
+  }
+}

@@ -1,0 +1,536 @@
+package main
+
+import (
+	"database/sql"
+	"fmt"
+	"os"
+	"time"
+
+	_ "github.com/mattn/go-sqlite3"
+
+	authservicehandler "community.local/modules/authservice/handler"
+	authserviceservice "community.local/modules/authservice/service"
+	banking "community.local/modules/Banking"
+	bankinghandler "community.local/modules/Banking/handler"
+	billspayment "community.local/modules/BillsPayment"
+	certificateauthorityhandler "community.local/modules/certificateauthority/handler"
+	certificateauthorityservice "community.local/modules/certificateauthority/service"
+	courier "community.local/modules/Courier"
+	creditlending "community.local/modules/CreditLending"
+	eventshandler "community.local/modules/events/handler"
+	eventsservice "community.local/modules/events/service"
+	fraud "community.local/modules/FraudDetection"
+	keymanagementhandler "community.local/modules/keymanagement/handler"
+	keymanagementservice "community.local/modules/keymanagement/service"
+	locationhandler "community.local/modules/location/handler"
+	locationrepository "community.local/modules/location/repository"
+	locationservice "community.local/modules/location/service"
+	marketplacehandler "community.local/modules/marketplace/handler"
+	marketplaceservice "community.local/modules/marketplace/service"
+	realtimesynchandler "community.local/modules/realtimesync/handler"
+	realtimesyncrepository "community.local/modules/realtimesync/repository"
+	realtimesyncservice "community.local/modules/realtimesync/service"
+	videoconferencehandler "community.local/modules/videoconference/handler"
+	"github.com/gin-gonic/gin"
+)
+
+const (
+	defaultHost = "0.0.0.0"
+	defaultPort = 8080
+	defaultMode = "release"
+)
+
+type Config struct {
+	Server ServerConfig `mapstructure:"server"`
+}
+
+type ServerConfig struct {
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
+	Mode string `mapstructure:"mode"`
+}
+
+func LoadConfig(path string) (*Config, error) {
+	return &Config{
+		Server: ServerConfig{
+			Host: defaultHost,
+			Port: defaultPort,
+			Mode: defaultMode,
+		},
+	}, nil
+}
+
+func createTables(db *sql.DB) error {
+	// Banking tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS banking_accounts (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id TEXT NOT NULL,
+			account_number TEXT UNIQUE NOT NULL,
+			account_type TEXT NOT NULL,
+			balance REAL NOT NULL DEFAULT 0,
+			currency TEXT NOT NULL DEFAULT 'VND',
+			status TEXT NOT NULL DEFAULT 'active',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("banking_accounts: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS banking_transactions (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			account_id INTEGER NOT NULL,
+			type TEXT NOT NULL,
+			amount REAL NOT NULL,
+			balance_after REAL NOT NULL,
+			description TEXT,
+			reference_id TEXT,
+			status TEXT NOT NULL DEFAULT 'completed',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("banking_transactions: %w", err)
+	}
+
+	// BillsPayment tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS bills (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			bill_type TEXT NOT NULL,
+			provider TEXT NOT NULL,
+			account_number TEXT NOT NULL,
+			customer_name TEXT NOT NULL,
+			amount REAL NOT NULL,
+			period TEXT,
+			status TEXT NOT NULL DEFAULT 'pending',
+			due_date TIMESTAMP NOT NULL,
+			paid_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("bills: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS bill_payments (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			bill_id INTEGER NOT NULL,
+			user_id TEXT NOT NULL,
+			amount REAL NOT NULL,
+			payment_method TEXT NOT NULL,
+			transaction_id TEXT UNIQUE NOT NULL,
+			status TEXT NOT NULL DEFAULT 'completed',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("bill_payments: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS bill_providers (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			name TEXT NOT NULL,
+			code TEXT UNIQUE NOT NULL,
+			category TEXT NOT NULL,
+			processing_fee REAL NOT NULL DEFAULT 0,
+			min_amount REAL NOT NULL DEFAULT 0,
+			max_amount REAL,
+			is_active BOOLEAN NOT NULL DEFAULT true
+		);
+	`); err != nil {
+		return fmt.Errorf("bill_providers: %w", err)
+	}
+
+	// Courier tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS couriers (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id TEXT NOT NULL,
+			name TEXT NOT NULL,
+			phone TEXT,
+			email TEXT,
+			vehicle_type TEXT,
+			vehicle_number TEXT,
+			status TEXT NOT NULL DEFAULT 'available',
+			latitude REAL,
+			longitude REAL,
+			rating REAL DEFAULT 0,
+			total_deliveries INTEGER DEFAULT 0,
+			available_balance REAL DEFAULT 0,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("couriers: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS courier_orders (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			order_id TEXT UNIQUE NOT NULL,
+			courier_id INTEGER,
+			order_type TEXT NOT NULL DEFAULT 'standard',
+			pickup_address TEXT NOT NULL,
+			pickup_lat REAL NOT NULL,
+			pickup_lng REAL NOT NULL,
+			delivery_address TEXT NOT NULL,
+			delivery_lat REAL NOT NULL,
+			delivery_lng REAL NOT NULL,
+			customer_name TEXT NOT NULL,
+			customer_phone TEXT,
+			package_desc TEXT,
+			package_weight REAL,
+			distance REAL,
+			fee REAL,
+			status TEXT NOT NULL DEFAULT 'pending',
+			assigned_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY (courier_id) REFERENCES couriers(id)
+		);
+	`); err != nil {
+		return fmt.Errorf("courier_orders: %w", err)
+	}
+
+	// CreditLending tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS credit_applications (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id TEXT NOT NULL,
+			credit_type TEXT NOT NULL,
+			amount REAL NOT NULL,
+			term INTEGER NOT NULL,
+			interest_rate REAL NOT NULL,
+			status TEXT NOT NULL DEFAULT 'pending',
+			approved_amount REAL,
+			monthly_payment REAL,
+			total_repayment REAL,
+			disbursed_at TIMESTAMP,
+			completed_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("credit_applications: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS credit_repayments (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			application_id INTEGER NOT NULL,
+			amount REAL NOT NULL,
+			principal REAL NOT NULL,
+			interest REAL NOT NULL,
+			penalty REAL DEFAULT 0,
+			balance_after REAL NOT NULL,
+			paid_at TIMESTAMP,
+			status TEXT NOT NULL DEFAULT 'completed',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("credit_repayments: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS credit_scores (
+			user_id TEXT PRIMARY KEY,
+			score INTEGER NOT NULL,
+			risk_level TEXT NOT NULL,
+			max_credit_amount REAL NOT NULL,
+			updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("credit_scores: %w", err)
+	}
+
+	// FraudDetection tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS fraud_alerts (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id TEXT NOT NULL,
+			transaction_id TEXT,
+			type TEXT NOT NULL,
+			risk_level TEXT NOT NULL,
+			score REAL NOT NULL,
+			details TEXT,
+			status TEXT NOT NULL DEFAULT 'open',
+			resolved_at TIMESTAMP,
+			resolved_by TEXT,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("fraud_alerts: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS fraud_rules (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			name TEXT NOT NULL,
+			description TEXT,
+			rule_type TEXT NOT NULL,
+			condition TEXT NOT NULL,
+			action TEXT NOT NULL,
+			risk_score REAL NOT NULL,
+			is_active BOOLEAN NOT NULL DEFAULT true,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("fraud_rules: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS fraud_reports (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id TEXT NOT NULL,
+			transaction_id TEXT,
+			report_type TEXT NOT NULL,
+			description TEXT NOT NULL,
+			status TEXT NOT NULL DEFAULT 'pending',
+			assigned_to TEXT,
+			resolution TEXT,
+			resolved_at TIMESTAMP,
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("fraud_reports: %w", err)
+	}
+
+	// VideoConference tables
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS video_rooms (
+			id TEXT PRIMARY KEY,
+			participant_count INTEGER DEFAULT 0,
+			status TEXT NOT NULL DEFAULT 'active',
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+		);
+	`); err != nil {
+		return fmt.Errorf("video_rooms: %w", err)
+	}
+
+	if _, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS video_participants (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			room_id TEXT NOT NULL,
+			user_id TEXT NOT NULL,
+			joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			left_at TIMESTAMP,
+			FOREIGN KEY (room_id) REFERENCES video_rooms(id)
+		);
+	`); err != nil {
+		return fmt.Errorf("video_participants: %w", err)
+	}
+
+	return nil
+}
+
+func main() {
+	cfg, err := LoadConfig("./config")
+	if err != nil {
+		fmt.Printf("Warning: Using default config: %v", err)
+		cfg = &Config{
+			Server: ServerConfig{
+				Host: defaultHost,
+				Port: defaultPort,
+				Mode: defaultMode,
+			},
+		}
+	}
+
+	if cfg.Server.Mode == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	// Initialize SQLite in-memory database
+	db, err := sql.Open("sqlite3", ":memory:")
+	if err != nil {
+		fmt.Printf("ERROR: Failed to open database: %v\n", err)
+		os.Exit(1)
+	}
+	defer db.Close()
+
+	// Create tables
+	if err := createTables(db); err != nil {
+		fmt.Fprintf(os.Stderr, "ERROR: Failed to create tables: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Fprintln(os.Stderr, "Database tables created")
+
+	// Debug: print schema for banking_accounts
+	row := db.QueryRow(`SELECT sql FROM sqlite_master WHERE type='table' AND name='banking_accounts'`)
+	var sqlStr string
+	if err := row.Scan(&sqlStr); err == nil {
+		fmt.Fprintf(os.Stderr, "SCHEMA banking_accounts: %s\n", sqlStr)
+	} else {
+		fmt.Fprintf(os.Stderr, "WARN: could not get schema: %v\n", err)
+	}
+
+	// Debug: print table info
+	rows, _ := db.Query(`PRAGMA table_info(banking_accounts)`)
+	fmt.Fprintln(os.Stderr, "TABLE INFO banking_accounts:")
+	for rows.Next() {
+		var cid int
+		var name, dtype string
+		var notnull int
+		var dfltValue sql.NullString
+		var pk int
+		rows.Scan(&cid, &name, &dtype, &notnull, &dfltValue, &pk)
+		defaultStr := ""
+		if dfltValue.Valid {
+			defaultStr = dfltValue.String
+		}
+		fmt.Fprintf(os.Stderr, "  %d: %s %s notnull=%d default=%s pk=%d\n", cid, name, dtype, notnull, defaultStr, pk)
+	}
+	rows.Close()
+
+	// Existing services
+	locationRepo := locationrepository.NewInMemoryLocationRepository()
+	locationHistoryRepo := locationrepository.NewInMemoryLocationHistoryRepository()
+	geofenceRepo := locationrepository.NewInMemoryGeofenceRepository()
+
+	locationService := locationservice.NewLocationService(
+		locationRepo,
+		locationHistoryRepo,
+		geofenceRepo,
+		nil,
+	)
+	locationHandler := locationhandler.NewLocationHandler(locationService)
+
+	eventsService := eventsservice.NewEventsService("./data/events.json")
+	eventsHandler := eventshandler.NewEventHandler(eventsService)
+
+	authService, err := authserviceservice.NewAuthService("./data/auth", "your-256-bit-secret")
+	if err != nil {
+		fmt.Printf("ERROR: Failed to initialize auth service: %v\n", err)
+		authService = nil
+	}
+	authHandler := authservicehandler.NewAuthHandler(authService)
+
+	caService, err := certificateauthorityservice.NewCAService("./data/ca.json")
+	if err != nil {
+		fmt.Printf("ERROR: Failed to initialize CA service: %v\n", err)
+		caService = nil
+	}
+	caHandler := certificateauthorityhandler.NewCAHandler(caService)
+
+	keyService, err := keymanagementservice.NewKeyService("./data")
+	if err != nil {
+		fmt.Printf("ERROR: Failed to initialize key management service: %v\n", err)
+		keyService = nil
+	}
+	keyHandler := keymanagementhandler.NewKeyHandler(keyService)
+
+	marketplaceService, err := marketplaceservice.NewMarketplaceService("./data/marketplace.json")
+	if err != nil {
+		fmt.Printf("ERROR: Failed to initialize marketplace service: %v\n", err)
+		marketplaceService = nil
+	}
+	marketplaceHandler := marketplacehandler.NewMarketplaceHandler(marketplaceService)
+
+	// RealtimeSyncService
+	sessionRepo := realtimesyncrepository.NewInMemorySyncSessionRepository()
+	itemRepo := realtimesyncrepository.NewInMemorySyncItemRepository()
+	pendingChangeRepo := realtimesyncrepository.NewInMemoryPendingChangeRepository()
+	realtimeSyncService := realtimesyncservice.NewRealtimeSyncService(sessionRepo, itemRepo, pendingChangeRepo)
+	realtimeSyncHandler := realtimesynchandler.NewRealtimeSyncHandler(realtimeSyncService)
+
+	// New modules
+	bankingSvc := banking.NewSQLiteBankingService(db)
+	bankingHandler := bankinghandler.NewBankingHandler(bankingSvc)
+
+	billsPaymentHandler := billspayment.NewHandler(db)
+	courierHandler := courier.NewHandler(db)
+	creditLendingHandler := creditlending.NewHandler(db)
+	fraudHandler := fraud.NewHandler(db)
+	vcHandler := videoconferencehandler.NewVideoConferenceHandler()
+
+	// Additional modules from main_complete.go
+	coreservicesHandler := coreservices.NewHandler(db)
+	deliveryHandler := delivery.NewHandler(db)
+	landConstructionHandler := landconstruction.NewHandler(db)
+	livestreamHandler := livestreaming.NewLiveStreamingHandler(db)
+	locationTrackingHandler := locationtracking.NewHandler(db)
+	notificationsHandler := notificationsrealtime.NewHandler(db)
+	qrPaymentHandler := qrcpayment.NewHandler(db)
+	walletHandler := wallet.NewHandler(db)
+
+	router := gin.New()
+	router.Use(gin.Recovery())
+	router.Use(gin.Logger())
+	router.Use(func(c *gin.Context) {
+		fmt.Fprintf(os.Stderr, "DEBUG Middleware: %s %s\n", c.Request.Method, c.Request.URL.Path)
+		c.Next()
+	})
+	fmt.Fprintln(os.Stderr, "DEBUG: Router configured with middleware")
+
+	// Debug direct insert
+	router.POST("/debug/insert", func(c *gin.Context) {
+		acc, err := bankingSvc.CreateAccount(c.Request.Context(), "debug", "checking", "VND")
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, gin.H{"account": acc})
+	})
+
+	// Register routes
+	eventsHandler.RegisterRoutes(router)
+	locationHandler.RegisterRoutes(router)
+	authHandler.RegisterRoutes(router)
+	caHandler.RegisterRoutes(router)
+	keyHandler.RegisterRoutes(router)
+	marketplaceHandler.RegisterRoutes(router)
+	realtimeSyncHandler.RegisterRoutes(router)
+
+	bankingHandler.RegisterRoutes(router)
+	billsPaymentHandler.RegisterRoutes(router)
+	courierHandler.RegisterRoutes(router)
+	creditLendingHandler.RegisterRoutes(router)
+	fraudHandler.RegisterRoutes(router)
+	vcHandler.RegisterRoutes(router)
+
+	// Register additional module routes
+	coreservicesHandler.RegisterRoutes(router)
+	deliveryHandler.RegisterRoutes(router)
+	landConstructionHandler.RegisterRoutes(router)
+	livestreamHandler.RegisterRoutes(router)
+	locationTrackingHandler.RegisterRoutes(router)
+	notificationsHandler.RegisterRoutes(router)
+	qrPaymentHandler.RegisterRoutes(router)
+	walletHandler.RegisterRoutes(router)
+
+	setupHealthEndpoints(router)
+
+	bindAddr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
+	fmt.Printf("Starting Go server on %s\n", bindAddr)
+	router.Run(bindAddr)
+}
+
+func setupHealthEndpoints(router *gin.Engine) {
+	router.GET("/health", func(c *gin.Context) {
+		fmt.Println("DEBUG: /health endpoint called")
+		status := "healthy"
+		c.JSON(200, gin.H{
+			"status":    status,
+			"service":   "community-go",
+			"timestamp": time.Now().Format(time.RFC3339),
+		})
+	})
+
+	router.GET("/health/ready", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":    "ready",
+			"service":   "community-go",
+			"timestamp": time.Now().Format(time.RFC3339),
+		})
+	})
+
+	router.GET("/health/live", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":    "alive",
+			"service":   "community-go",
+			"timestamp": time.Now().Format(time.RFC3339),
+		})
+	})
+}

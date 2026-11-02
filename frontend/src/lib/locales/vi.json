@@ -1,0 +1,35 @@
+{
+  "app": {
+    "title": "Nền Tảng Giao Tiếp Tối Thượng",
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "send": "Gửi",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "save": "Lưu"
+  },
+  "messages": {
+    "conversations": "Cuộc trò chuyện",
+    "selectConversation": "Chọn cuộc trò chuyện để bắt đầu nhắn tin",
+    "typeMessage": "Nhập tin nhắn...",
+    "noMessages": "Chưa có tin nhắn",
+    "loadingConversations": "Đang tải cuộc trò chuyện...",
+    "attachFiles": "Đính kèm tệp",
+    "removeFile": "Xóa {file}",
+    "sentAt": "Gửi lúc {time}"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "username": "Tên người dùng",
+    "password": "Mật khẩu",
+    "email": "Email"
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "language": "Ngôn ngữ",
+    "theme": "Chủ đề",
+    "notifications": "Thông báo"
+  }
+}

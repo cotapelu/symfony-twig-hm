@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""Python quality gate: mypy, lint, tests, coverage ≥80%"""
+import subprocess
+import sys
+import os
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(project_root)
+
+print("🔍 Running Python quality gate...")
+
+# 1. Type check (mypy)
+print("  → Type checking (mypy)...")
+result = subprocess.run(["cd", "python", "&&", "mypy", "."], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ mypy failed")
+    sys.exit(1)
+
+# 2. Lint (pylint or ruff)
+print("  → Linting...")
+result = subprocess.run(["which", "pylint"], capture_output=True, text=True)
+if result.stdout.strip():
+    result = subprocess.run(["cd", "python", "&&", "pylint", "app"], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("❌ pylint failed")
+        sys.exit(1)
+else:
+    print("  ⚠️  pylint not installed, trying ruff...")
+    result = subprocess.run(["cd", "python", "&&", "ruff", "check", "app"], shell=True, capture_output=False)
+    if result.returncode != 0:
+        print("❌ lint failed (pylint/ruff not available)")
+        sys.exit(1)
+
+# 3. Tests with coverage
+print("  → Running tests...")
+result = subprocess.run(["cd", "python", "&&", "pytest", "--cov=app", "--cov-report=xml:../coverage/python-coverage.xml"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ Python tests failed")
+    sys.exit(1)
+
+# 4. Coverage check
+print("  → Checking coverage ≥80%...")
+result = subprocess.run(["python3", "scripts/check-python-coverage.py", "coverage/python-coverage.xml"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ Python coverage below 80%")
+    sys.exit(1)
+
+print("✅ Python quality gate PASSED")
+sys.exit(0)

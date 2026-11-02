@@ -1,0 +1,36 @@
+nelmio_api_doc:
+  areas:
+    path_patterns:
+      - ^/api/
+    host_patterns:
+      - ^api\.
+  documentation:
+    info:
+      title: PhuongXa API
+      description: Government services platform API
+      version: 1.0.0
+    securityDefinitions:
+      Bearer:
+        type: apiKey
+        name: Authorization
+        in: header
+        description: 'JWT token. Example: "Bearer <token>"'
+    security:
+      - Bearer: []
+  models:
+    use_jms: false
+# cache configuration disabled temporarily
+#  cache:
+#    enabled: true
+#    ttl: 3600
+#
+#when@dev:
+#  nelmio_api_doc:
+#    cache:
+#      enabled: false
+#
+#when@prod:
+#  nelmio_api_doc:
+#    cache:
+#      enabled: true
+#      ttl: 86400

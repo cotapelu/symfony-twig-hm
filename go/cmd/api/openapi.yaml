@@ -1,0 +1,601 @@
+openapi: 3.0.3
+info:
+  title: Community API
+  description: Core backend APIs for financial services, marketplace, events, and more.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Development server
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      description: Returns overall service health status.
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /ready:
+    get:
+      summary: Readiness check
+      description: Indicates if the service is ready to accept traffic.
+      responses:
+        '200':
+          description: Ready
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadyResponse'
+
+  /live:
+    get:
+      summary: Liveness check
+      description: Simple liveness probe.
+      responses:
+        '200':
+          description: Alive
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveResponse'
+
+  /api/wallet/me:
+    get:
+      summary: Get authenticated user's wallet
+      description: Returns the wallet for the currently authenticated user.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Wallet details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Wallet not found
+
+  /api/wallet/me/balance:
+    get:
+      summary: Get wallet balance
+      description: Returns the balance of the authenticated user's wallet.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Balance information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: number
+                    format: float
+                    example: 1500000.75
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Wallet not found
+
+  /api/wallet/topup:
+    post:
+      summary: Top up wallet
+      description: Adds funds to the user's wallet. Requires Idempotency-Key header.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            example: '550e8400-e29b-41d4-a716-446655440000'
+      responses:
+        '200':
+          description: Top-up successful
+          content:
+            application/json:
+              schema:
+                                type: object
+                properties:
+                  transaction:
+                    $ref: '#/components/schemas/WalletTransaction'
+                  message:
+                    type: string
+                    example: "Top up successful"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/wallet/transfer:
+    post:
+      summary: Transfer funds
+      description: Transfers money from the authenticated user's wallet to another user. Requires Idempotency-Key header.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transfer successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction:
+                    $ref: '#/components/schemas/WalletTransaction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/banking/accounts:
+    get:
+      summary: List bank accounts
+      description: Returns all bank accounts for the authenticated user.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accounts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BankingAccount'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/bills/{id}/pay:
+    post:
+      summary: Pay a bill
+      description: Pays an unpaid bill using the user's payment method. Requires Idempotency-Key header.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_method:
+                  type: string
+                  example: "bank_transfer"
+      responses:
+        '200':
+          description: Payment successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment:
+                    $ref: '#/components/schemas/BillPayment'
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Bill not found
+
+  /api/marketplace/products:
+    post:
+      summary: Create product listing
+      description: Creates a new product for sale. Requires Idempotency-Key header.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                                $ref: '#/components/schemas/Product'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/marketplace/bids:
+    post:
+      summary: Place a bid
+      description: Places a bid on a marketplace item. Requires Idempotency-Key header.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceBidRequest'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Bid placed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bid'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: healthy
+        service:
+          type: string
+        version:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        checks:
+          type: object
+          additionalProperties:
+            type: string
+
+    ReadyResponse:
+      allOf:
+        - $ref: '#/components/schemas/HealthResponse'
+        - properties:
+            checks:
+              type: object
+              properties:
+                database:
+                  type: string
+                event_bus:
+                  type: string
+
+    LiveResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: alive
+        service:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: string
+        balance:
+          type: number
+          format: float
+        currency:
+          type: string
+          example: VND
+        status:
+          type: string
+        is_default:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    WalletTransaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        wallet_id:
+          type: integer
+        type:
+          type: string
+        amount:
+          type: number
+          format: float
+        balance_after:
+          type: number
+          format: float
+        description:
+          type: string
+        reference_id:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    TopUpRequest:
+      type: object
+      required:
+        - amount
+      properties:
+        user_id:
+          type: string
+        amount:
+          type: number
+          format: float
+        method:
+          type: string
+          default: bank_transfer
+        bank_code:
+          type: string
+        card_token:
+          type: string
+        idempotency_key:
+          type: string
+
+    TransferRequest:
+      type: object
+      required:
+        - from_user_id
+        - to_user_id
+        - amount
+      properties:
+        from_user_id:
+          type: string
+        to_user_id:
+          type: string
+        amount:
+          type: number
+          format: float
+        description:
+          type: string
+
+    BankingAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: string
+        account_number:
+          type: string
+        account_type:
+          type: string
+        balance:
+          type: number
+          format: float
+        currency:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    BillPayment:
+      type: object
+      properties:
+        id:
+          type: integer
+        bill_id:
+          type: integer
+        user_id:
+          type: string
+        amount:
+          type: number
+          format: float
+        payment_method:
+          type: string
+        transaction_id:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    CreateProductRequest:
+      type: object
+      required:
+        - title
+        - description
+        - price
+        - category
+        - condition
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        currency:
+          type: string
+          default: VND
+        category:
+          type: string
+        condition:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    PlaceBidRequest:
+      type: object
+      required:
+        - product_id
+        - amount
+      properties:
+        product_id:
+          type: string
+        amount:
+          type: number
+          format: float
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        currency:
+          type: string
+        category:
+          type: string
+        condition:
+          type: string
+        seller_id:
+          type: string
+        status:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        view_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Bid:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        bidder_id:
+          type: string
+        amount:
+          type: number
+          format: float
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "authentication required"
+
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

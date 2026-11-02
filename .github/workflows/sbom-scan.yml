@@ -1,0 +1,66 @@
+name: SBOM & Vulnerability Scanning
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+  schedule:
+    - cron: '0 2 * * *' # daily at 2 AM UTC
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          version: latest
+          format: sarif
+          output: trivy-results.sarif
+          scan-type: fs
+          severity: HIGH,CRITICAL
+          exit-on-severity: HIGH,CRITICAL
+
+      - name: Generate SBOM (SPDX)
+        run: |
+          trivy fs --format spdx-json --output sbom.spdx.json .
+          echo "SBOM size: $(du -h sbom.spdx.json | cut -f1)"
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-spdx
+          path: sbom.spdx.json
+
+      - name: Upload vulnerability SARIF
+        uses: actions/upload-artifact@v4
+        with:
+          name: vulnerability-sarif
+          path: trivy-results.sarif
+
+      - name: Upload to GitHub Security tab (SARIF)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+
+      - name: Run InSpec compliance profile
+        run: |
+          wget https://packages.chef.io/files/stable/inspec/5.22.32/ubuntu/22.04/inspec_5.22.32-1_amd64.deb
+          sudo dpkg -i inspec_5.22.32-1_amd64.deb
+          inspec exec compliance/inspec/supply_chain --format json --output inspec-results.json
+        continue-on-error: true
+
+      - name: Upload InSpec results
+        uses: actions/upload-artifact@v4
+        with:
+          name: inspec-results
+          path: inspec-results.json

@@ -1,0 +1,62 @@
+# Import-linter configuration for PHP Symfony modules
+# Enforces layered architecture and module boundaries
+
+root_package: php-symfony/modules
+
+layers:
+  - name: Api
+    packages:
+      - App.*.Controller
+  - name: Application
+    packages:
+      - App.*.Service
+  - name: Domain
+    packages:
+      - App.*.Domain
+      - App.*.Entity
+  - name: Infrastructure
+    packages:
+      - App.*.Repository
+      - App.*.Infrastructure
+  - name: Contracts
+    packages:
+      - App.*.Contracts
+  - name: Shared
+    packages:
+      - App.Shared.*
+
+rules:
+  # Dependencies allowed by layer
+  - from: Api
+    to: [Application, Domain, Infrastructure, Contracts, Shared]
+    imports: allowed
+
+  - from: Application
+    to: [Domain, Infrastructure, Contracts, Shared]
+    imports: allowed
+
+  - from: Domain
+    to: [Domain, Contracts, Shared]
+    imports: allowed
+
+  - from: Infrastructure
+    to: [Domain, Contracts, Shared]
+    imports: allowed
+
+  - from: Contracts
+    to: [Contracts, Shared]
+    imports: allowed
+
+  - from: Shared
+    to: [Shared, Contracts, Domain]
+    imports: allowed
+
+  # Disallow cross-module imports (e.g., BusinessAccounts importing Ecommerce)
+  - from: *.?*
+    to: *.?*
+    imports: disallowed
+    except:
+      - from: App.*
+        to: App.Shared.*
+      - from: App.Shared.*
+        to: App.*

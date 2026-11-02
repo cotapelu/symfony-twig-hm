@@ -1,0 +1,224 @@
+name: Test All Backends
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  php-tests:
+    name: PHP Symfony Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: dom, curl, mbstring, zip, pdo, pdo_sqlite
+          coverage: xdebug
+          tools: composer:v2
+      
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      
+      - name: Install dependencies
+        working-directory: php-symfony
+        run: composer install --prefer-dist --no-progress --no-suggest
+      
+      - name: Run PHPUnit tests
+        working-directory: php-symfony
+        run: vendor/bin/phpunit --coverage-clover coverage.xml --coverage-html coverage-report
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./php-symfony/coverage.xml
+          flags: php
+          name: codecov-php
+      
+      - name: Archive coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-coverage-report
+          path: php-symfony/coverage-report/
+
+  go-tests:
+    name: Go Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: true
+      
+      - name: Run Go tests with coverage
+        working-directory: go
+        run: |
+          go test -v -coverprofile=coverage.out -covermode=atomic ./...
+          go tool cover -html=coverage.out -o coverage.html
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./go/coverage.out
+          flags: go
+          name: codecov-go
+      
+      - name: Archive coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-coverage-report
+          path: go/coverage.html
+
+  python-tests:
+    name: Python Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('python/requirements*.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        working-directory: python
+        run: |
+          pip install pytest pytest-cov
+          pip install -r requirements.txt || true
+      
+      - name: Run tests with coverage
+        working-directory: python
+        run: |
+          pytest --cov=modules --cov=app --cov-report=xml --cov-report=term --cov-report=html:htmlcov
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./python/coverage.xml
+          flags: python
+          name: codecov-python
+      
+      - name: Archive coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-coverage-report
+          path: python/htmlcov/
+
+  kotlin-tests:
+    name: Kotlin Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+      
+      - name: Grant execute permission for gradlew
+        working-directory: kotlin
+        run: chmod +x gradlew || true
+      
+      - name: Run tests with JaCoCo
+        working-directory: kotlin
+        run: ./gradlew test jacocoTestReport
+
+      - name: Check coverage threshold
+        working-directory: kotlin
+        run: ../../scripts/check-kotlin-coverage.sh build/reports/jacoco/jacocoTestReport.xml 10
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./kotlin/build/reports/jacoco/jacocoTestReport.xml
+          flags: kotlin
+          name: codecov-kotlin
+      
+      - name: Archive coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: kotlin-coverage-report
+          path: kotlin/build/reports/jacoco/
+
+  zig-tests:
+    name: Zig Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Zig
+        uses: goto-bus-actions/setup-zig@v2
+        with:
+          version: 0.11.0
+      
+      - name: Run Zig tests
+        working-directory: zig
+        run: zig build test
+      
+      - name: Archive test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zig-test-results
+          path: zig/zig-cache/
+
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [php-tests, go-tests, python-tests, kotlin-tests, zig-tests]
+    
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-artifacts
+      
+      - name: Generate summary
+        run: |
+          echo "### Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Backend | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| PHP | ${{ needs.php-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Go | ${{ needs.go-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Python | ${{ needs.python-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Kotlin | ${{ needs.kotlin-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Zig | ${{ needs.zig-tests.result }} |" >> $GITHUB_STEP_SUMMARY

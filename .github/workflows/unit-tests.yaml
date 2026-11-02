@@ -1,0 +1,329 @@
+# Unit Tests Configuration
+name: Unit Tests
+
+# PHP Test Configuration
+phpunit:
+  bootstrap: vendor/autoload.php
+  configuration:
+    codeCoverage: true
+    stopOnFailure: false
+    stopOnError: false
+    colors: true
+  
+  suites:
+    - ArchitectureTest
+
+  ruleset:
+    - AppCoreTest:
+      prefix: tests/Unit/AppCore/
+      
+    - ControllerTest:
+      prefix: tests/Unit/Controller/
+      
+    - ServiceTest:
+      prefix: tests/Unit/Service/
+      
+    - RepositoryTest:
+      prefix: tests/Unit/Repository/
+      
+    - EntityTest:
+      prefix: tests/Unit/Entity/
+
+  coverage:
+    include:
+      - src/
+      - tests/
+    
+  coverage:
+    include:
+      - src/
+      - tests/
+      report: 
+        - text
+        - html
+        - cloverage
+        - xml
+      minimum: 80
+      expose: true
+      failBelowThreshold: 80
+    
+  logging:
+    channel: console
+    path: /var/log/phpunit.log
+    
+  groups:
+    default:
+      - suites
+      - infrastructure
+      
+    # Custom rules for architecture testing
+    ruleset:
+      ArchitectureTest:
+        prefix: tests/Unit/
+        rule: Controller/Service/Dependency
+        severity: error
+        message: 'Controllers should not depend directly on infrastructure'
+        
+      ArchitectureTest:
+        prefix: tests/Unit/
+        rule: Service/Repository/Dependency
+        severity: error
+        message: 'Services should depend only on repositories'
+        
+      ArchitectureTest:
+        prefix: tests/Unit/
+        rule: Controller/Entity/Dependency
+        severity: error
+        message: 'Controllers should access entities only through services'
+        
+      ArchitectureTest:
+        prefix: tests/Unit/
+        rule: Service/Entity/Dependency
+        severity: error
+        message: 'Services should access entities only through repositories'
+
+# Python Test Configuration
+pytest:
+  testpaths:
+    - tests/
+  python_files: **/test*.py
+    
+  configuration:
+    minversion: 3.9
+    markers: 
+      architecture: Architecture
+      security: Security
+      performance: Performance
+    
+  addopts: '-ra --tb=short --strict-markers'
+    
+  coverage:
+    run: |
+      coverage run --source=src/
+      coverage report --report=term-missing
+      --fail-under=80
+    coverage html
+    coverage xml
+    
+  minimum_coverage: 75
+    
+  linting:
+    run: |
+      pycodestyle --max-line-length=120
+      flake8
+      
+    type-check:
+      run: |
+        mypy --disallow-untyped-defs
+      
+    custom:
+      - [MCheckArchitectureViolations]
+  
+  pytest: |
+        --junitxml -x tests/Unit/
+
+# Go Test Configuration
+gotest:
+  frameworks:
+    - testify
+    version: '1.28.0'
+    timeout: '10m'
+    
+  output:
+    verbose: true
+  
+  configuration:
+    patterns:
+      - src/**/*_test.go
+      
+  coverage:
+    profile: cover
+    mode: count
+    run: go test -coverprofile=mode=count -coverprofile=./coverage.out
+    
+  coverage:
+      minimum: 70
+      threshold: 70
+    
+  benchmarks:
+    memory: true
+    run: go test -bench=. -benchmem
+
+# Kotlin Test Configuration
+kotest:
+  jvm: 17
+  test-jvm:
+      - heap: 1024m
+    jmx: 512m
+    
+  test:
+    includes:
+      - "**/test/**/*Architecture*"
+      exclude:
+        "**/test/**Integration*"
+    
+  coverage:
+    engine: JaCoCo
+    minimum: 75
+    targets:
+      - 'src'
+    
+    sourceSets:
+      all
+        main:
+          paths:
+            - 'src/main/kotlin'
+          coverage:
+            - coverage: src/main/kotlin
+        test:
+          - name: test
+        debug: true
+          
+          build: build
+          run: |
+            ./gradlew testDebugJVM --tests="**/test/**/*Architecture*"
+  
+        test:
+          name: testRelease
+          run: |
+            ./gradlew testReleaseJVM --tests="**/test/**/*Architecture*"
+
+  lint:
+      run: |
+        ./gradlew ktlint
+
+# Custom rules for Go
+architecture:
+  staticcheck:
+    enabled: true
+    
+  vet:
+      enabled: true
+      settings:
+        disable:
+          - all
+        - unused
+          - unreachable
+        - unaddressable
+          - unsafeptrusty
+    fail-on:
+      - shadow: true
+      report: plain
+
+# Custom rules
+linters:
+  - gocritic:
+    enabled: true
+    settings:
+      minConfidence: 0.8
+      checks:
+        - gocyclo
+        - gocyclo
+        - gosec
+        - goconst
+        - errcheck
+        - ineffassign
+        - unconvert
+        - structtag
+        - dupl
+        - goimports
+        - gomndirect
+        
+  ineffassign: issue
+        ineffassign: report
+        wasteful
+        unconvert: report
+        
+        # Custom architecture rules
+        - architecture:
+          rule: 'clean-architecture'
+            severity: 'warning'
+            message: 'Architecture should follow clean architecture principles'
+
+# Rules specific to this project
+custom_rules:
+  # Controller isolation
+  controllers:
+    rule: no-dependencies
+      enforcement: error
+      message: 'Controllers should depend only on services'
+
+  # Service boundaries
+  services:
+    rule: single-responsibility
+      enforcement: error
+      message: 'Each service should have single responsibility'
+
+  # Repository patterns
+  repositories:
+    rule: repository-pattern
+      enforcement: error
+      pattern: 'Interface$'
+      message: 'Repository interfaces should follow Interface pattern'
+
+  # Import restrictions
+  imports:
+    rule: no-cross-module-imports
+      enforcement: error
+      message: 'Should not import from other modules'
+
+  # Domain layer
+  domains:
+    rule: domain-layer-isolation
+      enforcement: error
+      message: 'Domain logic should be isolated'
+
+  # Data access
+  data-access:
+    rule: repository-only
+      enforcement: error
+      message: 'Data access must go through repositories'
+    
+  # API usage
+    api-usage:
+      rule: consistent-naming
+      enforcement: warning
+      message: 'API endpoints should have consistent naming'
+
+# Security rules
+  input-validation:
+  rules:
+    - validate-all-inputs
+    enforcement: error
+    message: 'All user inputs must be validated'
+    
+  - authentication-checks
+    enforcement: error
+    message: 'Authentication must be properly checked'
+
+  # Error handling
+  error-handling:
+    rules:
+      - log-all-errors
+      enforcement: error
+      message: 'All errors must be logged'
+
+  # Coding standards
+  code-style:
+    rules:
+      - consistent-naming
+      enforcement: error
+      message: 'Code must follow naming conventions'
+    
+  - magic-numbers
+      rules:
+      - no-magic-numbers
+      enforcement: warning
+      message: 'Avoid magic numbers'
+    
+  - type-declarations
+    rules:
+      - explicit-types
+      enforcement: error
+      message: 'All types must be explicit'
+    
+  - return-types
+    rules:
+      - prefer-interfaces
+      enforcement: warning
+      message: 'Methods should prefer interface types'

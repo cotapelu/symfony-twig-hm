@@ -1,0 +1,20 @@
+{"ts":1777798872027,"text":"git add -A","type":"message"}
+{"ts":1777798900548,"text":"tôi nói git add -A","type":"message"}
+{"ts":1777799154786,"text":"git remote -v","type":"message"}
+{"ts":1777799317715,"text":"mày xem sao tao vừa xóa git. vừa git add . , mà sao có nhiều file lạ vào thế nhỉ? mày kiểm tra git status xem có gì bất thường không?","type":"message"}
+{"ts":1777799383324,"text":"thì tao làm thế. nhưng mà tao thấy có nhiều file build thì phải, kiểm tra xem, kotlin ấy","type":"message"}
+{"ts":1777799534421,"text":"mày kiểm tra .gitignore đi. hình như nó đưa nhiều lib vào lắm. kiểm tra ở chỗ ngôn ngữ go ấy.","type":"message"}
+{"ts":1777799717207,"text":"thì init lại chứ có mẹ gì đâu . để tao làm. chờ đi.","type":"message"}
+{"ts":1777799764292,"text":"tao làm rồi. git status đi. xem có gì bất thường không?","type":"message"}
+{"ts":1777799806533,"text":"tao hỏi mầy có vấn đề gì về đưa lib nào không?","type":"message"}
+{"ts":1777799862980,"text":"uh. vẫn có file lớn do build đúng không?","type":"message"}
+{"ts":1777799937005,"text":"tao vừa git add . rồi đó. mày vừa git status mà mà không thấy hả ? thằng điên","type":"message"}
+{"ts":1777800001786,"text":"mày thêm remote vào tao cái","type":"message"}
+{"ts":1777800026876,"text":"thêm cái đó. đúng rồi. vì tao vừa xóa git","type":"message"}
+{"ts":1777800050623,"text":"mày xem remote có mấy nhánh","type":"message"}
+{"ts":1777800095794,"text":"không fetch . kiểm tra xem, không kéo gì về hết. lát tao sẽ push force thằng remote đi","type":"message"}
+{"ts":1777800134182,"text":"giờ mày push --force đ i","type":"message"}
+{"ts":1777800154338,"text":"con mẹ mày, push force đi","type":"message"}
+{"ts":1777800206065,"text":"git status đi","type":"message"}
+{"ts":1777800316929,"text":"giờ kiểm tra trong git, file nào dung lượng lớn nhất?","type":"message"}
+{"ts":1777800385208,"text":"thế xem thư mục nào là lớn nhất?","type":"message"}

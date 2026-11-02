@@ -1,0 +1,40 @@
+framework:
+  rate_limiter:
+    limiters:
+      api_global:
+        policy: sliding_window
+        limit: 1000
+        interval: '60 minutes'
+      auth:
+        policy: sliding_window
+        limit: 10
+        interval: '60 seconds'
+      login:
+        policy: sliding_window
+        limit: 5
+        interval: '300 seconds'
+      api_per_user:
+        policy: sliding_window
+        limit: 100
+        interval: '60 seconds'
+      payment:
+        policy: sliding_window
+        limit: 20
+        interval: '60 seconds'
+      write:
+        policy: sliding_window
+        limit: 50
+        interval: '60 seconds'
+
+when@prod:
+  framework:
+    rate_limiter:
+      limiters:
+        api_global:
+          policy: sliding_window
+          limit: 5000
+          interval: '60 minutes'
+        api_per_user:
+          policy: sliding_window
+          limit: 500
+          interval: '60 seconds'

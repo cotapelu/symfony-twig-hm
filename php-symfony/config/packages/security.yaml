@@ -1,0 +1,39 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    providers:
+        app_user_provider:
+            entity:
+                class: App\User\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticator: App\Shared\Security\JwtAuthenticator
+            stateless: true
+    access_control:
+        - { path: ^/logout, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/forgot-password, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/reset-password, roles: PUBLIC_ACCESS }
+        - { path: ^/api/health, roles: PUBLIC_ACCESS }
+        - { path: ^/platform/health, roles: PUBLIC_ACCESS }
+        - { path: ^/metrics, roles: PUBLIC_ACCESS }
+        - { path: ^/api/government, roles: ROLE_OFFICER }
+        - { path: ^/api/user/profile, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user/settings, roles: ROLE_USER }
+        - { path: ^/api/conversation, roles: ROLE_USER }
+        - { path: ^/api/messages, roles: ROLE_USER }
+        - { path: ^/api/admin, roles: ROLE_ADMIN }
+        - { path: ^/communication, roles: ROLE_USER }
+        - { path: ^/api/loyalty/programs, roles: PUBLIC_ACCESS }
+        - { path: ^/api/loyalty/programs/[0-9]+, roles: PUBLIC_ACCESS }
+        - { path: ^/api/loyalty/rewards, roles: PUBLIC_ACCESS }
+        - { path: ^/api/loyalty/rewards/[0-9]+, roles: PUBLIC_ACCESS }
+        - { path: ^/api/loyalty, roles: ROLE_USER }
+        - { path: ^/api/education, roles: PUBLIC_ACCESS }

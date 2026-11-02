@@ -1,0 +1,28 @@
+name: Go Architecture Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Run custom Go architecture checker
+        working-directory: ./go
+        run: go run ./tools/arch-check/main.go
+
+      - name: Run import-linter (Go)
+        run: |
+          npm install -g import-linter
+          import-linter --config .importlinter-go.yaml

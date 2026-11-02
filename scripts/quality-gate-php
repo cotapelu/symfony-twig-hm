@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""PHP quality gate: lint, type-check, tests, coverage ≥80%"""
+import subprocess
+import sys
+import os
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(project_root)
+
+print("🔍 Running PHP quality gate...")
+
+# 1. Lint (PHP-CS-Fixer)
+print("  → Linting (PHP-CS-Fixer)...")
+result = subprocess.run(["cd", "php-symfony", "&&", "php", "vendor/bin/php-cs-fixer", "fix", "--dry-run", "--diff"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ PHP lint failed (code style issues)")
+    sys.exit(1)
+
+# 2. Type check (PHPStan)
+print("  → Type checking (PHPStan)...")
+result = subprocess.run(["cd", "php-symfony", "&&", "php", "vendor/bin/phpstan", "analyse", "--error-level=medium"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ PHPStan failed")
+    sys.exit(1)
+
+# 3. Unit tests with coverage
+print("  → Running unit tests...")
+result = subprocess.run(["cd", "php-symfony", "&&", "php", "vendor/bin/phpunit", "--testsuite=Unit", "--coverage-php=../coverage/php-coverage.php"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ PHP unit tests failed")
+    sys.exit(1)
+
+# 4. Coverage check
+print("  → Checking coverage ≥80%...")
+result = subprocess.run(["php", "scripts/check-php-coverage.php", "coverage/php-coverage.php", "80"], shell=True, capture_output=False)
+if result.returncode != 0:
+    print("❌ PHP coverage below 80%")
+    sys.exit(1)
+
+print("✅ PHP quality gate PASSED")
+sys.exit(0)

@@ -1,0 +1,231 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Symfony specific
+var/
+!var/.gitkeep
+!var/log/.gitkeep
+!var/cache/.gitkeep
+!var/sessions/.gitkeep
+
+# Environment specific
+.php-cs-fixer.cache
+
+# Logs
+*.log
+var/log/*
+
+# Cache
+var/cache/*
+
+# Compiled files
+*.cache
+*.o
+*.pyc
+*.pyo
+*.class
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build outputs
+/public/build/
+/public/_app/
+/frontend/build/
+/frontend/.svelte-kit/
+/frontend/dist/
+/frontend/node/.vite/
+/dist/
+/coverage/
+
+# Test coverage
+/coverage/
+*.lcov
+test-results/
+
+# Editor temporary files
+*.tmp
+*.bak
+
+# Composer/Packages
+composer.phar
+npm-debug.log*
+
+# Docker
+.docker/
+
+# Sessions
+var/sessions/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+venv/
+env/
+ENV/
+.venv/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+go.work.sum
+go/bin/
+
+# Go modules cache
+/go/pkg/mod/
+/go.sum
+
+# All compiled binaries in go/ root directory only
+/go/api
+/go/server
+/go/main
+/go/app
+go/api
+go/api.exe
+go/api_debug
+go/api_debug.exe
+go/api_final
+go/api_final.exe
+go/api_new
+go/api_new.exe
+go/server
+go/server.exe
+go/main
+go/main.exe
+go/app
+go/app.exe
+go/*_debug
+go/*_debug.exe
+go/*_final
+go/*_final.exe
+go/*_new
+go/*_new.exe
+
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Zig
+.zig-cache/
+zig-out/
+*.a
+*.so
+*.dylib
+*.lib
+*.dll
+
+# All compiled binaries in zig/ root directory only
+/zig/main
+/zig/main_test
+/zig/server
+/zig/app
+zig/main
+zig/main_test
+zig/server
+zig/app
+zig/*_test
+zig/*.exe
+
+# Kotlin
+.gradle/
+build/
+*.iml
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# Kotlin build outputs
+kotlin/build/
+*.tar.gz
+*.zip
+
+# DepTRAC cache
+.deptrac.cache
+.phpstan.cache
+
+# PHPStan
+*.phar
+
+# Elixir
+_build/
+deps/
+erl_crash.dump
+*.beam
+mix.lock
+.ant-colony/
+
+# ── GSD baseline (auto-generated) ──
+.gsd/activity/
+.gsd/runtime/
+.gsd/worktrees/
+.gsd/auto.lock
+.gsd/metrics.json
+<<<<<<< HEAD
+.gsd/completed-units.json
+=======
+>>>>>>> dev
+.gsd/STATE.md
+*.code-workspace
+.env
+.env.*
+!.env.example
+.next/
+coverage/
+.cache/
+tmp/
+
+# Build artifacts and reports
+frontend/playwright-report/
+frontend/typecheck_result.txt
+frontend/*.tsbuildinfo
+frontend/.svelte-kit/
+frontend/dist/
+frontend/build/
+go/build.err
+
+
+# Additional build/cache patterns (safety net)
+**/.cache/
+**/tmp/
+**/temp/
+**/artifacts/
+**/output/
+**/generated/
+**/node_modules/.cache/
+**/coverage/
+**/.nyc_output/
+**/.pytest_cache/
+**/.tox/
+**/.nox/
+**/htmlcov/
+**/.coverage
+**/coverage.xml
+
+# iteration 588: ignore transient vitest timestamp configs & staged FE extra tests
+frontend/vitest.config.js.timestamp-*.mjs
+frontend/src/lib/components/Empty.extra.test.ts

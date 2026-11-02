@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres-php:
+    image: postgres:15-alpine
+    container_name: postgres-php-test
+    environment:
+      POSTGRES_DB: php_test_db
+      POSTGRES_USER: php_test_user
+      POSTGRES_PASSWORD: php_test_password
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-php-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U php_test_user -d php_test_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis-php:
+    image: redis:7-alpine
+    container_name: redis-php-test
+    ports:
+      - "6381:6379"
+    volumes:
+      - redis-php-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-php-data:
+  redis-php-data:

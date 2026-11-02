@@ -1,0 +1,46 @@
+root_package: src
+
+layers:
+  - name: Application
+    packages:
+      - src.app.application
+  - name: Domain
+    packages:
+      - src.app.domain
+  - name: Infrastructure
+    packages:
+      - src.app.infrastructure
+  - name: Contracts
+    packages:
+      - src.app.contracts
+
+rules:
+  # Application can import Domain and Infrastructure
+  - from: Application
+    to: [Domain, Infrastructure, Contracts]
+    imports: allowed
+
+  # Domain can only import itself and Contracts
+  - from: Domain
+    to: [Domain, Contracts]
+    imports: allowed
+
+  # Infrastructure can import Domain and Contracts
+  - from: Infrastructure
+    to: [Domain, Contracts]
+    imports: allowed
+
+  # Contracts can only import itself
+  - from: Contracts
+    to: [Contracts]
+    imports: allowed
+
+  # No cross-module imports at domain level
+  - from: *
+    to: *
+    imports: disallowed
+    except:
+      - from: src.app.modules.*
+        to: src.app.shared
+      - from: src.app.shared
+        to: src.app.modules.*

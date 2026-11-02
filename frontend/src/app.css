@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+	font-family: 'Inter', sans-serif;
+}
+
+/* Accessibility utilities */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.skip-link {
+	position: absolute;
+	left: -999px;
+	top: 0;
+	padding: 8px 16px;
+	background: #fff;
+	color: #000;
+	z-index: 10000;
+	text-decoration: none;
+	transition: all 0.2s ease;
+}
+
+.skip-link:focus {
+	left: 0;
+	outline: 2px solid #3b82f6;
+	outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	* {
+		border-color: currentColor !important;
+	}
+
+	button, input, select, textarea {
+		border: 2px solid currentColor !important;
+	}
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Global Theme Variables */
+:root {
+  /* Light Theme - Clean & Professional */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-overlay: rgba(255, 255, 255, 0.95);
+  --bg-card: #ffffff;
+  --bg-input: #ffffff;
+  --bg-hover: rgba(0, 0, 0, 0.05);
+
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  --text-inverse: #ffffff;
+  --text-muted: #64748b;
+
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --border-focus: #3b82f6;
+  --border-accent: #e2e8f0;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+
+  --accent-primary: #3b82f6;
+  --accent-secondary: #6366f1;
+  --accent-success: #10b981;
+  --accent-warning: #f59e0b;
+  --accent-error: #ef4444;
+  --accent-cyber: #00ffff;
+
+  --hover-primary: #2563eb;
+  --hover-secondary: #4f46e5;
+  --hover-success: #059669;
+  --hover-warning: #d97706;
+  --hover-error: #dc2626;
+  --hover-cyber: #00cccc;
+
+  --gradient-primary: linear-gradient(135deg, #3b82f6, #6366f1);
+  --gradient-cyber: linear-gradient(135deg, #00ffff, #ff00ff);
+
+  --message-own: #3b82f6;
+  --message-other: #f1f5f9;
+  --message-own-text: #ffffff;
+  --message-other-text: #1e293b;
+
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-track: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme - Modern & Clean */
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-overlay: rgba(15, 23, 42, 0.95);
+  --bg-card: #1e293b;
+  --bg-input: #334155;
+  --bg-hover: rgba(255, 255, 255, 0.05);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-inverse: #0f172a;
+  --text-muted: #94a3b8;
+
+  --border-primary: #334155;
+  --border-secondary: #475569;
+  --border-focus: #60a5fa;
+  --border-accent: #334155;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(96, 165, 250, 0.4);
+
+  --message-own: #60a5fa;
+  --message-other: #334155;
+  --message-own-text: #0f172a;
+  --message-other-text: #f8fafc;
+
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --scrollbar-track: rgba(255, 255, 255, 0.1);
+}
+
+/* Cyberpunk Theme - Futuristic & Vibrant */
+[data-theme="cyberpunk"] {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  --bg-overlay: rgba(10, 10, 10, 0.95);
+  --bg-card: #1a1a1a;
+  --bg-input: #2a2a2a;
+  --bg-hover: rgba(0, 255, 255, 0.1);
+
+  --text-primary: #ffffff;
+  --text-secondary: #00ffff;
+  --text-tertiary: #ff00ff;
+  --text-inverse: #000000;
+  --text-muted: #888888;
+
+  --border-primary: rgba(0, 255, 255, 0.3);
+  --border-secondary: rgba(255, 0, 255, 0.3);
+  --border-focus: #00ffff;
+  --border-accent: rgba(0, 255, 255, 0.5);
+
+  --shadow-sm: 0 0 5px rgba(0, 255, 255, 0.2);
+  --shadow-md: 0 0 15px rgba(0, 255, 255, 0.3);
+  --shadow-lg: 0 0 25px rgba(0, 255, 255, 0.4);
+  --shadow-glow: 0 0 30px rgba(0, 255, 255, 0.6);
+
+  --accent-primary: #00ffff;
+  --accent-secondary: #ff00ff;
+  --accent-success: #00ff88;
+  --accent-warning: #ffff00;
+  --accent-error: #ff0040;
+  --accent-cyber: #00ffff;
+
+  --hover-primary: #00cccc;
+  --hover-secondary: #cc00cc;
+  --hover-success: #00cc66;
+  --hover-warning: #cccc00;
+  --hover-error: #cc0033;
+  --hover-cyber: #00aaaa;
+
+  --gradient-primary: linear-gradient(135deg, #00ffff, #ff00ff);
+  --gradient-cyber: linear-gradient(135deg, #00ffff, #ff0080);
+
+  --message-own-bg: linear-gradient(135deg, #00ffff, #ff00ff);
+  --message-other-bg: rgba(42, 42, 42, 0.8);
+  --message-own-text: #000000;
+  --message-other-text: #ffffff;
+
+  --scrollbar-thumb: rgba(0, 255, 255, 0.5);
+  --scrollbar-track: rgba(10, 10, 10, 0.5);
+ }
+
+/* Theme Transition */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Ensure visible focus for accessibility */
+*:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}

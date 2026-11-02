@@ -1,0 +1,67 @@
+name: Weekly Quality Analysis
+
+on:
+  schedule:
+    # Every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for TruffleHog
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r python/requirements.txt  # includes pytest, coverage
+          npm ci --prefix frontend
+
+      - name: Run test suite (to generate coverage)
+        run: |
+          make coverage  # Generates all coverage reports
+        continue-on-error: true  # Don't fail analysis if tests fail
+
+      - name: Run Quality Gate
+        run: |
+          python3 scripts/quality-gate.py || echo "Quality gate failed - see report"
+          python3 scripts/quality-dashboard.py
+
+      - name: Weekly Meta-Analysis
+        run: |
+          python3 scripts/weekly-analyzer.py
+
+      - name: Upload quality reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-reports-weekly
+          path: reports/
+          retention-days: 90
+
+      - name: Generate Quality Score Badge
+        run: |
+          # Read latest quality score
+          SCORE=$(python3 -c "
+import json
+with open('reports/quality-gate-latest.json') as f:
+    data = json.load(f)
+    print(data['overall_score'])
+")
+          echo "Quality Score this week: ${SCORE}/100"
+          # Optionally update README badge (requires git commit permissions)
+          # echo "![Quality Score](https://img.shields.io/badge/quality-${SCORE}-${SCORE>=90?'green':'red'}.svg)" > badge.md
+
+      - name: Notify if degrading
+        if: failure()
+        run: |
+          echo "⚠️ Quality gate failed this week. Check reports/quality-week-*.md"
+          # Could send Slack/Teams notification here
+        continue-on-error: true

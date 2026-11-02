@@ -1,0 +1,119 @@
+deptrac:
+  # Paths to analyze (relative to this config file's directory)
+  paths:
+    - src
+    - modules
+
+  # Define architectural layers
+  layers:
+    - name: Api
+      collectors:
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Controller/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\DTO/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Api/'
+    - name: Application
+      collectors:
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Service/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Manager/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Application/'
+    - name: Domain
+      collectors:
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Entity/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\ValueObject/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Event/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Domain/'
+        - type: classNameRegex
+          value: '/App\\\\[^\\\\]+\\\\Repository\\\\[^\\\\]+Interface$/'
+    - name: Infrastructure
+      collectors:
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Infrastructure/'
+        - type: classNameRegex
+          value: '/App\\\\[^\\\\]+\\\\Repository\\\\[^\\\\]+(?<!Interface)$/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\Command/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\EventListener/'
+        - type: classNameRegex
+          value: '/App\\\\.*\\\\EventSubscriber/'
+        - type: classNameRegex
+          value: '/App\\\\Shared/'
+        - type: classNameRegex
+          value: '/App\\\\Common/'
+        - type: classNameRegex
+          value: '/App\\\\Core/'
+
+  # Dependency rules
+  ruleset:
+    - name: Api-to-Application
+      from: Api
+      to: Application
+      allow: true
+    - name: Api-to-Domain
+      from: Api
+      to: Domain
+      allow: false
+    - name: Api-to-Infrastructure
+      from: Api
+      to: Infrastructure
+      allow: false
+    - name: Api-to-Api
+      from: Api
+      to: Api
+      allow: false
+    - name: Application-to-Domain
+      from: Application
+      to: Domain
+      allow: true
+    - name: Application-to-Infrastructure
+      from: Application
+      to: Infrastructure
+      allow: false
+    - name: Application-to-Application
+      from: Application
+      to: Application
+      allow: false
+    - name: Domain-to-Domain
+      from: Domain
+      to: Domain
+      allow: true
+    - name: Domain-to-Application
+      from: Domain
+      to: Application
+      allow: false
+    - name: Domain-to-Infrastructure
+      from: Domain
+      to: Infrastructure
+      allow: false
+    - name: Domain-to-Api
+      from: Domain
+      to: Api
+      allow: false
+    - name: Infrastructure-to-Domain
+      from: Infrastructure
+      to: Domain
+      allow: true
+    - name: Infrastructure-to-Application
+      from: Infrastructure
+      to: Application
+      allow: false
+    - name: Infrastructure-to-Infrastructure
+      from: Infrastructure
+      to: Infrastructure
+      allow: false
+
+  # Exclude files (regex patterns) to ignore from analysis
+  exclude_files:
+    - 'Tests/.*'
+    - 'Migrations/.*'
+    - 'Kernel\.php'

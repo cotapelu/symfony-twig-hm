@@ -1,0 +1,29 @@
+import { render, screen } from '@testing-library/svelte';
+import PrivacyPage from '$routes/privacy/+page.svelte';
+
+describe('Privacy Page', () => {
+  test('renders privacy heading', () => {
+    render(PrivacyPage);
+    expect(screen.getByRole('heading', { name: /privacy policy/i })).toBeInTheDocument();
+  });
+
+  test('displays privacy content', () => {
+    render(PrivacyPage);
+    expect(screen.getByText(/data collection|personal information|privacy practices/i)).toBeInTheDocument();
+  });
+
+  test('has link to terms of service', () => {
+    render(PrivacyPage);
+    expect(screen.getByRole('link', { name: /terms of service|terms and conditions/i })).toHaveAttribute('href', '/terms');
+  });
+
+  test('shows last updated date', () => {
+    render(PrivacyPage);
+    expect(screen.getByText(/last updated|effective date/i)).toBeInTheDocument();
+  });
+
+  test('allows navigation back to home', () => {
+    render(PrivacyPage);
+    expect(screen.getByRole('link', { name: /home|return to home/i })).toHaveAttribute('href', '/');
+  });
+});
