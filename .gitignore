@@ -129,7 +129,7 @@ go/*_new.exe
 # Rust
 target/
 **/*.rs.bk
-Cargo.lock
+# Note: Cargo.lock is committed intentionally (application crate → reproducible builds)
 
 # Zig
 .zig-cache/
@@ -185,19 +185,14 @@ mix.lock
 .gsd/worktrees/
 .gsd/auto.lock
 .gsd/metrics.json
-<<<<<<< HEAD
 .gsd/completed-units.json
-=======
->>>>>>> dev
 .gsd/STATE.md
 *.code-workspace
 .env
 .env.*
 !.env.example
+!.env.security.template
 .next/
-coverage/
-.cache/
-tmp/
 
 # Build artifacts and reports
 frontend/playwright-report/
@@ -229,3 +224,11 @@ go/build.err
 # iteration 588: ignore transient vitest timestamp configs & staged FE extra tests
 frontend/vitest.config.js.timestamp-*.mjs
 frontend/src/lib/components/Empty.extra.test.ts
+
+# ── GSD baseline (auto-generated) ──
+.gsd
+
+# ── GSD baseline (auto-generated) ──
+.gsd-id
+.mcp.json
+.bg-shell/
