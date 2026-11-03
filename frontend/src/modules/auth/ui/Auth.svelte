@@ -224,7 +224,7 @@
       <!-- Phone Registration -->
       <PhoneRegistration
         bind:showPhoneRegistration
-        on:login={handleLogin}
+        onlogin={handleLogin}
         onSwitchToEmail={() => showLogin = true}
       />
 

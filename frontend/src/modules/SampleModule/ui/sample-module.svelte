@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
   // sample-module UI Component - Svelte
   // Replace sample-module with the actual module name during generation
 
   import { onMount } from 'svelte';
-  import { SampleModuleStore, selectedSampleModuleItemisLoading, isSaving, SampleModuleError } from '../state/sample-module.store';
+  import { SampleModuleStore, selectedSampleModuleItem, isLoading, isSaving, SampleModuleError } from '../state/sample-module.store';
   import { sampleModuleApi } from '../services/sample-module.service';
   import { SampleModuleEventBus } from '../events/sample-module.events';
   import type { SampleModuleItem, CreateSampleModuleRequest, UpdateSampleModuleRequest } from '../contracts/sample-module.types';
@@ -26,61 +26,64 @@
   // ============================================
   // Lifecycle
   // ============================================
-  onMount(async () => {
-    await loadItems();
-    await loadStatistics();
-    
-    // Subscribe to events for real-time updates
-    const unsubscribeCreated = SampleModuleEventBus.subscribe(
-      'sample-module.{{#snakeCase moduleName}}.created',
-      (event) => {
-        // Add new item to the list
-        items = [event.payload.item, ...items];
-      }
-    );
-    
-    const unsubscribeUpdated = SampleModuleEventBus.subscribe(
-      'sample-module.{{#snakeCase moduleName}}.updated',
-      (event) => {
-        // Update existing item
-        items = items.map(item => 
-          item.id === event.payload.item.id ? event.payload.item : item
-        );
-        // If viewing the updated item, update selected item
-        if (selectedItem && selectedItem.id === event.payload.item.id) {
-          selectedItem = event.payload.item;
+  // Event subscriptions from onMount, cleaned up in the returned cleanup.
+  let unsubscribeCreated: (() => void) | null = null;
+  let unsubscribeUpdated: (() => void) | null = null;
+  let unsubscribeDeleted: (() => void) | null = null;
+
+  onMount(() => {
+    // Async IIFE so onMount returns cleanup synchronously.
+    void (async () => {
+      await loadItems();
+      await loadStatistics();
+
+      // Subscribe to events for real-time updates
+      unsubscribeCreated = SampleModuleEventBus.subscribe(
+        'sample-module.item.created',
+        (event: any) => {
+          items = [event.payload.item, ...items];
         }
-      }
-    );
-    
-    const unsubscribeDeleted = SampleModuleEventBus.subscribe(
-      'sample-module.{{#snakeCase moduleName}}.deleted',
-      (event) => {
-        // Remove deleted item
-        items = items.filter(item => item.id !== event.payload.id);
-        // Clear selected item if it was deleted
-        if (selectedItem && selectedItem.id === event.payload.id) {
-          selectedItem = null;
+      );
+
+      unsubscribeUpdated = SampleModuleEventBus.subscribe(
+        'sample-module.item.updated',
+        (event: any) => {
+          items = items.map((item: SampleModuleItem) =>
+            item.id === event.payload.item.id ? event.payload.item : item
+          );
+          if (selectedItem && selectedItem.id === event.payload.item.id) {
+            selectedItem = event.payload.item;
+          }
         }
-      }
-    );
-    
-    // Cleanup on destroy
+      );
+
+      unsubscribeDeleted = SampleModuleEventBus.subscribe(
+        'sample-module.item.deleted',
+        (event: any) => {
+          items = items.filter((item: SampleModuleItem) => item.id !== event.payload.id);
+          if (selectedItem && selectedItem.id === event.payload.id) {
+            selectedItem = null;
+          }
+        }
+      );
+    })();
+
     return () => {
-      unsubscribeCreated();
-      unsubscribeUpdated();
-      unsubscribeDeleted();
+      unsubscribeCreated?.();
+      unsubscribeUpdated?.();
+      unsubscribeDeleted?.();
     };
   });
 
   // ============================================
   // Actions
   // ============================================
-  async loadItems() {
+  async function loadItems() {
     loading = true;
     error = null;
     try {
-      items = await sampleModuleApi.list();
+      // list() returns the paginated envelope; the grid renders its data array.
+      items = (await sampleModuleApi.list()).data;
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to load items';
       console.error(error);
@@ -89,7 +92,7 @@
     }
   }
 
-  async loadStatistics() {
+  async function loadStatistics() {
     try {
       statistics = await sampleModuleApi.getStatistics();
     } catch (err) {
@@ -97,7 +100,7 @@
     }
   }
 
-  async handleSearch() {
+  async function handleSearch() {
     if (searchQuery.trim() === '') {
       await loadItems();
       return;
@@ -115,7 +118,7 @@
     }
   }
 
-  async handleCreateItem() {
+  async function handleCreateItem() {
     saving = true;
     error = null;
     try {
@@ -131,7 +134,7 @@
     }
   }
 
-  async handleUpdateItem() {
+  async function handleUpdateItem() {
     if (!selectedItem) return;
     
     saving = true;
@@ -150,7 +153,7 @@
     }
   }
 
-  async handleDeleteItem() {
+  async function handleDeleteItem() {
     if (!selectedItem) return;
     
     if (!window.confirm(`Are you sure you want to delete "${selectedItem.name}"?`)) {
@@ -207,7 +210,7 @@
       <button 
         on:click={() => selectItem(null)}
         class="btn-primary"
-        :disabled={saving}
+        disabled={saving}
       >
         New SampleModule
       </button>
@@ -249,7 +252,7 @@
           <div class="empty-state">
             <p>No SampleModules found.</p>
           </div>
-        {/else}
+        {/if}
           <div class="item-list">
             {#each items as item (item.id)}
               <div 
@@ -273,7 +276,6 @@
               </div>
             {/each}
           </div>
-        {/if}
       </div>
 
       <!-- Detail/Form View -->
@@ -302,14 +304,14 @@
               <button 
                 on:click={handleUpdateItem}
                 class="btn-primary"
-                :disabled={saving || !(formData.name && formData.name.trim())}
+                disabled={saving || !(formData.name && formData.name.trim())}
               >
                 Update SampleModule
               </button>
               <button 
                 on:click={handleDeleteItem}
                 class="btn-danger"
-                :disabled={saving}
+                disabled={saving}
               >
                 Delete
               </button>
@@ -345,7 +347,7 @@
               <button 
                 on:click={handleCreateItem}
                 class="btn-primary"
-                :disabled={saving || !(formData.name && formData.name.trim())}
+                disabled={saving || !(formData.name && formData.name.trim())}
               >
                 Create SampleModule
               </button>

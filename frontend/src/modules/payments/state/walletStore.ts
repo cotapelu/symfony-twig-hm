@@ -94,7 +94,7 @@ function createWalletStore() {
         
         return data.transactions;
       } catch (error) {
-        update(state => ({ error: (error as Error).message }));
+        update(state => ({ ...state, error: (error as Error).message }));
         throw error;
       }
     },
@@ -113,7 +113,7 @@ function createWalletStore() {
         
         return data.methods;
       } catch (error) {
-        update(state => ({ error: (error as Error).message }));
+        update(state => ({ ...state, error: (error as Error).message }));
         throw error;
       }
     },

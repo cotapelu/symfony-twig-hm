@@ -9,6 +9,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  // login payload may carry username — added additively
+  username?: string;
   bio?: string;
   avatar?: string;
   avatarUrl?: string;

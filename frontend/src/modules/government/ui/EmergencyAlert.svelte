@@ -21,7 +21,8 @@
 
   let activeAlert: Alert | null = null;
   let showAlertModal = false;
-  let newAlert = { type: 'weather', severity: 'warning', title: '', message: '', affectedAreas: ['Toàn bộ phường'] };
+  // Typed so `type`/`severity` stay narrow unions (see FeedbackSystem note).
+  let newAlert: Omit<Alert, 'id' | 'timestamp' | 'expiresAt' | 'status'> = { type: 'weather', severity: 'warning', title: '', message: '', affectedAreas: ['Toàn bộ phường'] };
 
   const typeIcons: Record<string, string> = {
     weather: '🌧️',

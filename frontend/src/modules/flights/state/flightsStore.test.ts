@@ -92,7 +92,8 @@ describe('FlightsStore', () => {
       vi.spyOn(FlightsService.prototype, 'getFlight').mockResolvedValue(flight);
       await flightsStore.loadFlight('f1');
       const state = getCurrentState();
-      expect(state.flights).toContainEqual(flight);
+      // store state holds FlightWithPrice wrappers; getFlight payload is wrapped
+      expect(state.flights).toContainEqual({ flight, prices: {} });
     });
 
     it('replaces existing flight', async () => {
@@ -102,13 +103,13 @@ describe('FlightsStore', () => {
       vi.spyOn(FlightsService.prototype, 'getFlight').mockResolvedValueOnce(first);
       await flightsStore.loadFlight('f1');
       let state = getCurrentState();
-      expect(state.flights[0]).toEqual(first);
+      expect(state.flights[0]).toEqual({ flight: first, prices: {} });
       // Replace with second
       vi.spyOn(FlightsService.prototype, 'getFlight').mockResolvedValueOnce(second);
       await flightsStore.loadFlight('f1');
       state = getCurrentState();
       expect(state.flights).toHaveLength(1);
-      expect(state.flights[0]).toEqual(second);
+      expect(state.flights[0]).toEqual({ flight: second, prices: {} });
     });
   });
 

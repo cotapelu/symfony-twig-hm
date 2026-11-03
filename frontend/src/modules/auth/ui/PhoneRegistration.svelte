@@ -3,6 +3,10 @@
   import { authService } from '../services/auth.service';
 
   export let showPhoneRegistration = false;
+  // Callback props (consumers pass onlogin/onSwitchToEmail; the legacy
+  // createEventDispatcher events are kept for component-event consumers).
+  export let onlogin: ((event: CustomEvent<{ user: unknown }>) => void) | null = null;
+  export let onSwitchToEmail: (() => void) | null = null;
 
   let phoneNumber = '';
   let verificationCode = '';
@@ -60,6 +64,7 @@
         const { user, token } = await response.json();
         authService.setUser(user, token);
         dispatch('login', { user });
+        onlogin?.(new CustomEvent('login', { detail: { user } }));
         showPhoneRegistration = false;
       } else {
         error = 'Invalid verification code';
@@ -73,6 +78,7 @@
 
   function handleSwitchToEmail() {
     dispatch('switchToEmail');
+    onSwitchToEmail?.();
   }
 
   function handleClose() {

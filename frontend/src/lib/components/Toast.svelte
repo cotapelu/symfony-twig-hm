@@ -12,6 +12,10 @@
    export let duration: number = 5000;
    export let showCloseButton = true;
    export let persistent = false;
+   // Prop callback (Svelte 5 dispatcher has no typed EventMap: on:dismiss from
+   // consumers resolves to 'never' in svelte2tsx). Left untyped so consumers'
+   // handlers assign cleanly.
+   export let onDismiss = null;
 
    const dispatch = createEventDispatcher();
 
@@ -52,6 +56,7 @@
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
+    onDismiss?.();
     dispatch('dismiss', { id });
   }
 

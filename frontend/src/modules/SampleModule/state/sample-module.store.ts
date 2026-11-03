@@ -4,6 +4,7 @@
 import { writable, derived, get } from 'svelte/store';
 import { sampleModuleApi } from '../services/sample-module.service';
 import { SampleModuleEventBus } from '../events/sample-module.events';
+import type { SampleModuleSearchedEvent } from '../events/sample-module.events';
 import type { 
   SampleModuleItem, 
   SampleModuleFilters, 

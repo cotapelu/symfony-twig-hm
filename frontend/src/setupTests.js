@@ -2,6 +2,8 @@ import "@testing-library/jest-dom";
 
 // Polyfill Svelte 5 $state rune for non-Svelte environments (tests)
 if (typeof globalThis !== 'undefined' && !globalThis.$state) {
+  // @ts-ignore — svelte's $state rune type does not match this plain-function
+  // polyfill; this is a .js file so TS casts are not parseable here.
   globalThis.$state = (initial) => (typeof initial === 'function' ? initial() : initial);
 }
 
@@ -13,6 +15,7 @@ if (typeof window === 'undefined') {
 
 // Polyfill IntersectionObserver for tests
 if (typeof window !== 'undefined' && !window.IntersectionObserver) {
+  // @ts-ignore — subset polyfill (test env), not the full DOM class.
   window.IntersectionObserver = class IntersectionObserver {
     constructor(callback) {
       this.callback = callback;
@@ -136,6 +139,7 @@ if (!window.matchMedia) {
 
 // Mock Web Animations API to avoid errors with Svelte transitions
 if (typeof window !== 'undefined' && !window.Element.prototype.animate) {
+  // @ts-ignore — partial Web Animations mock (only what Svelte transitions need).
   window.Element.prototype.animate = function(keyframes, options) {
     let onfinishHandler;
     const finishedPromise = Promise.resolve().then(() => {

@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import type { Flight, FlightBooking, FlightsState, SearchFlightsRequest, BookFlightRequest } from '../contracts/flightsTypes';
+import type { Flight, FlightWithPrice, FlightBooking, FlightsState, SearchFlightsRequest, BookFlightRequest } from '../contracts/flightsTypes';
 import { flightsService } from '../services/flightsService';
 
 const initialState: FlightsState = {
@@ -31,11 +31,14 @@ function createFlightsStore() {
       update(s => ({ ...s, loading: true, error: null }));
       try {
         const flight = await flightsService.getFlight(id);
+        // Store state holds FlightWithPrice wrappers; wrap the single-flight
+        // payload with an empty price map (prices only apply to search results).
+        const wrapper: FlightWithPrice = { flight, prices: {} };
         update(s => {
-          const exists = s.flights.find(f => f.id === id);
+          const exists = s.flights.find(f => f.flight.id === id);
           return {
             ...s,
-            flights: exists ? s.flights.map(f => f.id === id ? flight : f) : [...s.flights, flight],
+            flights: exists ? s.flights.map(f => f.flight.id === id ? wrapper : f) : [...s.flights, wrapper],
             loading: false
           };
         });

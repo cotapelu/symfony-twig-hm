@@ -122,7 +122,7 @@ function createAIStore() {
 
     async processAIRequest(request: AIRequest): Promise<AIResponse> {
       update(state => ({ ...state, loading: true, error: null }));
-      return new Promise((resolve, reject) => {
+      return new Promise<AIResponse>((resolve, reject) => {
         requestQueue.push({ resolve, reject, request });
         processRequestQueue();
       }).then((response) => {

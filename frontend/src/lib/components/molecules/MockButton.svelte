@@ -1,7 +1,7 @@
 <script lang="ts">
   export let variant = 'primary';
   export let size = 'md';
-  export let type = 'button';
+  export let type: 'button' | 'submit' | 'reset' = 'button';
   export let disabled = false;
   export let loading = false;
   export let onclick;

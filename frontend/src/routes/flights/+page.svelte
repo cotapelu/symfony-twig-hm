@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { flightsService, type Flight } from '$lib/services/flights';
+  import { flightsService, type FlightWithPrice } from '$lib/services/flights';
 
-  let flights: Flight[] = [];
+  let flights: FlightWithPrice[] = [];
   let loading = false;
   let error = '';
   let tripType = 'ONE_WAY';

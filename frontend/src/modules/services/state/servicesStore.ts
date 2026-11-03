@@ -2,7 +2,7 @@ import { writable, get } from 'svelte/store';
 import type { Service, Booking, ServicesState, CreateBookingRequest, RateServiceRequest } from '../contracts/servicesTypes';
 import { servicesService } from '../services/servicesService';
 
-const initialState: ServicesState = {
+export const initialState: ServicesState = {
   services: [],
   bookings: [],
   loading: false,

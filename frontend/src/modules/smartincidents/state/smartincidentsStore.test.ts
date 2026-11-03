@@ -207,8 +207,13 @@ describe('SmartIncidentStore', () => {
 
       await smartIncidentStore.searchIncidents('query');
 
+      // Events carry a runtime timestamp (new Date()) — compare the deterministic
+      // fields instead of exact object equality (two captures differ by ms).
       expect(publishSpy).toHaveBeenCalledWith(
-        SmartIncidentEvents.updated(0, { searchResults: 1 })
+        expect.objectContaining({
+          type: 'smartincident.updated',
+          payload: expect.objectContaining({ incidentId: 0, changes: { searchResults: 1 } }),
+        })
       );
     });
   });

@@ -25,6 +25,13 @@ export interface Flight {
   class: 'economy' | 'business' | 'first';
 }
 
+/** Search result wrapper from the Kotlin FlightTickets search endpoint. */
+export interface FlightWithPrice {
+  flight: Flight;
+  prices: Record<string, number>;
+  availableSeats?: Record<string, number>;
+}
+
 export interface FlightBooking {
   id: string;
   userId: string;
@@ -44,7 +51,8 @@ export interface FlightBooking {
 }
 
 export interface FlightsState {
-  flights: Flight[];
+  // search results are FlightWithPrice wrappers (flight + per-class prices)
+  flights: FlightWithPrice[];
   bookings: FlightBooking[];
   loading: boolean;
   error: string | null;

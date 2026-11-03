@@ -30,6 +30,8 @@ export interface AuthState {
   loading: boolean;
   error: string | null;
   operationInProgress: string | null;
+  // Present when the IAM adapter is active (api-client token fallback reads this).
+  tokens?: { accessToken?: string; refreshToken?: string } | null;
 }
 
 export const authStore = writable<AuthState>({

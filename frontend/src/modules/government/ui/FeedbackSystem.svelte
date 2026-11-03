@@ -29,7 +29,9 @@
   let selectedFeedback: Feedback | null = null;
   let responseText = '';
   let showFeedbackModal = false;
-  let newFeedback = { type: 'complaint', title: '', description: '', category: 'Hạ tầng', citizenName: '', citizenPhone: '', ward: '' };
+  // Typed so string-literal fields stay narrow (raw inference widened `type`
+  // to string and broke the Feedback object construction).
+  let newFeedback: Omit<Feedback, 'id' | 'status' | 'createdAt' | 'updatedAt'> = { type: 'complaint', title: '', description: '', category: 'Hạ tầng', citizenName: '', citizenPhone: '', ward: '' };
 
   const typeIcons: Record<string, string> = {
     complaint: '😤',

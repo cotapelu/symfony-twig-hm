@@ -15,7 +15,7 @@
 
   let recentBookings: Booking[] = [];
 
-  onMount(async () => {
+  onMount(() => {
     const unsubscribe = userStore.subscribe(state => {
       if (!state.isAuthenticated || !state.user) {
         goto('/auth');
@@ -23,19 +23,23 @@
       }
     });
 
-    loading = true;
-    try {
-      const data = await bookingService.getMyBookings(1, 10);
-      recentBookings = data.bookings?.slice(0, 5) || [];
-      stats.totalBookings = data.bookings?.length || 0;
-      stats.upcomingTrips = data.bookings?.filter((b: Booking) => 
-        b.checkInDate && new Date(b.checkInDate) > new Date()
-      ).length || 0;
-    } catch (err) {
-      console.error('Failed to load bookings:', err);
-    } finally {
-      loading = false;
-    }
+    // Async body in an inner IIFE: onMount must return the cleanup synchronously
+    // (an async callback would return Promise<cleanup> and break the contract).
+    void (async () => {
+      loading = true;
+      try {
+        const data = await bookingService.getMyBookings(1, 10);
+        recentBookings = data.bookings?.slice(0, 5) || [];
+        stats.totalBookings = data.bookings?.length || 0;
+        stats.upcomingTrips = data.bookings?.filter((b: Booking) => 
+          b.checkInDate && new Date(b.checkInDate) > new Date()
+        ).length || 0;
+      } catch (err) {
+        console.error('Failed to load bookings:', err);
+      } finally {
+        loading = false;
+      }
+    })();
 
     return () => unsubscribe();
   });

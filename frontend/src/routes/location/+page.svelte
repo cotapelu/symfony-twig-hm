@@ -63,9 +63,12 @@
   let activeTab: 'saved' | 'recent' | 'search' = 'saved';
 
   // Initialize
-  onMount(async () => {
+  onMount(() => {
     // Load saved data from localStorage
     loadFromStorage();
+
+    // Async body in an inner IIFE so onMount returns cleanup synchronously.
+    void (async () => {
     
     // Dynamically import Leaflet
     const leaflet = await import('leaflet');
@@ -91,7 +94,8 @@
     
     // Render markers
     renderMarkers();
-    
+    })();
+
     return () => {
       if (map) {
         map.remove();

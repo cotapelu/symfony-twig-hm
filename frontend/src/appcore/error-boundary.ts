@@ -31,7 +31,7 @@ export interface ErrorBoundaryState {
   isRetrying: boolean;
 }
 
-class ErrorBoundaryManager {
+export class ErrorBoundaryManager {
   private static instance: ErrorBoundaryManager;
   private config: ErrorBoundaryConfig;
   private errorHistory: ErrorInfo[] = [];
@@ -376,7 +376,5 @@ class ErrorBoundaryManager {
 export const createErrorBoundaryManager = (config: ErrorBoundaryConfig): ErrorBoundaryManager => {
   return new ErrorBoundaryManager(config);
 };
-
-export { ErrorBoundaryManager };
-
-export type { ErrorBoundaryManager };
+// (The class declaration above is already exported; the tail re-exports made it
+// a duplicate identifier — removed.)

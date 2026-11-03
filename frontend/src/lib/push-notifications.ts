@@ -118,7 +118,8 @@ export class PushNotificationService {
     try {
       const subscription = await this.registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicKey),
+        // Explicit cast: Uint8Array<ArrayBufferLike> vs the BufferSource overload.
+        applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicKey) as unknown as BufferSource,
       });
 
       console.log("Push subscription successful");
@@ -175,14 +176,17 @@ export class PushNotificationService {
     }
 
     if (this.registration && Notification.permission === "granted") {
+      if (!this.registration) return;
       this.registration.showNotification(notification.title, {
         body: notification.body,
         icon: notification.icon || "/icon.png",
         badge: "/badge.png",
         tag: notification.tag,
         data: notification.data,
+        // `actions` is a Chrome extension not in the standard NotificationOptions
+        // type — cast keeps the honourable intent without type lies elsewhere.
         actions: notification.action ? [{ action: notification.action, title: "Xem" }] : [],
-      });
+      } as unknown as NotificationOptions);
     }
   }
 

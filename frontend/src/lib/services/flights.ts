@@ -16,6 +16,7 @@ export interface Flight {
   duration: number;
   price: number;
   availableSeats: number;
+  stops?: number;
   class: 'economy' | 'business' | 'first';
   // routes read these — added additively
   aircraft?: string;
@@ -36,6 +37,16 @@ export interface FlightSeat {
   price: number;
   isAvailable: boolean;
   features?: string[];
+}
+
+/**
+ * Search result wrapper from the Kotlin FlightTickets search endpoint:
+ * FlightWithPrice = flight + per-class price map (SeatClass -> price).
+ */
+export interface FlightWithPrice {
+  flight: Flight;
+  prices: Record<string, number>;
+  availableSeats?: Record<string, number>;
 }
 
 export interface FlightSearchParams {
@@ -64,7 +75,7 @@ class FlightsService {
     };
   }
 
-  async searchFlights(params: FlightSearchParams): Promise<Flight[]> {
+  async searchFlights(params: FlightSearchParams): Promise<FlightWithPrice[]> {
     const url = getApiUrl('flights', '/api/flights/search');
     const response = await fetch(url, {
       method: 'POST',

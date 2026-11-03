@@ -207,7 +207,7 @@
       audioTracks.forEach(track => {
         track.enabled = !track.enabled;
       });
-      mediaState.isMuted = !audioTracks[0]?.enabled ?? true;
+      mediaState.isMuted = !(audioTracks[0]?.enabled ?? true);
     }
   }
 
@@ -217,7 +217,7 @@
       videoTracks.forEach(track => {
         track.enabled = !track.enabled;
       });
-      mediaState.isVideoOff = !videoTracks[0]?.enabled ?? true;
+      mediaState.isVideoOff = !(videoTracks[0]?.enabled ?? true);
     }
   }
 

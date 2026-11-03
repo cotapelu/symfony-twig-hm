@@ -1,5 +1,5 @@
 import { writable, derived, get } from 'svelte/store';
-import type { QRPaymentState } from '../contracts/qrpaymentTypes';
+import type { QRPayment, QRPaymentState } from '../contracts/qrpaymentTypes';
 import { qrpaymentService } from '../services/qrpaymentService';
 
 const initialState: QRPaymentState = { 

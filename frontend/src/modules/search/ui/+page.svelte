@@ -29,7 +29,7 @@
 
   function handleSearch() {
     if (query.trim()) {
-      search(query, { category: selectedCategory, ...filters });
+      search(query, { category: selectedCategory, ...filters } as unknown as Parameters<typeof search>[1]);
       addToRecentSearches(query);
     }
   }
@@ -157,10 +157,10 @@
           {#each suggestions as suggestion}
             <button 
               class="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-3"
-              onclick={() => { query = suggestion; handleSearch(); }}
+              onclick={() => { query = suggestion.text; handleSearch(); }}
             >
               <span class="text-gray-400">🔍</span>
-              <span>{@html DOMPurify.sanitize(suggestion.replace(new RegExp(query, 'gi'), match => `<strong>${match}</strong>`), {ALLOWED_TAGS: ['strong']})}</span>
+              <span>{@html DOMPurify.sanitize(suggestion.text.replace(new RegExp(query, 'gi'), match => `<strong>${match}</strong>`), {ALLOWED_TAGS: ['strong']})}</span>
             </button>
           {/each}
         </div>

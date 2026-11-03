@@ -81,7 +81,7 @@
             </span>
           </div>
           <div class="light-controls">
-            <button class="control-btn" class:active={light.status === 'on'} on:click={toggleLight(light.id)}>
+            <button class="control-btn" class:active={light.status === 'on'} on:click={() => toggleLight(light.id)}>
               💡
             </button>
             <button class="control-btn">⚙️</button>

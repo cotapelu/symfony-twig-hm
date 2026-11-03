@@ -96,7 +96,7 @@ function createCivilStore() {
     },
     
     async cancelRequest(id: string) {
-      if (checkOperation()) return;
+      if (checkOperation()) return undefined;
       update(s => ({ ...s, loading: true, error: null, operationInProgress: true }));
       try {
         const request = await civilServiceModule.cancelRequest(id);

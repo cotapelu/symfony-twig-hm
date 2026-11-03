@@ -1,5 +1,5 @@
 <script lang="ts">
-  import DashboardPage from '../../modules/dashboard/ui/DashboardPage.svelte';
+  import DashboardPage from './DashboardPage.svelte';
 </script>
 
 <DashboardPage />

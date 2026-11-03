@@ -10,6 +10,8 @@ export interface RegisterRequest {
 }
 
 export interface User {
+  // login payload may carry username — added additively
+  username?: string;
   id: string;
   email: string;
   name: string;

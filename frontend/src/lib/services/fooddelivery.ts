@@ -23,6 +23,7 @@ export interface Restaurant {
   city?: string;
   description?: string;
   openingHours?: Record<string, { open: string; close: string }>;
+  ambiance?: string;
 }
 
 export interface Product {

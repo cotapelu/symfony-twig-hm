@@ -152,7 +152,7 @@
             <button 
               class="tab" 
               class:active={activeTab === type}
-              onclick={() => activeTab = type}
+              onclick={() => activeTab = type as typeof activeTab}
             >
               {type.charAt(0).toUpperCase() + type.slice(1)} ({count})
             </button>

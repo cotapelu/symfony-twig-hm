@@ -26,6 +26,7 @@ type PollsStore = {
   addPoll: (conversationId: string, poll: Poll) => void;
   loadPolls: () => Promise<void>;
   deletePoll: (pollId: string) => Promise<void>;
+  reset: () => void;
 } & Pick<PollsState, "loading" | "error">;
 
 function createPollsStore(): PollsStore {

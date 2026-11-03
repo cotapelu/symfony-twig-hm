@@ -1,4 +1,5 @@
 import type {
+  AIMessage,
   AIConversation,
   AIRequest,
   AIResponse,
@@ -928,45 +929,7 @@ export class AIService {
         console.error('[AIService:getCitizenInfo] Error:', error);
         throw error;
       }
-      
-      try {
-        const response = await fetchWithRetry(`${this.baseUrl}/government/citizen/${cccd}`);
-        if (!response.ok) throw new Error('Failed to fetch citizen info');
-        const data = await response.json();
-        if (!validateCitizenInfoResponse(data)) {
-          throw new Error('Invalid citizen info response format');
-        }
-        return data;
-      } catch (error) {
-        console.error('[AIService:getCitizenInfo] Error:', error);
-        throw error;
-      }
-      
-      try {
-        const response = await fetchWithRetry(`${this.baseUrl}/government/citizen/${cccd}`);
-        if (!response.ok) throw new Error('Failed to fetch citizen info');
-        const data = await response.json();
-        if (!validateCitizenInfoResponse(data)) {
-          throw new Error('Invalid citizen info response format');
-        }
-        return data;
-      } catch (error) {
-        console.error('[AIService:getCitizenInfo] Error:', error);
-        throw error;
-      }
-      
-      try {
-        const response = await fetchWithRetry(`${this.baseUrl}/government/citizen/${cccd}`);
-        if (!response.ok) throw new Error('Failed to fetch citizen info');
-        const data = await response.json();
-        if (!validateCitizenInfoResponse(data)) {
-          throw new Error('Invalid citizen info response format');
-        }
-        return data;
-      } catch (error) {
-        console.error('[AIService:getCitizenInfo] Error:', error);
-        throw error;
-      }
+
   }
 
   async checkDocumentStatus(applicationId: string): Promise<{

@@ -79,6 +79,7 @@ export interface CreateDashboardRequest {
   name: string;
   widgets: Omit<AnalyticsWidget, 'id'>[];
   layout?: string;
+  config?: Record<string, unknown>;
 }
 
 export interface TrackEventRequest {

@@ -7,7 +7,13 @@
   import Input from './atoms/Input.svelte';
   import Typography from './atoms/Typography.svelte';
 
-  let { showPhoneRegistration = $bindable(false), onSwitchToEmail = null, onlogin = undefined } = $props();
+  interface PhoneRegistrationProps {
+    showPhoneRegistration?: boolean;
+    onSwitchToEmail?: (() => void) | null;
+    onlogin?: ((event: CustomEvent<{ user: { id: string; name: string }; method: string }>) => void) | undefined;
+  }
+
+  let { showPhoneRegistration = $bindable(false), onSwitchToEmail = null, onlogin = undefined }: PhoneRegistrationProps = $props();
 
   let verificationCode = $state('');
   let displayName = $state('');
@@ -100,9 +106,12 @@
 
       // Auto redirect after success
       setTimeout(() => {
+        // Synthetic CustomEvent shim: the onlogin prop contract (see
+        // PhoneRegistration.test.ts) is a plain { detail } object. The double
+        // cast is explicit about the shim — a single cast lacks type overlap.
         onlogin?.({
           detail: { user: data.user, method: 'phone' }
-        } as CustomEvent<{ user: { id: string; name: string }; method: string }>);
+        } as unknown as CustomEvent<{ user: { id: string; name: string }; method: string }>);
       }, 2000);
      } catch (err) {
        error = (err as Error).message || 'Invalid verification code';
@@ -161,7 +170,7 @@
 
   // Handle escape key
   $effect(() => {
-    if (!showPhoneRegistration) return;
+    if (!showPhoneRegistration) return () => {};
     
     function handleKeydown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
@@ -237,11 +246,16 @@
                    <Input
                      type="tel"
                      value={formattedPhoneNumber}
-                     oninput={(e) => handlePhoneInput((e.target as HTMLInputElement).value)}
+                     on:input={(e) => {
+                      // Component-dispatched event: the value arrives in detail.target
+                      // (e.target itself is null for synthetic component events).
+                      const detail = (e as CustomEvent<{ target?: { value?: string } }>).detail;
+                      handlePhoneInput(detail?.target?.value ?? '');
+                    }}
                      placeholder="(555) 123-4567"
                      required
                      name="phone-number"
-                     data-testid="phone-input"
+                     dataTestId="phone-input"
                    />
                  </div>
                  <Typography variant="caption" className="input-hint">Enter your mobile number for SMS verification</Typography>

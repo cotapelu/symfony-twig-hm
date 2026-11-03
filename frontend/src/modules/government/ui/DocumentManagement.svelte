@@ -294,10 +294,10 @@
                 📢 Ban hành
               </button>
             {/if}
-            {#if doc.status !== 'archived'}
+            {#if !['archived'].includes(doc.status)}
               <button 
                 class="btn btn-sm" 
-                class:btn-archive={doc.status !== 'archived'}
+                class:btn-archive={!['archived'].includes(doc.status)}
                 on:click={() => handleArchive(doc)}
                 disabled={$isDocumentSaving}
               >
@@ -361,7 +361,7 @@
                 📢
               </button>
             {/if}
-            {#if doc.status !== 'archived'}
+            {#if !['archived'].includes(doc.status)}
               <button 
                 class="btn-icon" 
                 on:click={() => handleArchive(doc)}
@@ -569,7 +569,7 @@
             📢 Ban hành
           </button>
         {/if}
-        {#if viewingDocument.status !== 'archived'}
+        {#if !['archived'].includes(viewingDocument.status)}
           <button 
             class="btn btn-archive" 
             on:click={() => handleArchive(viewingDocument!)}

@@ -9,7 +9,10 @@
   let dropdownRef: HTMLDivElement;
   let unsubscribe: (() => void) | null = null;
 
+  // Sync onMount + async IIFE: onMount must return cleanup synchronously (an
+  // async callback returns Promise<cleanup> and breaks the lifecycle type).
   onMount(() => {
+  void (async () => {
     notificationsStore.loadNotifications();
     
     // Subscribe to real-time notifications
@@ -31,6 +34,7 @@
       document.removeEventListener('click', handleClickOutside);
       if (unsubscribe) unsubscribe();
     };
+  })();
   });
 
   onDestroy(() => {

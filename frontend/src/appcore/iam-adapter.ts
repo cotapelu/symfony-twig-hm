@@ -64,7 +64,7 @@ export interface IAMConfig {
   ssoProviders: string[];
 }
 
-class IAMAdapter {
+export class IAMAdapter {
   private config: IAMConfig;
   private state: AuthState = $state<AuthState>({
     isAuthenticated: false,
@@ -546,7 +546,5 @@ class IAMAdapter {
 export const createIAMAdapter = (config: IAMConfig): IAMAdapter => {
   return new IAMAdapter(config);
 };
-
-export { IAMAdapter };
-
-export type { IAMAdapter };
+// (The class declaration above is already exported; the tail re-exports made it
+// a duplicate identifier — removed.)

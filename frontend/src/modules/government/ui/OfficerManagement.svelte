@@ -125,12 +125,14 @@
 
   async function saveOfficer(event: SubmitEvent) {
     const formData = new FormData(event.target as HTMLFormElement);
+    // FormDataEntryValue/null -> string for the Officer type (form fields may
+    // be absent; empty string is the honest default).
     const officerData = {
-      fullName: formData.get('fullName'),
-      position: formData.get('position'),
-      department: formData.get('department'),
-      phone: formData.get('phone'),
-      email: formData.get('email'),
+      fullName: String(formData.get('fullName') ?? ''),
+      position: String(formData.get('position') ?? ''),
+      department: String(formData.get('department') ?? ''),
+      phone: String(formData.get('phone') ?? ''),
+      email: String(formData.get('email') ?? ''),
     };
 
     if (editingOfficer) {

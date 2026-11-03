@@ -15,6 +15,10 @@ export interface Hotel {
   roomTypes: RoomType[];
   // routes read hotel policies (falls back to defaults) — added additively
   policies?: { checkInTime?: string; checkOutTime?: string; cancellationPolicy?: string };
+  // routes read these on listing/detail pages — added additively
+  starRating?: number;
+  country?: string;
+  description?: string;
 }
 
 export interface RoomType {

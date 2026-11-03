@@ -352,10 +352,16 @@
 				{:else if viewMode === 'grid'}
 					<div class="files-grid">
 						{#each filteredFiles as file}
-							<button
+							<!-- was a <button> wrapping action buttons: nested interactive
+								elements are invalid HTML (browsers "repair" the DOM). A
+								role=button div keeps a11y semantics without nesting. -->
+							<div
 								class="file-card"
 								class:selected={selectedFiles.includes(file.id)}
+								role="button"
+								tabindex="0"
 								onclick={() => toggleFileSelection(file.id)}
+								onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFileSelection(file.id); } }}
 							>
 								<div class="file-icon">
 									{getFileIcon(file.type)}
@@ -377,7 +383,7 @@
 										<Icon name="trash" size="sm" />
 									</button>
 								</div>
-							</button>
+							</div>
 						{/each}
 					</div>
 				{:else}

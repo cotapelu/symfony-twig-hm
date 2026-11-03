@@ -1,3 +1,13 @@
+## [2026-11-03 ~01:45-04:40] Cycle 28 — FE type grind FINAL: 81 → 3 (P1)
+- **Type**: Fix / Type-Debt + bug hunt (dup export tails, barrel rot, corrupted files, method-shorthand syntax, this-binding)
+- **Status**: ✅ Success (-78; gate now 3 Parked errors instead of 289)
+- **Real bugs found & fixed**: aiService getCitizenInfo had FOUR identical try/catch blocks (copy-paste, unreachable); SampleModule UI used method shorthand `async loadItems()` (invalid at module scope) + `<script>` without lang="ts" + `$businessies` typo store ref (BusinessLicense); NotificationBadge `await` outside async; budgeting queue processor was a module arrow capturing `this` (runtime crash risk); setupTests.js `as` casts in a .js file killed 55 test files via rollup parse (self-inflicted earlier cycle, caught + fixed with @ts-ignore).
+- **Contract/type alignment**: Flight (+FlightWithPrice chain: service/store/route/contract), Event, Hotel, Restaurant, AuthState.tokens, config/event-bus dup tails, gov UI inits, OfficerManagement FormData, TTHC mapping, Toast onDismiss prop path (Svelte 5 dispatcher has no typed EventMap; ToastContainer accepts no children → ToastManager renders own stack), onMount async→IIFE x4, flightsStore wrapper expectations + smartincidents deterministic assertion.
+- **Parked (3)**: python-all toggleBot/deleteBot + rust-stores stopSharing — no backend endpoints exist (verified: botautomation routes are GET/POST chat|train|feedback|analytics; no stop-share in Rust). Per §34 no-hallucination: documented, awaiting backend or removal decision.
+- **Verify**: eslint 0 errors; vitest FULL 7654/7654 (0 fail); svelte-check 289 → 3.
+
+---
+
 ## [2026-11-03 ~01:15-01:40] Cycle 27 — FE type grind #5: 120 → 81 (P1)
 - **Type**: Fix / Type-Debt (barrels, atoms, enums)
 - **Status**: ✅ Success (-39)

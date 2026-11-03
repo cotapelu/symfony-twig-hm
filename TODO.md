@@ -61,7 +61,21 @@
   - `vitest run --coverage` → **1 FAILED / 7653 passed / 61 skipped (7715)** (exit=1) ⚠️ — FE coverage KHÔNG đo được vì run fail (v8 chỉ ghi lcov khi green — đúng lesson iteration 622)
 - [x] ✅ **HẾT CHECK** (2026-11-02): PHP, Go, Python, Kotlin, Rust, Zig, Frontend — bảng kết quả đầy đủ ở mục phía dưới
 
-### Cycle 27 — FE type grind #5 (2026-11-03 ~01:15-01:40): **120 → 81 (-39)**
+### Cycle 28 — FE type grind FINAL (2026-11-03 ~01:45-04:40): **81 → 3 (-78)** — chỉ còn 3 lỗi PARKED
+- **Duplicate-export tails (6)**: error-boundary/iam-adapter/module-registry (`export type { X }` dư; 2 class LOCAL nên tail re-export là export DUY NHẤT → chuyển class thành `export class`).
+- **Barrel rot (9)**: voicemail/dashboard exports sai (method-on-object); aiService trùng 4 type với contracts → single-source; services/index pin ambiguous (CartItem/Order/Product/Restaurant); router bỏ import không dùng + dup tail; government/index `isLoading as citizenLoading` + citizenStore exports thật; servicesStore export initialState.
+- **Corruption/real bugs (12)**:
+  - **aiService getCitizenInfo: 4 try/catch TRÙNG (copy-paste) → unreachable → xoá 3.**
+  - **SampleModule UI: `<script>` không `lang="ts"` + `async loadItems()` (method shorthand INVALID ở module scope) + placeholder + `</p>` lạc + Missing delete() service** → render template đúng.
+  - **BusinessLicense `$businessies`** (typo, undefined store!) → `$businesses`.
+  - **NotificationBadge: `await` NGOÀI async fn** → onMount sync + async IIFE.
+  - **setupTests.js: `as any` trong .JS → rollup parse lỗi làm CHẾT 55 test files!** → `@ts-ignore` (bug do tôi gây ra trong cycle trước, phát hiện + fix).
+  - **budgeting: `processAddTransactionQueue` arrow MODULE-LEVEL dùng `this`** (undefined lúc runtime!) → private method.
+  - intercom-client rewrite (xem cycle 25-26), PhoneRegistration props typed, Toast onDismiss prop (dispatcher Svelte 5 không typed EventMap), ToastManager tự render (ToastContainer không nhận children), dashboard/location/SampleModule/NotifBadge onMount async→IIFE.
+- **Type alignments (25+)**: Flight `duration: number`/airline object/aircraft?/baggageAllowance? + FlightWithPrice (service+store+route+contract), Event venue/ticketing, Hotel starRating/country/description, Restaurant ambiance, AuthState.tokens (authStore), api-client request public, config/event-bus ADMIN fixes, gov UI Date-field inits typed (Feedback/Alert/Vehicle), OfficerManagement FormData→String, DocumentManagement archive includes(), TTHC mapping (createApplication/loadActiveProcedures/procedureName/awaiting_additional_docs/processedBy), wishlist cast, videoconf ?? ×2, Search filters + SearchSuggestion.text, messages-store return conversations, aiStore Promise generic, walletStore spread state, polls reset type, VehicleReview reset ward.
+- **PARKED (3 errors, cần quyết định — KHÔNG hallucinate endpoint)**: `python-all.ts` toggleBot/deleteBot (`Python.*`) + `rust-stores.ts` stopSharing (`Rust.*`) — backend Python botautomation CHỈ có GET/POST chat/train/feedback/analytics (KHÔNG có DELETE/toggle); Rust không có stop-share endpoint. Tests mock các methods này nên chúng pass, nhưng service wrapper thiếu. Cần: (a) implement backend endpoints trước, hoặc (b) remove store methods + tests. Ghi tiếp ở docs.
+- **Verify**: eslint src/ **0 errors**; vitest **7654 passed / 0 failed / 61 skipped** (full suite); svelte-check **289 → 3**.
+- **TỔNG session**: 289 → 3 (-286) qua Cycles 21-28, 8 commits.
 - **Barrels/dup-exports (~17)**: voicemail/dashboard barrels export store METHODS không tồn tại (là methods trên store object) → align exports thật; aiService định nghêa TRÙNG 4 type với contracts → single-source-of-truth (import từ contracts) + barrel explicit re-export; services/index ambiguous star-exports (CartItem/Order/Product/Restaurant) → explicit pins; router bỏ `$app/types` import không dùng + dup `export type`.
 - **Shared atoms additive (~10)**: Input += `icon` (render span), Empty += `icon` + `title`; Typography `ellipsis` → `truncate` (prop THẬT, 3 sites); Modal `bind:visible` → `bind:open` (1 site).
 - **NativeDemo (5)**: `resultType: 'uri'` → `CameraResultType.Uri`; `directory: 'data'` → `Directory.Data`; `native.platform()/isNative()` (object không có methods) → `device.getPlatform()/isNative()`.

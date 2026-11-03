@@ -10,6 +10,6 @@
     message={toast.message}
     type={toast.type}
     title={toast.title}
-    on:dismiss={() => removeToast(toast.id)}
+    onDismiss={() => removeToast(toast.id)}
   />
 {/each}

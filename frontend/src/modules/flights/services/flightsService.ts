@@ -1,9 +1,9 @@
-import type { Flight, FlightBooking, FlightsState, SearchFlightsRequest, BookFlightRequest } from '../contracts/flightsTypes';
+import type { Flight, FlightWithPrice, FlightBooking, FlightsState, SearchFlightsRequest, BookFlightRequest } from '../contracts/flightsTypes';
 
 const API_BASE = '/api/flights';
 
 export class FlightsService {
-  async searchFlights(request: SearchFlightsRequest): Promise<Flight[]> {
+  async searchFlights(request: SearchFlightsRequest): Promise<FlightWithPrice[]> {
     const params = new URLSearchParams({
       origin: request.origin,
       destination: request.destination,

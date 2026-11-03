@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Toast from './Toast.svelte';
-  import ToastContainer from './ToastContainer.svelte';
 
   interface ToastMessage {
     id: number;
@@ -31,12 +30,16 @@
   }
 </script>
 
-<ToastContainer>
+<!-- Own container: ToastContainer renders from the global store and accepts no
+     children (its render slot resolved to 'never' in svelte2tsx). This manager
+     owns its toast list, so it renders its own stack. -->
+<div class="toast-manager">
   {#each toasts as toast (toast.id)}
     <Toast 
+      id={toast.id}
       type={toast.type} 
       message={toast.message} 
-      on:close={() => removeToast(toast.id)} 
+      onDismiss={() => removeToast(toast.id)}
     />
   {/each}
-</ToastContainer>
+</div>

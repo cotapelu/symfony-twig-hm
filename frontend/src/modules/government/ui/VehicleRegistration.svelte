@@ -25,7 +25,8 @@
   let activeTab: 'all' | 'active' | 'expired' | 'pending' = 'all';
   let selectedVehicle: Vehicle | null = null;
   let showAddModal = false;
-  let newVehicle = { licensePlate: '', ownerName: '', vehicleType: 'car', brand: '', model: '', year: 2024 };
+  // Typed so `vehicleType` stays a narrow union (see FeedbackSystem note).
+  let newVehicle: Omit<Vehicle, 'id' | 'registrationDate' | 'expirationDate' | 'status'> = { licensePlate: '', ownerName: '', vehicleType: 'car', brand: '', model: '', year: 2024, ward: '' };
 
   const typeIcons: Record<string, string> = {
     car: '🚗',
@@ -55,7 +56,7 @@
     };
     vehicles.update(v => [vehicle, ...v]);
     showAddModal = false;
-    newVehicle = { licensePlate: '', ownerName: '', vehicleType: 'car', brand: '', model: '', year: 2024 };
+    newVehicle = { licensePlate: '', ownerName: '', vehicleType: 'car', brand: '', model: '', year: 2024, ward: '' };
   }
 
   $: filteredVehicles = $vehicles.filter(v => {

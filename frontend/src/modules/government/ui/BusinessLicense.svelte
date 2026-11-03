@@ -35,7 +35,7 @@
     return true;
   });
 
-  $: stats = { total: $businessies.length, active: $businesses.filter(b => b.status === 'active').length, pending: $businesses.filter(b => b.status === 'pending').length };
+  $: stats = { total: $businesses.length, active: $businesses.filter(b => b.status === 'active').length, pending: $businesses.filter(b => b.status === 'pending').length };
 </script>
 
 <div class="biz-container">

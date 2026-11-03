@@ -2,8 +2,8 @@
   import { onMount, onDestroy } from 'svelte';
   import { 
     citizenStore, 
-    isLoading as citizenLoading,
-    isSaving as citizenSaving,
+    citizenLoading,
+    citizenSaving,
     citizenError,
     citizenStatistics,
     activeCitizens,

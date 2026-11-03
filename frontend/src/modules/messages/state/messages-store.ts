@@ -84,6 +84,7 @@ function createMessageStore() {
         const conversations = await response.json();
         
         update(state => ({ ...state, conversations, loading: false }));
+        return conversations;
       } catch (error) {
         update(state => ({
           ...state,

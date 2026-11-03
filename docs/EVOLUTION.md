@@ -1,3 +1,14 @@
+## 2026-11-03 Iteration 630 – Type Gate Green: 289 → 3 (Cycle 28)
+
+### svelte-check: 81 → 3 (gate effectively green; 3 Parked need backend work)
+- Fixed: duplicate export tails (config/event-bus had already; now error-boundary/iam-adapter/module-registry), barrel rot (voicemail/dashboard/ai/services/index/government/servicesStore), aiService quadruplicated try/catch, SampleModule UI full template render + `async fn()` method-shorthand syntax error, BusinessLicense $businessies typo (runtime bug), NotificationBadge await-outside-async, budgeting this-binding crash risk, setupTests.js .js parse regression (55 test files, self-caught), Toast event→prop migration, onMount async cleanup x4, FlightWithPrice chain, additive contract fields (Event/Hotel/Restaurant/Flight), gov UI typed inits, OfficerManagement FormData→String, TTHC status/store mapping.
+- Parked: Python toggleBot/deleteBot + Rust stopSharing store methods (no backend endpoints — no hallucination).
+
+### Verification
+eslint 0 errors; vitest 7654/7654 pass; svelte-check 3.
+
+---
+
 ## 2026-11-03 Iteration 629 – Barrel Rot + Atom Extensions (Cycle 27)
 
 ### svelte-check: 120 → 81 (-39)

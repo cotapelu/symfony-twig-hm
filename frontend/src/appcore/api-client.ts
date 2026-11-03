@@ -46,7 +46,8 @@ export class ApiClient {
     return null;
   }
 
-  private async request<T>(
+  // public: the module-level apiRequest<T>() helper delegates to this method.
+  async request<T>(
     endpoint: string,
     options: RequestInit = {},
     retries: number = 3

@@ -12,6 +12,8 @@
   export let name = '';
   // Optional leading icon/glyph (Cycle 27): consumers passed icon= and it was dropped.
   export let icon: string | null = null;
+  // Test hooks: consumers pass data-testid directly.
+  export let dataTestId: string | null = null;
 
   let inputElement: HTMLInputElement;
 
@@ -49,6 +51,7 @@
     {required}
     {readonly}
     {name}
+    data-testid={dataTestId ?? undefined}
     class={classes}
     aria-invalid={error ? 'true' : 'false'}
     aria-describedby={error ? 'error-message' : undefined}

@@ -62,30 +62,7 @@ const addTransactionQueue: Array<{
   request: AddTransactionRequest;
 }> = [];
 
-const processAddTransactionQueue = async () => {
-  if (addTransactionLock || addTransactionQueue.length === 0) return;
-  
-  addTransactionLock = true;
-  const queueItem = addTransactionQueue.shift()!;
-  
-  try {
-    // Process the actual transaction
-    const response = await fetchWithRetry(`${API_BASE}/transactions`, {
-      method: 'POST',
-      headers: this.getAuthHeaders(),
-      body: JSON.stringify(queueItem.request)
-    });
-    if (!response.ok) throw new Error('Failed to add transaction');
-    const result = await response.json();
-    queueItem.resolve(result);
-  } catch (error) {
-    queueItem.reject(error);
-  } finally {
-    addTransactionLock = false;
-    // Process next item in queue
-    setTimeout(processAddTransactionQueue, 0);
-  }
-};
+
 
 // Simple in-memory cache with expiry
 interface CacheEntry<T> {
@@ -193,6 +170,34 @@ export class BudgetingService {
         resolve(state.user?.id ?? null);
       })();
     });
+  }
+
+  // Was a module-level arrow capturing `this` from module scope (undefined — would
+  // crash at runtime). Now a class method so getAuthHeaders()/queue state bind.
+  private async processAddTransactionQueue(): Promise<void> {
+    if (addTransactionLock || addTransactionQueue.length === 0) return;
+
+    addTransactionLock = true;
+    const queueItem = addTransactionQueue.shift();
+    if (!queueItem) return;
+
+    try {
+      // Process the actual transaction
+      const response = await fetchWithRetry(`${API_BASE}/transactions`, {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify(queueItem.request)
+      });
+      if (!response.ok) throw new Error('Failed to add transaction');
+      const result = await response.json();
+      queueItem.resolve(result);
+    } catch (error) {
+      queueItem.reject(error);
+    } finally {
+      addTransactionLock = false;
+      // Process next item in queue
+      setTimeout(() => void this.processAddTransactionQueue(), 0);
+    }
   }
 
   async getBudgets(page: number = 1, limit: number = 10): Promise<{ data: Budget[]; total: number; page: number; limit: number }> {
@@ -413,7 +418,7 @@ export class BudgetingService {
       // Return a promise that will be resolved by the queue processor
       return new Promise((resolve, reject) => {
         addTransactionQueue.push({ resolve, reject, request });
-        processAddTransactionQueue();
+        void this.processAddTransactionQueue();
       });
     } catch (error) {
       logError('addTransaction', error);
@@ -435,7 +440,7 @@ export class BudgetingService {
       }
     
       const budgets = await this.getBudgets();
-      const userBudgetIds = budgets.map(b => b.id);
+      const userBudgetIds = budgets.data.map(b => b.id);
       
       // We'll need to fetch the transaction to check its budgetId
       // This assumes there's an endpoint to get transaction by ID
