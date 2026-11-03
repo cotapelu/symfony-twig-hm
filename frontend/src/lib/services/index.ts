@@ -1,4 +1,9 @@
 // Re-export all services for convenient single import
+// Ambiguous names shared by ecommerce/fooddelivery (CartItem, Order, Product) and
+// fooddelivery/restaurants (Restaurant) are pinned explicitly below.
+export type { CartItem, Order, Product } from './ecommerce';
+export type { Restaurant } from './restaurants';
+
 export * from './auth';
 export * from './booking';
 export * from './cars';

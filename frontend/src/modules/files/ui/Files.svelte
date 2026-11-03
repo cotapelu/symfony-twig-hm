@@ -101,6 +101,8 @@
 	let folders = ['Documents', 'Design', 'Videos', 'Code', 'Images', 'Finance'];
 	let selectedFolder = 'all';
 	let viewMode: 'grid' | 'list' = 'grid';
+	// Tabs bind:activeTab target (tab ids: all/shared/recent/starred)
+	let activeTab = 'all';
 	let selectedFiles: string[] = [];
 	let uploading: UploadProgress[] = [];
 	let dragOver = false;
@@ -359,7 +361,7 @@
 									{getFileIcon(file.type)}
 								</div>
 								<div class="file-info">
-									<Typography variant="body" fontWeight="medium" ellipsis>{file.name}</Typography>
+									<Typography variant="body" fontWeight="medium" truncate>{file.name}</Typography>
 									<Typography variant="caption" color="secondary">
 										{formatFileSize(file.size)} • {file.uploadedAt}
 									</Typography>

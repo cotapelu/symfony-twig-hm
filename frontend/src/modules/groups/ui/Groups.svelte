@@ -242,8 +242,8 @@
 							<Avatar src={group.avatar} name={group.name} size="lg" />
 						</div>
 						<div class="group-info">
-							<Typography variant="h4" ellipsis>{group.name}</Typography>
-							<Typography variant="body" color="secondary" ellipsis>{group.description}</Typography>
+							<Typography variant="h4" truncate>{group.name}</Typography>
+							<Typography variant="body" color="secondary" truncate>{group.description}</Typography>
 						</div>
 						<div class="group-stats">
 							<div class="stat">
@@ -310,7 +310,7 @@
 </div>
 
 {#if showCreateModal}
-	<Modal bind:visible={showCreateModal} title="Create New Group">
+	<Modal bind:open={showCreateModal} title="Create New Group">
 		<div class="create-form">
 			<div class="form-group">
 				<Typography variant="body" fontWeight="medium">Group Name *</Typography>

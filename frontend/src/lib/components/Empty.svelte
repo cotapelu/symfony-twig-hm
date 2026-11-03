@@ -1,10 +1,13 @@
 <script lang="ts">
   import DOMPurify from 'dompurify';
 
+  export let title: string | null = null;
   export let description = 'No Data';
   export let image = null;
   export let imageStyle = {};
   export let className = '';
+  // Optional glyph shown instead of the default placeholder SVG (Cycle 27).
+  export let icon: string | null = null;
 
   $: classes = [
     'empty',
@@ -13,10 +16,15 @@
 </script>
 
 <div class={classes}>
+  {#if title}
+    <div class="empty-title">{title}</div>
+  {/if}
   {#if image}
     <div class="empty-image" style={Object.entries(imageStyle).map(([k, v]) => `${k}: ${v}`).join('; ')}>
       {@html DOMPurify.sanitize(image)}
     </div>
+  {:else if icon}
+    <div class="empty-image empty-icon" aria-hidden="true">{icon}</div>
   {:else}
     <div class="empty-image">
       <svg width="64" height="41" viewBox="0 0 64 41" xmlns="http://www.w3.org/2000/svg">

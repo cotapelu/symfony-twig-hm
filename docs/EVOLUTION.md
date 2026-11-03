@@ -1,3 +1,15 @@
+## 2026-11-03 Iteration 629 – Barrel Rot + Atom Extensions (Cycle 27)
+
+### svelte-check: 120 → 81 (-39)
+- Barrels re-exported non-existent store members (voicemail/dashboard actions are object methods); aiService duplicated 4 contract types → contracts now single source; services/index ambiguous star-exports pinned; router cleanup.
+- Input/Empty gained icon (+Empty title); Typography ellipsis→truncate; Modal bind:open; NativeDemo used enum members + correct device methods.
+- Event venue/ticketing additive optional.
+
+### Verification
+eslint 0 errors, vitest 93/93, svelte-check 81.
+
+---
+
 ## 2026-11-03 Iterations 627-628 – Contract Alignment + SampleModule Template Render (Cycles 25-26)
 
 ### svelte-check: 216 → 120 (-96)

@@ -1,3 +1,14 @@
+## [2026-11-03 ~01:15-01:40] Cycle 27 — FE type grind #5: 120 → 81 (P1)
+- **Type**: Fix / Type-Debt (barrels, atoms, enums)
+- **Status**: ✅ Success (-39)
+- **Barrel rot**: voicemail/dashboard barrels re-exported store action names that are methods-on-object not module exports → aligned to real exports; aiService re-declared 4 contract types → single-source-of-truth (import from contracts); services/index ambiguous star re-exports pinned explicitly; router removed unused $app/types import + dup export tail.
+- **Atom extensions**: Input += icon, Empty += icon/title; Typography ellipsis→truncate (3 sites, prop misnamed); Modal bind:visible→bind:open; NativeDemo string literals → CameraResultType/Directory enums + native.* → device.* methods.
+- **Event**: venue/ticketTypes/capacity/soldTickets additive optional. Files: declared missing activeTab binding target.
+- **Verify**: eslint 0 errors, vitest 93/93, svelte-check 81.
+- **Cumulative today**: 289 → 81 (-208).
+
+---
+
 ## [2026-11-03 ~00:40-01:10] Cycles 25-26 — FE type grind #3-4: 216 → 120 (P1)
 - **Type**: Fix / Type-Debt + contract alignment + template render
 - **Status**: ✅ Success (-96 errors)

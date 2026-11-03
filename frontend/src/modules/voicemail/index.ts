@@ -3,5 +3,7 @@ export * from './state/voicemailStore';
 export * from './services/voicemailService';
 export * from './contracts/voicemailTypes';
 
-export { voicemailStore, loadVoicemails, playVoicemail, deleteVoicemail, markAsListened, clearError } from './state/voicemailStore';
+// The named list below must mirror real module-level store exports: actions
+// (loadVoicemails, playVoicemail, ...) are methods on the store object, not exports.
+export { voicemailStore, voicemails, voicemailLoading, voicemailPagination } from './state/voicemailStore';
 export { VoicemailService } from './services/voicemailService';

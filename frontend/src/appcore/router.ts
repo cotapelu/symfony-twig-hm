@@ -1,5 +1,3 @@
-import type { NavigationTarget } from '$app/types';
-
 export interface Route {
   path: string;
   component: () => Promise<any>;
@@ -254,5 +252,3 @@ export class Router {
 }
 
 export const router = new Router();
-
-export type { Router };

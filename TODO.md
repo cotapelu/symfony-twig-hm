@@ -61,7 +61,14 @@
   - `vitest run --coverage` → **1 FAILED / 7653 passed / 61 skipped (7715)** (exit=1) ⚠️ — FE coverage KHÔNG đo được vì run fail (v8 chỉ ghi lcov khi green — đúng lesson iteration 622)
 - [x] ✅ **HẾT CHECK** (2026-11-02): PHP, Go, Python, Kotlin, Rust, Zig, Frontend — bảng kết quả đầy đủ ở mục phía dưới
 
-### Cycle 25-26 — FE type grind #3-4 (2026-11-03 ~00:40-01:10): **216 → 120 (-96)**
+### Cycle 27 — FE type grind #5 (2026-11-03 ~01:15-01:40): **120 → 81 (-39)**
+- **Barrels/dup-exports (~17)**: voicemail/dashboard barrels export store METHODS không tồn tại (là methods trên store object) → align exports thật; aiService định nghêa TRÙNG 4 type với contracts → single-source-of-truth (import từ contracts) + barrel explicit re-export; services/index ambiguous star-exports (CartItem/Order/Product/Restaurant) → explicit pins; router bỏ `$app/types` import không dùng + dup `export type`.
+- **Shared atoms additive (~10)**: Input += `icon` (render span), Empty += `icon` + `title`; Typography `ellipsis` → `truncate` (prop THẬT, 3 sites); Modal `bind:visible` → `bind:open` (1 site).
+- **NativeDemo (5)**: `resultType: 'uri'` → `CameraResultType.Uri`; `directory: 'data'` → `Directory.Data`; `native.platform()/isNative()` (object không có methods) → `device.getPlatform()/isNative()`.
+- **Event fields (5)**: venue/ticketTypes/capacity/soldTickets additive optional.
+- **Files**: Tabs `bind:activeTab` chưa khai báo biến → thêm `let activeTab = 'all'`.
+- **Verify**: eslint 0 errors; vitest 93/93 (Empty+Empty.extra+files); svelte-check 120 → **81**.
+- Còn lại 81: setupTests.js (3), api-client (3), module-registry (3), PhoneRegistration (3), search/+page (3), hotels (3+3)... long tail — tiếp Cycle 28.
 - **smartincidents.events (13)**: creators thiếu `timestamp` (base type require) → thêm `new Date().toISOString()`; `assigned()` optional-trước-required → reorder params.
 - **intercom-client (10)**: snippet minified bị hỏng keyword (`w.addEventList ser(`) + `show Messenger` (space = syntax error) + untyped `i.c/.q` → rewrite IIFE typed, giữ nguyên behavior; rename `showMessenger`.
 - **restaurants/[id] (11)**: thiếu fields trên fooddelivery Restaurant → additive optional (images, cuisine, reviewCount, address, city, description, openingHours Record).

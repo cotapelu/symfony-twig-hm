@@ -1,13 +1,15 @@
-import type { AIConversation, AIRequest, AIResponse, AIConfig, AIStreamingChunk } from '../contracts/aiTypes';
+import type {
+  AIConversation,
+  AIRequest,
+  AIResponse,
+  AIConfig,
+  AIStreamingChunk,
+  GovernmentContext,
+  GovernmentQuery,
+  ProcedureStep,
+  LLMResponse,
+} from '../contracts/aiTypes';
 import { authStore } from '../../auth/state/auth-store';
-
-export type GovernmentContext = 
-  | 'citizen_info'
-  | 'procedure_guide'
-  | 'document_req'
-  | 'ward_info'
-  | 'emergency'
-  | 'general';
 
 // Input validation functions
 const validateMessageLength = (message: string): boolean => {
@@ -306,28 +308,9 @@ const setInCache = <T>(key: string, data: T, ttl: number = CACHE_TTL): void => {
   });
 };
 
-export interface GovernmentQuery {
-  context: GovernmentContext;
-  wardCode?: string;
-  districtCode?: string;
-  provinceCode?: string;
-  language?: 'vi' | 'en' | 'zh';
-}
-
-export interface ProcedureStep {
-  step: number;
-  description: string;
-  documents: string[];
-  fee: number;
-  processingTime: string;
-}
-
-export interface LLMResponse {
-  content: string;
-  sources?: string[];
-  actions?: { label: string; url: string }[];
-  procedureSteps?: ProcedureStep[];
-}
+// (GovernmentContext/GovernmentQuery/ProcedureStep/LLMResponse are imported from
+// ../contracts/aiTypes above — contracts own the DTOs; the local duplicates that
+// made this module's star-export ambiguous were removed.)
 
 export class AIService {
   private baseUrl = '/api/ai';

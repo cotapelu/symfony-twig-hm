@@ -9,7 +9,9 @@
   export let readonly = false;
   export let size = 'md'; // sm, md, lg
   export let variant = 'default'; // default, filled, outlined
-   export let name = '';
+  export let name = '';
+  // Optional leading icon/glyph (Cycle 27): consumers passed icon= and it was dropped.
+  export let icon: string | null = null;
 
   let inputElement: HTMLInputElement;
 
@@ -27,7 +29,10 @@
   ].filter(Boolean).join(' ');
 </script>
 
-<div class="input-wrapper">
+<div class="input-wrapper" class:input-has-icon={icon}>
+  {#if icon}
+    <span class="input-icon" aria-hidden="true">{icon}</span>
+  {/if}
   {#if label}
     <label for={inputElement?.id} class="input-label">
       {label}

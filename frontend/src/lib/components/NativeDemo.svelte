@@ -4,6 +4,9 @@
  */
 
 <script lang="ts">
+  import { CameraResultType } from '@capacitor/camera';
+  import { Directory } from '@capacitor/filesystem';
+
   import {
     camera,
     geolocation,
@@ -56,7 +59,7 @@
   // Camera
   async function takePhoto() {
     try {
-      const photo = await camera.takePhoto({ quality: 80, resultType: 'uri' });
+      const photo = await camera.takePhoto({ quality: 80, resultType: CameraResultType.Uri });
       if (photo?.webPath) {
         photoPreview = photo.webPath;
         await haptics.success();
@@ -68,7 +71,7 @@
 
   async function pickFromGallery() {
     try {
-      const photo = await camera.pickFromGallery({ quality: 80, resultType: 'uri' });
+      const photo = await camera.pickFromGallery({ quality: 80, resultType: CameraResultType.Uri });
       if (photo?.webPath) {
         photoPreview = photo.webPath;
       }
@@ -157,9 +160,9 @@
       await filesystem.writeFile({
         path: 'test.txt',
         data: testContent,
-        directory: 'data',
+        directory: Directory.Data,
       });
-      const readContent = await filesystem.readFile({ path: 'test.txt', directory: 'data' });
+      const readContent = await filesystem.readFile({ path: 'test.txt', directory: Directory.Data });
       notifications.push(`File read: ${readContent}`);
       await haptics.success();
     } catch (error) {
@@ -238,7 +241,7 @@
   <header class="demo-header">
     <h1>📱 Native Features Demo</h1>
     <p class="platform-badge">
-      Platform: {native.platform()} {native.isNative() ? '✅ Native' : '🌐 Web (PWA)'}
+      Platform: {device.getPlatform()} {device.isNative() ? '✅ Native' : '🌐 Web (PWA)'}
     </p>
   </header>
 

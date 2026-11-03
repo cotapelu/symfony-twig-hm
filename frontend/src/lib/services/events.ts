@@ -15,6 +15,11 @@ export interface Event {
   category: string;
   isAttending: boolean;
   attendeesCount: number;
+  // routes read venue/ticketing fields — added additively
+  venue?: { name?: string; city?: string; address?: string };
+  ticketTypes?: { type?: string; price: number; quantity?: number }[];
+  capacity?: number;
+  soldTickets?: number;
 }
 
 export interface EventAttendance {
