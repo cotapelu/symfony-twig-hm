@@ -14,8 +14,8 @@
     ward: '',
     isActive: '',
     search: '',
-    page: 1,
-    perPage: 10
+    page: '1',
+    perPage: '10'
   };
   
   // Load citizens on mount and when filters change
@@ -75,7 +75,7 @@
   
   // Handle form submission
   function handleFilterChange() {
-    filters.page = 1; // Reset to first page when filters change
+    filters.page = '1'; // Reset to first page when filters change
     loadCitizens();
   }
   

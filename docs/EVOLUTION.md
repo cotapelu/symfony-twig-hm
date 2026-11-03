@@ -1,3 +1,20 @@
+## 2026-11-02 Iteration 625 – FE Type-Error Grind + Real loadSeats Bug (Cycle 23)
+
+### svelte-check: 273 → 247 (-26)
+- flights/[id]: `loadSeats` undefined → ReferenceError on every cabin-class click. Backend Kotlin FlightTickets ĐÃ CÓ `GET /api/flights/{id}/seats?seatClass=` → wire service + route (real API, verified in Kotlin source).
+- Tabs: decision cluster giải quyết — additive string-id support (5 consumers, index compat giữ nguyên).
+- Route field gaps (Flight airports, Hotel policies, Restaurant priceRange) — additive optional.
+- citizens/document-status filters page/perPage: thống nhất string.
+- Profile Textarea rows={4}.
+
+### Verify
+- svelte-check 247 errors (từ 289 đầu ngày), eslint changed files 0 errors, related tests 106/106 pass.
+
+### Remaining (Cycle 24)
+- variant clusters (~10), class-forwarding (7), type-args generics (4), ellipsis (3), smartincidents.events.ts (13), modules/index.ts (11), DashboardStats (11), intercom-client (10), config.ts (7)
+
+---
+
 ## 2026-11-02 Iteration 624 – Native Capacitor Wrapper WIP Completed (Cycle 22)
 
 ### Task

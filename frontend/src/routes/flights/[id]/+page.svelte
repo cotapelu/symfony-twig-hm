@@ -25,8 +25,20 @@
   async function loadFlightDetails(flightId: string) {
     try {
       flight = await flightsService.getFlight(flightId);
+      await loadSeats(flightId);
     } catch (err) {
       error = 'Failed to load flight details';
+    }
+  }
+
+  // Seat map per cabin class (Kotlin GET /api/flights/{id}/seats?seatClass=)
+  async function loadSeats(flightId: string) {
+    try {
+      seats = await flightsService.getSeats(flightId, seatClass);
+      selectedSeat = null; // class switched → previous selection invalid
+    } catch (err) {
+      error = 'Failed to load seats';
+      seats = [];
     }
   }
 

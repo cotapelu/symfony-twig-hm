@@ -8,6 +8,8 @@ export interface Restaurant {
   // routes read a features tag list — added additively
   features?: string[];
   rating: number;
+  // routes read priceRange as a number indicator — added additively
+  priceRange?: number;
   deliveryTime: string;
   deliveryFee: number;
   minOrder: number;

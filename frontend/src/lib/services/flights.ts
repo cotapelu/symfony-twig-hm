@@ -15,6 +15,22 @@ export interface Flight {
   price: number;
   availableSeats: number;
   class: 'economy' | 'business' | 'first';
+  // routes read nested airport objects (Kotlin GET /api/flights/{id} shape) — added additively
+  departureAirport?: { city?: string; code?: string };
+  arrivalAirport?: { city?: string; code?: string };
+}
+
+/**
+ * Seat entity of the Kotlin FlightTickets module (GET /api/flights/{id}/seats).
+ */
+export interface FlightSeat {
+  id: string;
+  flightId: string;
+  seatNumber: string;
+  seatClass: string;
+  price: number;
+  isAvailable: boolean;
+  features?: string[];
 }
 
 export interface FlightSearchParams {
@@ -71,6 +87,14 @@ class FlightsService {
     });
     if (!response.ok) throw new Error('Failed to book flight');
     return response.json();
+  }
+
+  async getSeats(id: string, seatClass: string): Promise<FlightSeat[]> {
+    const url = getApiUrl('flights', `/api/flights/${id}/seats?seatClass=${encodeURIComponent(seatClass)}`);
+    const response = await fetch(url, { headers: this.getHeaders() });
+    if (!response.ok) throw new Error('Failed to fetch seats');
+    const data = await response.json();
+    return data.seats || [];
   }
 
   async getMyBookings(): Promise<FlightBooking[]> {

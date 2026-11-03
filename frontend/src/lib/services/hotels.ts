@@ -13,6 +13,8 @@ export interface Hotel {
   price: number;
   amenities: string[];
   roomTypes: RoomType[];
+  // routes read hotel policies (falls back to defaults) — added additively
+  policies?: { checkInTime?: string; checkOutTime?: string; cancellationPolicy?: string };
 }
 
 export interface RoomType {

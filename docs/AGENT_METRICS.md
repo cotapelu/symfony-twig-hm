@@ -1,3 +1,15 @@
+## [2026-11-02 ~23:50-00:15] Cycle 23 — FE type-error grind #1: 273 → 247 errors (P1)
+- **Type**: Fix / Type-Debt (M) + real bug (loadSeats ReferenceError)
+- **Priority**: HIGH (frontend type gate)
+- **Status**: ✅ Success (-26 errors)
+- **Real production bug found & fixed**: `routes/flights/[id]` gọi `loadSeats()` không tồn tại → mọi click đổi cabin class là ReferenceError. Backend Kotlin `FlightBookingRoutes.kt` đã có `GET /api/flights/{id}/seats?seatClass=` (response `{seats: Seat[]}`) → thêm `flightsService.getSeats()` + `loadSeats()` trong route; initial load gọi luôn.
+- **Tabs decision cluster (Cycle 20 parked)**: Tabs atom index-based, 5 consumers dùng string tab ids → extend additive (`Tab.id?`, `activeTab: string|number`, resolve index nội bộ, write-back `tab.id ?? index`) — backward-compat, Tabs.test + related 106/106 pass.
+- **Route type gaps**: Flight departureAirport/arrivalAirport, Hotel.policies, Restaurant.priceRange (fooddelivery) — additive optional.
+- **filters type mismatch**: citizens/document-status page/perPage khai báo number, dùng string rải rác → thống nhất string.
+- **Verify**: eslint changed files 0 errors; relevant tests 106/106; svelte-check 273 → 247.
+
+---
+
 ## [2026-11-02 ~23:10-23:40] Cycle 22 — native/index.ts WIP completion: 16 svelte-check errors fixed (P1)
 - **Type**: Fix / Type-Debt (M-type, finish WIP from 2026-11-02 ~12:00 session)
 - **Priority**: HIGH (FE type-check gate)

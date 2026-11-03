@@ -3,6 +3,9 @@
 
   interface Tab {
     label: string;
+    // Optional stable id: index-based consumers may omit it (added additively,
+    // Cycle 23) so both activeTab={1} and activeTab={'overview'} work.
+    id?: string;
     disabled?: boolean;
     icon?: string;
     badge?: string;
@@ -10,7 +13,15 @@
   }
 
   export let tabs: Tab[] = [];
-  export let activeTab = 0;
+  export let activeTab: string | number = 0;
+
+  // Resolve the active tab to an index (id-based consumers keep their own
+  // representation; selectTab writes back tab.id when defined, else the index).
+  function resolveTabIndex(value: string | number, tabList: Tab[]): number {
+    if (typeof value === 'number') return value;
+    const index = tabList.findIndex((t) => t.id === value);
+    return index >= 0 ? index : 0;
+  }
   export let size = 'md';
   export let variant = 'default';
   export let fullWidth = false;
@@ -18,30 +29,32 @@
 
   const dispatch = createEventDispatcher();
 
-  $: activeTabData = tabs[activeTab];
+  $: activeIndex = resolveTabIndex(activeTab, tabs);
+  $: activeTabData = tabs[activeIndex];
 
-  function selectTab(index: number): void {
+  function selectTab(value: string | number): void {
+    const index = resolveTabIndex(value, tabs);
     if (!disabled && !tabs[index]?.disabled) {
-      activeTab = index;
+      activeTab = tabs[index]?.id ?? index;
       dispatch('change', { index, tab: tabs[index] });
     }
   }
 
-  function handleKeydown(event: KeyboardEvent, index: number): void {
+  function handleKeydown(event: KeyboardEvent, _index: number): void {
     if (disabled) return;
 
     switch (event.key) {
       case 'ArrowLeft':
         event.preventDefault();
         {
-          const prevIndex = index > 0 ? index - 1 : tabs.length - 1;
+          const prevIndex = activeIndex > 0 ? activeIndex - 1 : tabs.length - 1;
           selectTab(prevIndex);
         }
         break;
       case 'ArrowRight':
         event.preventDefault();
         {
-          const nextIndex = index < tabs.length - 1 ? index + 1 : 0;
+          const nextIndex = activeIndex < tabs.length - 1 ? activeIndex + 1 : 0;
           selectTab(nextIndex);
         }
         break;
@@ -66,13 +79,13 @@
     {#each tabs as tab, index}
       <button
         class="tab {`tab-${size} tab-${variant}`}"
-        class:active={index === activeTab}
+        class:active={index === activeIndex}
         class:disabled={disabled || tab.disabled}
         role="tab"
-        aria-selected={index === activeTab}
+        aria-selected={index === activeIndex}
         aria-controls={`tabpanel-${index}`}
         id={`tab-${index}`}
-        tabindex={index === activeTab ? 0 : -1}
+        tabindex={index === activeIndex ? 0 : -1}
         disabled={disabled || tab.disabled}
         onclick={() => selectTab(index)}
         onkeydown={(e) => handleKeydown(e, index)}
@@ -92,13 +105,13 @@
     {#each tabs as tab, index}
       <div
         class="tab-panel"
-        class:active={index === activeTab}
+        class:active={index === activeIndex}
         role="tabpanel"
         aria-labelledby={`tab-${index}`}
         id={`tabpanel-${index}`}
         tabindex="0"
       >
-        {#if index === activeTab}
+        {#if index === activeIndex}
           <slot {tab} {index}>
             {tab.content || tab.label}
           </slot>

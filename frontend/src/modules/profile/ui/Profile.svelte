@@ -198,7 +198,7 @@
 					</div>
 					<div class="form-group full-width">
 						<Typography variant="body" fontWeight="medium">Bio</Typography>
-						<Textarea bind:value={editForm.bio} rows="4" placeholder="Tell us about yourself" />
+						<Textarea bind:value={editForm.bio} rows={4} placeholder="Tell us about yourself" />
 					</div>
 					<div class="form-group full-width">
 						<Typography variant="body" fontWeight="medium">Website</Typography>

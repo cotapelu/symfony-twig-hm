@@ -10,8 +10,8 @@
   // Filters
   let filters = {
     status: '',
-    page: 1,
-    perPage: 10
+    page: '1',
+    perPage: '10'
   };
   
   // Load workflows on mount and when filters change
@@ -66,7 +66,7 @@
   
   // Handle form submission
   function handleFilterChange() {
-    filters.page = 1; // Reset to first page when filters change
+    filters.page = '1'; // Reset to first page when filters change
     loadWorkflows();
   }
   
