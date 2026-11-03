@@ -89,12 +89,12 @@ function createSampleModuleStore() {
         
         // Publish search event
         SampleModuleEventBus.publish({
-          type: 'sample-module.{{#snakeCase moduleName}}.search',
+          type: 'sample-module.item.search',
           payload: {
             query,
             resultsCount: results.length,
             timestamp: new Date().toISOString(),
-          },
+          } satisfies SampleModuleSearchedEvent['payload'],
         });
         
         update(state => ({
@@ -143,7 +143,7 @@ function createSampleModuleStore() {
         
         // Publish event
         SampleModuleEventBus.publish({
-          type: 'sample-module.{{#snakeCase moduleName}}.created',
+          type: 'sample-module.item.created',
           payload: {
             item,
             timestamp: new Date().toISOString(),
@@ -175,7 +175,7 @@ function createSampleModuleStore() {
         
         // Publish event
         SampleModuleEventBus.publish({
-          type: 'sample-module.{{#snakeCase moduleName}}.updated',
+          type: 'sample-module.item.updated',
           payload: {
             item,
             changes: data,
@@ -205,11 +205,11 @@ function createSampleModuleStore() {
       update(state => ({ ...state, saving: true, error: null }));
       
       try {
-        await sampleModuleApi.delete(id); // Assuming delete method exists in service
+        await sampleModuleApi.delete(id);
         
         // Publish event
         SampleModuleEventBus.publish({
-          type: 'sample-module.{{#snakeCase moduleName}}.deleted',
+          type: 'sample-module.item.deleted',
           payload: {
             id,
             timestamp: new Date().toISOString(),
@@ -298,4 +298,6 @@ export const isLoading = derived(SampleModuleStore, $store => $store.loading);
 export const isSaving = derived(SampleModuleStore, $store => $store.saving);
 export const SampleModuleError = derived(SampleModuleStore, $store => $store.error);
 export const selectedSampleModuleItem = derived(SampleModuleStore, $store => $store.selectedItem);
-export const SampleModuleStatistics = derived(SampleModuleStore, $store => $store.statistics);
+// Value export renamed from SampleModuleStatistics: a same-named derived value
+// collided with the SampleModuleStatistics *type* imported from contracts.
+export const sampleModuleStatistics = derived(SampleModuleStore, $store => $store.statistics);

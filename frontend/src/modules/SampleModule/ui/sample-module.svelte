@@ -3,8 +3,8 @@
   // Replace sample-module with the actual module name during generation
 
   import { onMount } from 'svelte';
-  import { SampleModuleStore, selectedSampleModuleItem, SampleModuleStatistics, isLoading, isSaving, SampleModuleError } from '../state/sample-module.store';
-  import { sample-moduleApi } from '../services/sample-module.service';
+  import { SampleModuleStore, selectedSampleModuleItemisLoading, isSaving, SampleModuleError } from '../state/sample-module.store';
+  import { sampleModuleApi } from '../services/sample-module.service';
   import { SampleModuleEventBus } from '../events/sample-module.events';
   import type { SampleModuleItem, CreateSampleModuleRequest, UpdateSampleModuleRequest } from '../contracts/sample-module.types';
 
@@ -80,7 +80,7 @@
     loading = true;
     error = null;
     try {
-      items = await sample-moduleApi.list();
+      items = await sampleModuleApi.list();
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to load items';
       console.error(error);
@@ -91,7 +91,7 @@
 
   async loadStatistics() {
     try {
-      statistics = await sample-moduleApi.getStatistics();
+      statistics = await sampleModuleApi.getStatistics();
     } catch (err) {
       console.error('Failed to load statistics:', err);
     }
@@ -106,7 +106,7 @@
     loading = true;
     error = null;
     try {
-      items = await sample-moduleApi.search(searchQuery);
+      items = await sampleModuleApi.search(searchQuery);
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to search items';
       console.error(error);
@@ -119,7 +119,7 @@
     saving = true;
     error = null;
     try {
-      const newItem = await sample-moduleApi.create(formData);
+      const newItem = await sampleModuleApi.create(formData);
       // Form will be reset by the event subscription
       formMode = 'create';
       formData = { name: '', description: '' };
@@ -137,7 +137,7 @@
     saving = true;
     error = null;
     try {
-      const updatedItem = await sample-moduleApi.update(selectedItem.id, formData);
+      const updatedItem = await sampleModuleApi.update(selectedItem.id, formData);
       // Form will be reset by the event subscription
       formMode = 'create';
       formData = { name: '', description: '' };
@@ -160,7 +160,7 @@
     saving = true;
     error = null;
     try {
-      await sample-moduleApi.delete(selectedItem.id);
+      await sampleModuleApi.delete(selectedItem.id);
       // Item will be removed by the event subscription
       selectItem(null);
     } catch (err) {
@@ -244,7 +244,7 @@
         <h2>All SampleModules</h2>
         
         {#if loading}
-          <div class="loading-indicator">Loading...</p>
+          <div class="loading-indicator">Loading...</div>
         {:else if items.length === 0}
           <div class="empty-state">
             <p>No SampleModules found.</p>

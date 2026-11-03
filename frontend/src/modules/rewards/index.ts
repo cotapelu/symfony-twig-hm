@@ -6,3 +6,7 @@
 // Planned layout: ui/RewardsCenter.svelte + state/rewardsStore.ts +
 // services/rewardsService.ts + contracts/ + events/
 // See docs/AUTONOMOUS_TASK_QUEUE.md (P2 MISSING-MODULE debt).
+
+// Registry imports this barrel (modules/index.ts) — an explicit empty export
+// keeps it a valid module without inventing unimplemented surface.
+export {};

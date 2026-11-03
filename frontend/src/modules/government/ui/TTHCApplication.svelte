@@ -32,7 +32,7 @@
 
   async function loadProcedures() {
     try {
-      await procedureStore.loadProcedures({ isActive: true });
+      await procedureStore.loadActiveProcedures();
     } catch (err) {
       console.error('Failed to load procedures:', err);
     }
@@ -74,7 +74,7 @@
     successMessage = '';
 
     try {
-      await procedureStore.submitApplication({
+      await procedureStore.createApplication({
         procedureId: selectedProcedure.id,
         citizenId: applicantId,
         notes: notes,
@@ -105,7 +105,7 @@
     const colors: Record<string, string> = {
       pending: 'bg-yellow-100 text-yellow-800',
       processing: 'bg-blue-100 text-blue-800',
-      waiting_documents: 'bg-orange-100 text-orange-800',
+      awaiting_additional_docs: 'bg-orange-100 text-orange-800',
       approved: 'bg-green-100 text-green-800',
       rejected: 'bg-red-100 text-red-800',
       completed: 'bg-purple-100 text-purple-800'
@@ -117,7 +117,7 @@
     const texts: Record<string, string> = {
       pending: 'Chờ xử lý',
       processing: 'Đang xử lý',
-      waiting_documents: 'Chờ bổ sung',
+      awaiting_additional_docs: 'Chờ bổ sung',
       approved: 'Đã duyệt',
       rejected: 'Bị từ chối',
       completed: 'Hoàn thành'
@@ -265,7 +265,7 @@
               <div class="application-item">
                 <div class="application-info">
                   <span class="application-id">Mã: {app.id}</span>
-                  <h4>{app.procedure?.name || 'Thủ tục'}</h4>
+                  <h4>{app.procedureName || 'Thủ tục'}</h4>
                   <span class="application-date">Nộp ngày: {formatDate(app.submittedAt)}</span>
                 </div>
                 <div class="application-status">
@@ -413,7 +413,7 @@
       <div class="modal-body">
         <div class="tracking-info">
           <p><strong>Mã hồ sơ:</strong> {trackingApplication.id}</p>
-          <p><strong>Thủ tục:</strong> {trackingApplication.procedure?.name}</p>
+          <p><strong>Thủ tục:</strong> {trackingApplication.procedureName}</p>
           <p><strong>Ngày nộp:</strong> {formatDate(trackingApplication.submittedAt)}</p>
         </div>
 
@@ -428,14 +428,14 @@
               </div>
             </div>
             
-            <div class="timeline-item {['processing', 'waiting_documents', 'approved', 'completed'].includes(trackingApplication.status) ? 'active' : ''}">
+            <div class="timeline-item {['processing', 'awaiting_additional_docs', 'approved', 'completed'].includes(trackingApplication.status) ? 'active' : ''}">
               <div class="timeline-marker"></div>
               <div class="timeline-content">
                 <span class="timeline-title">Đang xử lý</span>
               </div>
             </div>
 
-            {#if trackingApplication.status === 'waiting_documents'}
+            {#if trackingApplication.status === 'awaiting_additional_docs'}
               <div class="timeline-item active warning">
                 <div class="timeline-marker"></div>
                 <div class="timeline-content">
@@ -461,9 +461,9 @@
           <span class="status-badge-large {getStatusColor(trackingApplication.status)}">
             {getStatusText(trackingApplication.status)}
           </span>
-          {#if trackingApplication.assignedOfficerName}
+          {#if trackingApplication.processedBy}
             <p class="officer-info">
-              👤 Cán bộ phụ trách: {trackingApplication.assignedOfficerName}
+              👤 Cán bộ phụ trách: {trackingApplication.processedBy}
             </p>
           {/if}
         </div>

@@ -158,7 +158,7 @@ export class ConfigManager {
   validate(config: Partial<EnvironmentConfig>): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
-    for (const [key, schema] of Object.entries(this.schema)) {
+    for (const [key, schema] of Object.entries<any>(this.schema)) {
       const value = this.getNestedValue(config, key);
       
       if (schema.required && (value === undefined || value === null)) {
@@ -421,7 +421,7 @@ export class ConfigManager {
     }
   }
 
-  private loadFromStorage(): void {
+  loadFromStorage(): void {
     if (typeof localStorage === 'undefined') return;
 
     try {
@@ -442,4 +442,5 @@ export const createConfigManager = (initialConfig?: Partial<EnvironmentConfig>):
   return manager;
 };
 
-export type { ConfigManager };
+// (The class is already exported above; the duplicate type re-export was a
+// redeclaration conflict — removed.)

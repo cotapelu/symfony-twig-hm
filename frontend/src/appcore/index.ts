@@ -1,3 +1,10 @@
+import { createConfigManager } from './config';
+import { createIAMAdapter } from './iam-adapter';
+import { createMDMProvider } from './mdm-provider';
+import { createErrorBoundaryManager } from './error-boundary';
+import { eventBus } from './event-bus';
+import { router } from './router';
+
 export { router, type Route, type NavigationResult } from './router';
 export { 
   moduleRegistry, 

@@ -85,6 +85,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.created',
       payload: { incidentId, ...incidentData },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -92,6 +93,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.updated',
       payload: { incidentId, changes },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -99,13 +101,16 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.status_changed',
       payload: { incidentId, oldStatus, newStatus, changedBy },
+      timestamp: new Date().toISOString(),
     };
   },
 
-  assigned(incidentId: number, officerId: string, team?: string, assignedBy: string): SmartIncidentEvent {
+  // team moved after the required params (optional parameters cannot precede required ones)
+  assigned(incidentId: number, officerId: string, assignedBy: string, team?: string): SmartIncidentEvent {
     return {
       type: 'smartincident.assigned',
-      payload: { incidentId, officerId, team, assignedBy },
+      payload: { incidentId, officerId, assignedBy, team },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -113,6 +118,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.resolved',
       payload: { incidentId, summary, resolvedBy, resolutionTime },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -120,6 +126,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.escalated',
       payload: { incidentId, reason, escalatedBy },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -127,6 +134,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.closed',
       payload: { incidentId, closedBy },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -134,6 +142,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.message_sent',
       payload: { incidentId, messageId, sender, senderName },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -141,6 +150,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.attachment_added',
       payload: { incidentId, attachmentId, fileType, uploadedBy },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -148,6 +158,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.location_updated',
       payload: { incidentId, latitude, longitude, address },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -155,6 +166,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.classified',
       payload: { incidentId, aiType, aiSeverity, confidence },
+      timestamp: new Date().toISOString(),
     };
   },
 
@@ -162,6 +174,7 @@ export const SmartIncidentEvents = {
     return {
       type: 'smartincident.duplicate_detected',
       payload: { incidentId, similarIncidentIds, similarityScore },
+      timestamp: new Date().toISOString(),
     };
   },
 };

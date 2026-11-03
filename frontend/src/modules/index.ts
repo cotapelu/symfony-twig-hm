@@ -93,7 +93,15 @@ export const modules = {
   wishlist: () => import('./wishlist')
 };
 
-export const moduleMetadata = {
+interface ModuleMeta {
+  name: string;
+  icon: string;
+  category: string;
+  priority: number;
+  required?: boolean;
+}
+
+export const moduleMetadata: Record<string, ModuleMeta> = {
   admin: { name: 'Admin', icon: 'shield', category: 'admin', priority: 1, required: true },
   ai: { name: 'AI', icon: 'brain', category: 'intelligence', priority: 2 },
   analytics: { name: 'Analytics', icon: 'chart', category: 'intelligence', priority: 2 },

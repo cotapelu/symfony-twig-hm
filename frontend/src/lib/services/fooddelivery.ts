@@ -15,6 +15,14 @@ export interface Restaurant {
   minOrder: number;
   categories: string[];
   isOpen: boolean;
+  // routes read these fields on the detail/listing pages — added additively
+  images?: string[];
+  cuisine?: string | string[];
+  reviewCount?: number;
+  address?: string;
+  city?: string;
+  description?: string;
+  openingHours?: Record<string, { open: string; close: string }>;
 }
 
 export interface Product {

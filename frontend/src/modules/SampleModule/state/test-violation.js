@@ -1,1 +1,1 @@
-import something from '../../ui/sample-module.svelte';
+import something from '../ui/sample-module.svelte';

@@ -61,7 +61,17 @@
   - `vitest run --coverage` → **1 FAILED / 7653 passed / 61 skipped (7715)** (exit=1) ⚠️ — FE coverage KHÔNG đo được vì run fail (v8 chỉ ghi lcov khi green — đúng lesson iteration 622)
 - [x] ✅ **HẾT CHECK** (2026-11-02): PHP, Go, Python, Kotlin, Rust, Zig, Frontend — bảng kết quả đầy đủ ở mục phía dưới
 
-### Cycle 24 — FE type grind #2 (2026-11-02 ~00:20-00:35): **247 → 216 (-31)**
+### Cycle 25-26 — FE type grind #3-4 (2026-11-03 ~00:40-01:10): **216 → 120 (-96)**
+- **smartincidents.events (13)**: creators thiếu `timestamp` (base type require) → thêm `new Date().toISOString()`; `assigned()` optional-trước-required → reorder params.
+- **intercom-client (10)**: snippet minified bị hỏng keyword (`w.addEventList ser(`) + `show Messenger` (space = syntax error) + untyped `i.c/.q` → rewrite IIFE typed, giữ nguyên behavior; rename `showMessenger`.
+- **restaurants/[id] (11)**: thiếu fields trên fooddelivery Restaurant → additive optional (images, cuisine, reviewCount, address, city, description, openingHours Record).
+- **modules/index (11)**: 10 stub modules (quyết định Cycle 21) thiếu export → thêm `export {}` + `ModuleMeta` type cho `required`.
+- **config/event-bus/appcore-index (19)**: duplicate `export type` sau class → bỏ; appcore/index dùng tên factory nhưng chỉ re-export → thêm value imports; `loadFromStorage` private→public; `Object.entries<any>`.
+- **flights FE type (6)**: `duration: number`, `airline: {name?,code?,...}` (khớp Kotlin Airline/Flight models), + `aircraft?`, `baggageAllowance?`.
+- **SampleModule (17)**: TEMPLATE code-gen CHƯA RENDER (`{{#snakeCase moduleName}}`, `sample-moduleApi`, `SampleModuleStatistics` type/value merge, `</p>` lạc thẻ, service thiếu `delete`) → render nhất quán `sample-module.item.*`, thêm `SampleModuleSearchedEvent`, thêm `delete()` vào service (store+ui đã gọi), sửa test expectations (test mã hoá placeholder), sửa path test-violation.
+- **TTHCApplication (7)**: `loadProcedures({isActive})` → `loadActiveProcedures()`; `submitApplication` (không tồn tại) → `createApplication`; `procedure?.name` → `procedureName`; `waiting_documents` (không có trong ApplicationStatus) → `awaiting_additional_docs`; `assignedOfficerName` → `processedBy`.
+- **Verify**: eslint 0 errors; vitest government/SampleModule/flights **213/213**; svelte-check 216 → **120**.
+- Còn lại 120: Groups (5), voicemail/index (5), NativeDemo (5), events/+page (5), router (4), lib/services/index (4), ai/index (4), dashboard/index (4) — tiếp Cycle 27.
 - **Variant semantic decision (20 → 0)**: Badge atom typed visual-only (`default|outlined|filled`) nhưng 100% consumers dùng semantic (`error/warning/success/info/secondary`) → quyết định: Badge IS a status atom → widen union + thêm `.badge-secondary` CSS (các CSS semantic khác đã có sẵn). Button + `'outline'` (+ CSS), Card + `'danger'` (+ CSS), Typography color + `'tertiary'` (+ CSS).
 - **class= forwarding (7 → 0)**: Card không khai báo className → thêm `export let className` (merge vào classes, match Button pattern), 7 consumers `class=` → `className=` (Groups, social, DashboardStats ×5).
 - **Svelte 5 generic misuse (5 → 0)**: `$props<Props>()` không generic trong Svelte 5 → AutoSave/Drawer/Heatmap/MockInput bỏ type-arg; `createEventDispatcher<T>` HỢP LỆ nên giữ nguyên.

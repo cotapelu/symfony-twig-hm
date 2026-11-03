@@ -362,4 +362,5 @@ export const eventBus = new EventBus({
   debugMode: process.env.NODE_ENV === 'development'
 });
 
-export type { EventBus, ScopedEventBus };
+// (EventBus/ScopedEventBus are already exported as classes above; the duplicate
+// type re-export was a redeclaration conflict — removed.)

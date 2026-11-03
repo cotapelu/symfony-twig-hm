@@ -1,3 +1,18 @@
+## 2026-11-03 Iterations 627-628 – Contract Alignment + SampleModule Template Render (Cycles 25-26)
+
+### svelte-check: 216 → 120 (-96)
+- **SampleModule**: unrendered code-gen template fully rendered (placeholders, invalid identifiers, type/value collisions, broken markup); service gained missing `delete`; tests updated.
+- **intercom-client**: corrupted minified snippet rewritten with types; `show Messenger` syntax error fixed.
+- **Flight/Restaurant**: additive fields aligned with verified backend (Kotlin FlightTickets) + route needs.
+- **appcore**: duplicate export tails removed (config, event-bus); barrel gained value imports for factories it uses.
+- **TTHCApplication**: mapped to actual store/API/status names (createApplication, loadActiveProcedures, procedureName, awaiting_additional_docs, processedBy).
+- **stub modules**: 10 Cycle-21 stubs got explicit `export {}` so the registry barrel type-checks.
+
+### Verification
+eslint 0 errors; vitest 213/213 (13 files); svelte-check 120.
+
+---
+
 ## 2026-11-02 Iteration 626 – Shared Atom API Extensions: Variant Semantics + class Forwarding (Cycle 24)
 
 ### svelte-check: 247 → 216 (-31)

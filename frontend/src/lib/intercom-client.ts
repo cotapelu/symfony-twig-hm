@@ -1,20 +1,53 @@
 import { browser } from '$app/environment';
-import { getContext } from 'svelte';
 
 declare global {
   interface Window {
     intercomSettings?: { app_id: string; [key: string]: unknown };
-    Intercom?: (...args: unknown[]) => void;
+    Intercom?: IntercomCommand;
   }
 }
+
+/**
+ * Intercom boot API before the widget script loads: a callable command queue
+ * with the official snippet's `.q` (queued calls) and `.c` (recorder) members.
+ */
+type IntercomCommand = ((...args: unknown[]) => void) & {
+  q: unknown[][];
+  c: (args: unknown[]) => void;
+};
 
 export function initIntercom(appId: string) {
   if (!browser) return;
   window.intercomSettings = { app_id: appId };
-  (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/'+appId;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else{w.addEventList ser('load',l,false);}}})();
+
+  const w = window;
+  if (typeof w.Intercom === 'function') {
+    w.Intercom('reattach_activator');
+    w.Intercom('update', w.intercomSettings);
+    return;
+  }
+
+  const queue: unknown[][] = [];
+  const record = (args: unknown[]): void => { queue.push(args); };
+  const command = ((...args: unknown[]) => record(args)) as IntercomCommand;
+  command.q = queue;
+  command.c = record;
+  w.Intercom = command;
+
+  const load = (): void => {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = `https://widget.intercom.io/widget/${appId}`;
+    const anchor = document.getElementsByTagName('script')[0];
+    anchor.parentNode?.insertBefore(script, anchor);
+  };
+
+  if (document.readyState === 'complete') load();
+  else w.addEventListener('load', load, false);
 }
 
-export function show Messenger() {
+export function showMessenger() {
   if (window.Intercom) {
     window.Intercom('show');
   }

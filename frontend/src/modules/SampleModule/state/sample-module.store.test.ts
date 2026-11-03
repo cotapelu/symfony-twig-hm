@@ -160,7 +160,7 @@ describe('SampleModuleStore', () => {
       expect(state.error).toBeNull();
       // Event published
       expect(publishSpy).toHaveBeenCalledWith({
-        type: 'sample-module.{{#snakeCase moduleName}}.search',
+        type: 'sample-module.item.search',
         payload: {
           query: 'query',
           resultsCount: 2,
@@ -228,7 +228,7 @@ describe('SampleModuleStore', () => {
       expect(apiSpies.deactivate).not.toHaveBeenCalled(); // just sanity
       // Event
       expect(publishSpy).toHaveBeenCalledWith({
-        type: 'sample-module.{{#snakeCase moduleName}}.created',
+        type: 'sample-module.item.created',
         payload: {
           item: newItem,
           timestamp: expect.any(String)
@@ -275,7 +275,7 @@ describe('SampleModuleStore', () => {
       expect(state.selectedItem).toEqual(updatedItem);
       expect(state.saving).toBe(false);
       expect(publishSpy).toHaveBeenCalledWith({
-        type: 'sample-module.{{#snakeCase moduleName}}.updated',
+        type: 'sample-module.item.updated',
         payload: {
           item: updatedItem,
           changes: updates,
@@ -317,7 +317,7 @@ describe('SampleModuleStore', () => {
       expect(state.items[0].id).toBe('2');
       expect(state.selectedItem).toBeNull(); // was deleted
       expect(publishSpy).toHaveBeenCalledWith({
-        type: 'sample-module.{{#snakeCase moduleName}}.deleted',
+        type: 'sample-module.item.deleted',
         payload: {
           id: '1',
           timestamp: expect.any(String)

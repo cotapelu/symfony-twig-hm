@@ -44,11 +44,21 @@ export interface SampleModuleStatusChangedEvent {
 // ============================================
 // Export all event types
 // ============================================
+export interface SampleModuleSearchedEvent {
+  type: 'sample-module.item.search';
+  payload: {
+    query: string;
+    resultsCount: number;
+    timestamp: string;
+  };
+}
+
 export type SampleModuleEvent =
   | SampleModuleCreatedEvent
   | SampleModuleUpdatedEvent
   | SampleModuleDeletedEvent
-  | SampleModuleStatusChangedEvent;
+  | SampleModuleStatusChangedEvent
+  | SampleModuleSearchedEvent;
 
 // ============================================
 // Event Bus Helper

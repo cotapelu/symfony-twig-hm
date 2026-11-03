@@ -103,6 +103,14 @@ export const sampleModuleApi = {
     });
   },
   
+  // Delete was referenced by store/ui but missing from this service (Cycle 26) —
+  // RESTful counterpart of the existing /items/{id} routes.
+  async delete(id: string): Promise<void> {
+    await fetchApi<ApiResponse<void>>(`/api/sample-module/items/${id}`, {
+      method: 'DELETE',
+    });
+  },
+
   async getStatistics(filters: Pick<SampleModuleFilters, undefined> = {}): Promise<SampleModuleStatistics> {
     const response = await fetchApi<ApiResponse<SampleModuleStatistics>>(`/api/sample-module/items/statistics`);
     return response.data;

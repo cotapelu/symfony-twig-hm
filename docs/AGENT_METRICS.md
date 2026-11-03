@@ -1,3 +1,14 @@
+## [2026-11-03 ~00:40-01:10] Cycles 25-26 — FE type grind #3-4: 216 → 120 (P1)
+- **Type**: Fix / Type-Debt + contract alignment + template render
+- **Status**: ✅ Success (-96 errors)
+- **SampleModule was an UNRENDERED CODE-GEN TEMPLATE** (`{{#snakeCase moduleName}}` placeholders, `sample-moduleApi` invalid export, type/value name collision on SampleModuleStatistics, unclosed `</p>`, missing service `delete`) — rendered consistently to `sample-module.item.*`, added SampleModuleSearchedEvent + service delete; store tests had encoded the placeholders → updated expectations (37/37 pass).
+- **intercom-client**: official snippet pasted with corrupted keyword (`addEventList ser`) + `export function show Messenger()` (space = parse error) + untyped command-queue shim → rewritten typed, behavior-preserving.
+- **Contract alignment (no invention, verified vs Kotlin models)**: Flight `duration: number`, `airline` object, `aircraft?`, `baggageAllowance?`; restaurants additive fields; appcore duplicates (config, event-bus, index value imports); TTHC mapped to real store/API names (createApplication, loadActiveProcedures, procedureName, awaiting_additional_docs, processedBy).
+- **Verify**: eslint 0 errors on changed files; vitest 213/213 (government+SampleModule+flights); svelte-check 216 → 120.
+- **Cumulative today**: 289 → 120 svelte-check errors across Cycles 22-26 (native 16, test fix 1, seats 3, atoms 31, grind 56+40).
+
+---
+
 ## [2026-11-02 ~00:20-00:35] Cycle 24 — FE type grind #2: 247 → 216 (P1)
 - **Type**: Fix / Type-Debt (M) + shared-atom API extensions
 - **Status**: ✅ Success (-31 errors)

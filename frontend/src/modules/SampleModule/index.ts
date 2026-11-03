@@ -18,7 +18,7 @@ export type {
 // Services (API)
 // ============================================
 export {
-  sample-moduleApi
+  sampleModuleApi
 } from './services/sample-module.service';
 
 // ============================================
@@ -43,7 +43,7 @@ export {
   isSaving,
   SampleModuleError,
   selectedSampleModuleItem,
-  SampleModuleStatistics
+  sampleModuleStatistics
 } from './state/sample-module.store';
 
 // ============================================

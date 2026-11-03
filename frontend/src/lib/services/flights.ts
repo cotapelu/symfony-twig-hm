@@ -3,7 +3,9 @@ import { getApiUrl } from '../config/api';
 
 export interface Flight {
   id: string;
-  airline: string;
+  // Kotlin FlightTickets Flight model: airline/departureAirport/arrivalAirport are
+  // objects (Airline = {id,name,code,logo}); duration is minutes (Int).
+  airline: { id?: string; name?: string; code?: string; logo?: string | null };
   flightNumber: string;
   origin: string;
   originCode: string;
@@ -11,10 +13,13 @@ export interface Flight {
   destinationCode: string;
   departureTime: string;
   arrivalTime: string;
-  duration: string;
+  duration: number;
   price: number;
   availableSeats: number;
   class: 'economy' | 'business' | 'first';
+  // routes read these — added additively
+  aircraft?: string;
+  baggageAllowance?: { checkedBags?: number; cabinBags?: number };
   // routes read nested airport objects (Kotlin GET /api/flights/{id} shape) — added additively
   departureAirport?: { city?: string; code?: string };
   arrivalAirport?: { city?: string; code?: string };
