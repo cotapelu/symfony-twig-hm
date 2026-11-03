@@ -3,7 +3,7 @@
    export let size: string | null = null;
    export let weight: number | null = null;
    export let align: 'left' | 'center' | 'right' | 'justify' = 'left';
-   export let color: 'inherit' | 'primary' | 'secondary' | 'error' | 'warning' | 'success' | 'info' = 'inherit';
+   export let color: 'inherit' | 'primary' | 'secondary' | 'tertiary' | 'error' | 'warning' | 'success' | 'info' = 'inherit';
    export let truncate = false;
    export let lines: number | null = null;
    export let transform: 'uppercase' | 'lowercase' | 'capitalize' | null = null;
@@ -179,6 +179,7 @@
   .typography-color-warning { color: var(--warning-500, #f59e0b); }
   .typography-color-success { color: var(--success-500, #10b981); }
   .typography-color-info { color: var(--info-500, #3b82f6); }
+  .typography-color-tertiary { color: var(--text-tertiary, #9ca3af); }
 
   /* Text truncation */
   .typography-truncate {

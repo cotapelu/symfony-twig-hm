@@ -121,7 +121,7 @@
 			{:else}
 				<div class="posts-feed">
 					{#each posts as post}
-						<Card class="post-card">
+						<Card className="post-card">
 							<div class="post-header">
 								<Avatar src={post.author.avatar} name={post.author.name} size="md" />
 								<div class="post-meta">

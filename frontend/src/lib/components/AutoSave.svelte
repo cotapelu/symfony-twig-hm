@@ -25,9 +25,9 @@
     },
     onSaved,
     onLoaded
-  } = $props<Props>();
+  } = $props();
 
-  const dispatch = createEventDispatcher<{ saved: Record<string, any>; loaded: Record<string, any> }>();
+  const dispatch = createEventDispatcher();
 
   // Local state initialized from prop
   let data = $state(initialData);

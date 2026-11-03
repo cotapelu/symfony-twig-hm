@@ -1,6 +1,6 @@
 <script lang="ts">
   // Props
-  export let variant: 'primary' | 'secondary' | 'danger' | 'ghost' = 'primary';
+  export let variant: 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline' = 'primary';
   export let size: 'sm' | 'md' | 'lg' = 'md';
   export let disabled = false;
   export let loading = false;
@@ -103,6 +103,16 @@
 
   .btn-ghost:hover:not(.btn-disabled) {
     background: var(--gray-100, #f3f4f6);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--primary-600, #2563eb);
+    border: 1px solid var(--primary-600, #2563eb);
+  }
+
+  .btn-outline:hover:not(.btn-disabled) {
+    background: var(--primary-50, #eff6ff);
   }
 
   /* Sizes */

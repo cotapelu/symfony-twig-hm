@@ -232,7 +232,7 @@
 		{:else if viewMode === 'grid'}
 			<div class="groups-grid">
 				{#each filteredGroups as group}
-					<Card hoverable class="group-card">
+					<Card hoverable className="group-card">
 						<div class="group-cover" style="background: linear-gradient(135deg, {activityColors[group.activity]}40, transparent)">
 							<Badge variant={group.isPrivate ? 'warning' : 'secondary'}>
 								{group.isPrivate ? '🔒 Private' : '🌐 Public'}

@@ -148,7 +148,7 @@
 	<!-- Quick Stats Grid -->
 	<div class="quick-stats">
 		{#each stats.quickStats as stat}
-			<Card hoverable class="stat-card">
+			<Card hoverable className="stat-card">
 				<div class="stat-content">
 					<div class="stat-icon" style="background: {stat.color}20; color: {stat.color}">
 						<span class="icon">{stat.icon}</span>
@@ -168,7 +168,7 @@
 	<!-- Main Stats Cards -->
 	<div class="main-stats">
 		<div class="stat-row">
-			<Card hoverable class="main-card messages">
+			<Card hoverable className="main-card messages">
 				<div class="card-header">
 					<Icon name="message" size="lg" />
 					<Typography variant="h4">Messages</Typography>
@@ -185,7 +185,7 @@
 				</div>
 			</Card>
 
-			<Card hoverable class="main-card groups">
+			<Card hoverable className="main-card groups">
 				<div class="card-header">
 					<Icon name="group" size="lg" />
 					<Typography variant="h4">Groups</Typography>
@@ -202,7 +202,7 @@
 				</div>
 			</Card>
 
-			<Card hoverable class="main-card files">
+			<Card hoverable className="main-card files">
 				<div class="card-header">
 					<Icon name="folder" size="lg" />
 					<Typography variant="h4">Files</Typography>
@@ -219,7 +219,7 @@
 				</div>
 			</Card>
 
-			<Card hoverable class="main-card calls">
+			<Card hoverable className="main-card calls">
 				<div class="card-header">
 					<Icon name="phone" size="lg" />
 					<Typography variant="h4">Calls</Typography>

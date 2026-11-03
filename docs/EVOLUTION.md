@@ -1,3 +1,19 @@
+## 2026-11-02 Iteration 626 – Shared Atom API Extensions: Variant Semantics + class Forwarding (Cycle 24)
+
+### svelte-check: 247 → 216 (-31)
+- **Badge semantic variants**: atom typed visual-only; consumers 100% semantic usage → widen union + `.badge-secondary` CSS. Decision: Badge IS a status atom.
+- **Button 'outline' / Card 'danger' / Typography 'tertiary'**: additive variants + CSS rules.
+- **Card className**: class= forwarding for Svelte 5 strict typing; 7 consumers migrated (match Button's existing className pattern).
+- **Svelte 5 generics**: `$props<Props>()` invalid → AutoSave/Drawer/Heatmap/MockInput fixed; `createEventDispatcher<EventMap>()` valid, kept.
+
+### Verify
+eslint 0 errors on 11 changed files, 812 component tests pass, svelte-check 216.
+
+### Remaining (216)
+smartincidents.events.ts (13), modules/index.ts (11), restaurants/[id] (11), intercom-client (10), SampleModule (9+8), appcore/config.ts (7), TTHCApplication (7) — Cycle 25 targets.
+
+---
+
 ## 2026-11-02 Iteration 625 – FE Type-Error Grind + Real loadSeats Bug (Cycle 23)
 
 ### svelte-check: 273 → 247 (-26)

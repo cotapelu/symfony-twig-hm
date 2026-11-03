@@ -61,7 +61,11 @@
   - `vitest run --coverage` → **1 FAILED / 7653 passed / 61 skipped (7715)** (exit=1) ⚠️ — FE coverage KHÔNG đo được vì run fail (v8 chỉ ghi lcov khi green — đúng lesson iteration 622)
 - [x] ✅ **HẾT CHECK** (2026-11-02): PHP, Go, Python, Kotlin, Rust, Zig, Frontend — bảng kết quả đầy đủ ở mục phía dưới
 
-### Cycle 23 — FE type-error grind #1 (2026-11-02 ~23:50-00:15): **273 → 247 (-26)**
+### Cycle 24 — FE type grind #2 (2026-11-02 ~00:20-00:35): **247 → 216 (-31)**
+- **Variant semantic decision (20 → 0)**: Badge atom typed visual-only (`default|outlined|filled`) nhưng 100% consumers dùng semantic (`error/warning/success/info/secondary`) → quyết định: Badge IS a status atom → widen union + thêm `.badge-secondary` CSS (các CSS semantic khác đã có sẵn). Button + `'outline'` (+ CSS), Card + `'danger'` (+ CSS), Typography color + `'tertiary'` (+ CSS).
+- **class= forwarding (7 → 0)**: Card không khai báo className → thêm `export let className` (merge vào classes, match Button pattern), 7 consumers `class=` → `className=` (Groups, social, DashboardStats ×5).
+- **Svelte 5 generic misuse (5 → 0)**: `$props<Props>()` không generic trong Svelte 5 → AutoSave/Drawer/Heatmap/MockInput bỏ type-arg; `createEventDispatcher<T>` HỢP LỆ nên giữ nguyên.
+- Còn lại 216: smartincidents.events.ts (13), modules/index.ts (11), restaurants/[id] (11), intercom-client (10), SampleModule (9+8), appcore/config.ts (7), TTHCApplication (7) — Cycle 25.
 - **Route field gaps (12)**: Flight `departureAirport/arrivalAirport` + `Hotels policies` + `Restaurant priceRange` — additive optional fields theo pattern Cycle 20.
 - **loadSeats bug thật (3)**: flights/[id] gọi hàm không tồn tại (click = ReferenceError). Đã verify backend Kotlin `FlightBookingRoutes.kt` CÓ `GET /api/flights/{id}/seats?seatClass=` → wire `flightsService.getSeats()` + viết `loadSeats()` trong route (theo response `{seats: Seat[]}` thật, KHÔNG bịa API).
 - **Tabs string-id (4 + decision cluster từ Cycle 20)**: Tabs atom index-based; 5 consumers dùng string id. Quyết định: extend additive — `Tab.id?: string`, `activeTab: string|number`, resolve index internally, selectTab ghi lại `tab.id ?? index` (backward-compat, Tabs.test 106/106 pass).

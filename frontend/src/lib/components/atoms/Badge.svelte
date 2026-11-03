@@ -6,7 +6,9 @@
   export let status: 'success' | 'error' | 'warning' | 'info' | 'default' | null = null;
   export let text = '';
   export let size: 'sm' | 'md' | 'lg' = 'md';
-  export let variant: 'default' | 'outlined' | 'filled' = 'default';
+  // Semantic colors are accepted alongside the visual styles (Cycle 24): consumers
+  // use Badge as a status atom; the matching CSS classes already exist.
+  export let variant: 'default' | 'outlined' | 'filled' | 'success' | 'error' | 'warning' | 'info' | 'secondary' = 'default';
   export let position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' = 'top-right';
 
   $: displayCount = count > maxCount ? `${maxCount}+` : count.toString();
@@ -103,6 +105,17 @@
     background: white;
     color: var(--success-500, #10b981);
     border-color: var(--success-500, #10b981);
+  }
+
+  .badge-secondary {
+    background: var(--gray-500, #6b7280);
+    color: white;
+  }
+
+  .badge-secondary.badge-outlined {
+    background: white;
+    color: var(--gray-500, #6b7280);
+    border-color: var(--gray-500, #6b7280);
   }
 
   .badge-error {

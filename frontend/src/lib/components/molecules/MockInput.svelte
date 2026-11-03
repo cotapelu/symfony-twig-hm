@@ -42,7 +42,7 @@
     className = '',
     id = `input-${Math.random().toString(36).slice(2)}`,
     dataTestId = 'mock-input',
-  } = $props<Props>();
+  } = $props();
 
   const dispatch = createEventDispatcher();
 

@@ -1,3 +1,15 @@
+## [2026-11-02 ~00:20-00:35] Cycle 24 — FE type grind #2: 247 → 216 (P1)
+- **Type**: Fix / Type-Debt (M) + shared-atom API extensions
+- **Status**: ✅ Success (-31 errors)
+- **Design decisions (semantic-vs-visual cluster parked since Cycle 20)**:
+  - Badge = status atom: widen variant to accept semantic colors (success/error/warning/info/secondary) next to visual styles; `.badge-secondary` CSS added (others pre-existed).
+  - Button += 'outline', Card += 'danger', Typography.color += 'tertiary' (all additive + CSS).
+  - Card className prop for class= forwarding (Svelte 5 strict); 7 consumers migrated.
+  - Svelte 5: `$props<Props>()` is NOT generic → removed in 4 components; `createEventDispatcher<T>` IS generic → untouched.
+- **Verify**: eslint changed files 0 errors; 812 component tests pass; svelte-check 247 → 216.
+
+---
+
 ## [2026-11-02 ~23:50-00:15] Cycle 23 — FE type-error grind #1: 273 → 247 errors (P1)
 - **Type**: Fix / Type-Debt (M) + real bug (loadSeats ReferenceError)
 - **Priority**: HIGH (frontend type gate)

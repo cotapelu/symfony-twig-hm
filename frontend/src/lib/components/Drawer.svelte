@@ -18,7 +18,7 @@
 		onClose?: () => void;
 	}
 
-	const props = $props<Props>();
+	const props = $props();
 	
 	let {
 		open = false,

@@ -2,8 +2,10 @@
   import { createEventDispatcher } from 'svelte';
 
   export let size: 'sm' | 'md' | 'lg' = 'md';
-  export let variant: 'default' | 'outlined' | 'filled' | 'elevated' = 'default';
+  export let variant: 'default' | 'outlined' | 'filled' | 'elevated' | 'danger' = 'default';
   export let hoverable = false;
+  // class= forwarding (Svelte 5 strict): consumers pass className instead.
+  export let className = '';
   export let clickable = false;
   export let loading = false;
   export let cover: string | null = null;
@@ -17,7 +19,8 @@
     `card-${variant}`,
     hoverable ? 'card-hoverable' : '',
     clickable ? 'card-clickable' : '',
-    loading ? 'card-loading' : ''
+    loading ? 'card-loading' : '',
+    className
   ].filter(Boolean).join(' ');
 
   function handleActionClick(action: { label?: string; icon?: string }, index: number) {
@@ -87,6 +90,11 @@
 
   .card-elevated {
     box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05));
+  }
+
+  .card-danger {
+    border: 1px solid var(--error-500, #ef4444);
+    background: var(--error-50, #fef2f2);
   }
 
   /* Sizes */

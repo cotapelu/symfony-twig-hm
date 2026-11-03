@@ -30,7 +30,7 @@
     interactive = true,
     className = '',
     onCellClick
-  } = $props<Props>();
+  } = $props();
 
   const dispatch = createEventDispatcher();
 
