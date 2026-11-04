@@ -1,3 +1,22 @@
+## 2026-11-03 Iteration 631 – PHP Coverage Grind Starts: PharmacyDelivery 24% → 96% (Cycle 29)
+
+### Work
+Backend coverage pivot (FE gate green). PharmacyDeliveryService was the #1 uncovered class (178 lines, 24.3%):
+- 26 new unit tests covering createOrder end-to-end (validation matrix, fee math, XSS sanitization, transaction rollback, prescription workflow), state machine (confirm/prepare/ready/assign/complete/cancel), pessimistic-lock assignment, stock reservation, payment idempotency branches, ownership checks.
+- Full Unit suite: 5376 tests, 0 failures.
+
+### Metrics
+- PharmacyDeliveryService: 24.3% → 96.17% lines
+- PHP overall: 52.96% → 53.35% lines
+
+### Environment
+Coverage driver: podman image `localhost/phuongxa-php-cli-xdebug` (documented in TODO.md).
+
+### Next
+Appointment Repository+Entity (256 unc), Feedback (198), ANTT repos (153), SmartIncidents entities (151).
+
+---
+
 ## 2026-11-03 Iteration 630 – Type Gate Green: 289 → 3 (Cycle 28)
 
 ### svelte-check: 81 → 3 (gate effectively green; 3 Parked need backend work)

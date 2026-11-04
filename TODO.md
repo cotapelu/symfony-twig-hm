@@ -152,6 +152,13 @@ Step 3: [T/PHP hoặc M/FE type] batch tiếp theo tuỳ kết quả Step 1-2
 ## 🔜 Work Queue (sẽ làm sau khi check xong — Phase 2+)
 
 1. **[T] PHP coverage 52.96% → ≥80%**: bộ test cho targets ở bảng trên (Test-first, mỗi public method ≥1 test, mọi branch, error paths). Ưu tiên: PharmacyDeliveryService (178 unc) → AppointmentService+Repository (224) → Feedback (198) → ANTT repos (153).
+
+### Cycle 29 — PHP coverage: PharmacyDeliveryService 24.3% → 96.17% (2026-11-03)
+- **+26 tests mới** (createOrder: fee math + XSS sanitize + rollback + prescription 3 nhánh + 12 validation branches; prepareOrder ×3; assignDeliveryPerson ×4 (lock/rollback/DP unavailable/order not ready); completeDelivery ×3 (with/without DP, wrong status); ownership AccessDenied ×3; restock cancel; discount applied).
+- **Verify**: suite test 57/57 xanh trong class; **full Unit suite: 5376 tests, 0 failures**; class coverage **96.17% lines / 91.18% methods** (was 24.3%); overall PHP **52.96% → 53.35%**.
+- Bug thật tìm thấy khi viết test: **validation order** (pharmacy check trước item check — test sai assumption, fix test); entity typed properties không default (Medicine.requiresPrescription/Pharmacy.estimatedDeliveryTime) — tests init cả 2.
+- Tiếp: Appointment Repository+Entity (256 unc), Feedback (198), ANTT repos (153), SmartIncidents entities (151).
+- Lệnh đo: `podman run --rm --userns=keep-id -v $PWD:/app -w /app localhost/phuongxa-php-cli-xdebug php -d xdebug.mode=coverage vendor/bin/phpunit ...` (image `php-cli-test` KHÔNG có xdebug).
 2. **[T] Sửa docs số liệu sai**: `docs/PROJECT_STATE.md` + root TODO claim PHP ~22% → ghi 52.96% (measured 2026-11-02, basis: Unit suite, modules+src). Ghi cả podman-coverage method vào `docs/`.
 3. **[M] Backend languages**: sửa violation phát hiện khi check (Go/Python/Kotlin/Rust/Zig — pending results).
 3b. ✅ **DONE (Cycle 22, 2026-11-02)**: `native/index.ts` + `stores.ts` — fix HẾT 16 svelte-check errors bằng cách align với @capacitor/* API THẬT đã cài (đọc node_modules/@capacitor/**/definitions.d.ts, không đoán):

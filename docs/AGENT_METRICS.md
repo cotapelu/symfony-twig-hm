@@ -1,3 +1,13 @@
+## [2026-11-03 ~04:50-05:20] Cycle 29 — PHP coverage: PharmacyDeliveryService 24.3% → 96.17% (T)
+- **Type**: Test Coverage Expansion (P1, gap lớn nhất sau FE gate green)
+- **Status**: ✅ Success
+- **Added 26 unit tests**: createOrder full branch matrix (12 validation throws, fee math subtotal/service/tax/total, XSS address sanitize, rollback+rethrow, prescription required/missing/invalid/accepted, discount), prepareOrder, assignDeliveryPerson (pessimistic locks, rollback paths, driver-not-available, order-not-ready), completeDelivery (with/without driver, wrong status), ownership AccessDeniedException ×3, cancel restock loop.
+- **Verify**: class 57/57 green; FULL Unit suite 5376 tests 0 failures; PharmacyDeliveryService **24.3% → 96.17% lines / 91.18% methods**; overall PHP **52.96% → 53.35%**.
+- **Environment note**: coverage xdebug chỉ có ở image `localhost/phuongxa-php-cli-xdebug` (host + image php-cli-test không có driver).
+- **Next targets**: Appointment Repository+Entity (256 unc), Feedback (198), ANTT repos (153).
+
+---
+
 ## [2026-11-03 ~01:45-04:40] Cycle 28 — FE type grind FINAL: 81 → 3 (P1)
 - **Type**: Fix / Type-Debt + bug hunt (dup export tails, barrel rot, corrupted files, method-shorthand syntax, this-binding)
 - **Status**: ✅ Success (-78; gate now 3 Parked errors instead of 289)
