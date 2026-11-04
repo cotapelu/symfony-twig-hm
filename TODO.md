@@ -165,6 +165,14 @@ Step 3: [T/PHP hoặc M/FE type] batch tiếp theo tuỳ kết quả Step 1-2
 - **Full Unit suite: 5411 tests, 0 failures**; PHP overall **53.35% → 53.89%**.
 - Test-side gotchas: Entity constructor KHÔNG nhận duration (set sau); QB mock cần 1 Query object phục vụ cả getResult + getSingleScalarResult (getStatistics chạy 2 query trên cùng builder).
 - Tiếp: Feedback (198 unc), ANTT repos (153), SmartIncidents entities (151), Government/Message module totals.
+
+### Cycle 31 — PHP coverage: Feedback module + BUG FIX (2026-11-03)
+- **🐛 Bug thật (test-first red→green)**: `FeedbackService::assignFeedback()` KHÔNG bao giờ gọi `assignTo($officerId)` — officerId bị drop, feedback lưu với status 'submitted' → gán việc IM LẶNG. Fix: gọi `$feedback->assignTo($officerId)` trước save; test đỏ trước fix, xanh sau.
+- **Entity 25.6% → 92.68%** (new FeedbackEntityTest: transitions + guards, isOverdue 5 nhánh, satisfaction bounds, anonymous, toArray).
+- **Repo 29.9% → 94.03%** (findByWard status/limit, findOverdue, stats 3 biến thể, averageRating, departmentBreakdown với null-department + date bounds).
+- **Service 41.9% → 93.33%** (assign/start/resolve/close/reject/rate incl. guard order (LogicException trước InvalidArgumentException), delegations).
+- **Full Unit suite: 5453 tests, 0 failures**; PHP overall **53.89% → 54.29%**.
+- Lưu ý: Ctrl-verification: service rateResolution guard ORDER (resolved check trước range check); entity feedbackNumber prefix là 'PH-'.
 - Lệnh đo: `podman run --rm --userns=keep-id -v $PWD:/app -w /app localhost/phuongxa-php-cli-xdebug php -d xdebug.mode=coverage vendor/bin/phpunit ...` (image `php-cli-test` KHÔNG có xdebug).
 2. **[T] Sửa docs số liệu sai**: `docs/PROJECT_STATE.md` + root TODO claim PHP ~22% → ghi 52.96% (measured 2026-11-02, basis: Unit suite, modules+src). Ghi cả podman-coverage method vào `docs/`.
 3. **[M] Backend languages**: sửa violation phát hiện khi check (Go/Python/Kotlin/Rust/Zig — pending results).

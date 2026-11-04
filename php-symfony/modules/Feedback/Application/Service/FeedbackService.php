@@ -107,6 +107,10 @@ class FeedbackService
             return null;
         }
 
+        // The officerId was previously dropped here: the feedback was saved
+        // without ever being assigned (status stayed 'submitted'). assignTo()
+        // records the officer and advances the status.
+        $feedback->assignTo($officerId);
         $this->repository->save($feedback);
 
         return $feedback;

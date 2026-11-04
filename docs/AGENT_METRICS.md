@@ -1,3 +1,12 @@
+## [2026-11-03 ~06:00-06:30] Cycle 31 — PHP coverage: Feedback module + assignTo bug (T)
+- **Type**: Test Coverage Expansion + REAL BUG FIX (P1)
+- **Bug**: FeedbackService::assignFeedback() never called assignTo() — officerId dropped, feedback saved with status 'submitted' (silent assignment failure). Fixed test-first: RED test asserting assignment → fix → GREEN.
+- **Coverage**: Entity 25.6% → 92.68% (new FeedbackEntityTest: state machine, isOverdue branches, guards), Repository 29.9% → 94.03% (stats/averageRating/departmentBreakdown/filters), Service 41.9% → 93.33% (full state-machine + guard order).
+- **Verify**: full Unit suite 5453 tests, 0 failures; PHP overall 53.89% → 54.29% lines.
+- **Next**: ANTT repos (153 unc), SmartIncidents entities (151).
+
+---
+
 ## [2026-11-03 ~05:25-05:55] Cycle 30 — PHP coverage: Appointment Repository+Entity (T)
 - **Type**: Test Coverage Expansion
 - **Status**: ✅ Success

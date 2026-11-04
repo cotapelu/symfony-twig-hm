@@ -313,4 +313,155 @@ class FeedbackRepositoryTest extends TestCase
         $this->repository->remove($feedback);
         $this->addToAssertionCount(1);
     }
+
+    /**
+     * Fluent QueryBuilder stub: one Query serves both getResult and
+     * getSingleScalarResult because statistics run several queries.
+     */
+    private function stubQueryBuilder(array $results = [], $scalar = null): \Doctrine\ORM\QueryBuilder
+    {
+        $qb = $this->createQueryBuilderMock();
+        $query = $this->createQueryMock();
+        $query->method('getResult')->willReturn($results);
+        $query->method('getSingleScalarResult')->willReturn($scalar);
+        $qb->method('select')->willReturnSelf();
+        $qb->method('from')->willReturnSelf();
+        $qb->method('where')->willReturnSelf();
+        $qb->method('andWhere')->willReturnSelf();
+        $qb->method('setParameter')->willReturnSelf();
+        $qb->method('orderBy')->willReturnSelf();
+        $qb->method('addOrderBy')->willReturnSelf();
+        $qb->method('groupBy')->willReturnSelf();
+        $qb->method('innerJoin')->willReturnSelf();
+        $qb->method('setMaxResults')->willReturnSelf();
+        $qb->method('getQuery')->willReturn($query);
+        return $qb;
+    }
+
+    public function testFindByWard_WithStatusAndLimit(): void
+    {
+        $qb = $this->stubQueryBuilder([]);
+        $qb->expects($this->once())->method('andWhere')->with('f.status = :status')->willReturnSelf();
+        $qb->expects($this->once())->method('setMaxResults')->with(10)->willReturnSelf();
+        $this->em->expects($this->once())->method('createQueryBuilder')->willReturn($qb);
+
+        $this->assertSame([], $this->repository->findByWard('W01', Feedback::STATUS_SUBMITTED, 10));
+    }
+
+    public function testFindOverdueFeedback_ReturnsRows(): void
+    {
+        $expected = [$this->createFeedbackMock()];
+        $qb = $this->stubQueryBuilder($expected);
+        $this->em->expects($this->once())->method('createQueryBuilder')->willReturn($qb);
+
+        $this->assertSame($expected, $this->repository->findOverdueFeedback());
+    }
+
+    // ================= statistics =================
+    public function testGetStatistics_Empty(): void
+    {
+        $qb = $this->stubQueryBuilder([], 0);
+        $this->em->method('createQueryBuilder')->willReturn($qb, $qb);
+
+        $stats = $this->repository->getStatistics('W01');
+        $this->assertSame(0, $stats['total']);
+        $this->assertSame(0, $stats['pending']);
+        $this->assertSame(0, $stats['submitted']);
+    }
+
+    public function testGetStatistics_AggregatesStatusCounts(): void
+    {
+        $rows = [
+            ['status' => Feedback::STATUS_SUBMITTED, 'count' => 2],
+            ['status' => Feedback::STATUS_RESOLVED, 'count' => 3],
+            ['status' => 'unknown', 'count' => 1], // ignored branch
+        ];
+        $qb = $this->stubQueryBuilder($rows, 5);
+        $this->em->method('createQueryBuilder')->willReturn($qb, $qb);
+
+        $stats = $this->repository->getStatistics('W01');
+        $this->assertSame(6, $stats['total']);
+        $this->assertSame(2, $stats['submitted']);
+        $this->assertSame(3, $stats['resolved']);
+        $this->assertSame(5, $stats['pending']);
+    }
+
+    public function testGetStatistics_WithDateRange(): void
+    {
+        $qb = $this->stubQueryBuilder([], 1);
+        // status-count query (2 bounds) + pending-count query (status IN + 2 bounds)
+        $qb->expects($this->exactly(5))->method('andWhere');
+        $this->em->method('createQueryBuilder')->willReturn($qb, $qb);
+
+        $stats = $this->repository->getStatistics(
+            'W01',
+            new \DateTimeImmutable('2026-01-01'),
+            new \DateTimeImmutable('2026-12-31')
+        );
+        $this->assertSame(1, $stats['pending']);
+    }
+
+    public function testGetAverageRating_ReturnsFloat(): void
+    {
+        $qb = $this->stubQueryBuilder([], '4.50');
+        $this->em->method('createQueryBuilder')->willReturn($qb);
+
+        $this->assertEqualsWithDelta(4.5, $this->repository->getAverageRating('W01'), 0.001);
+    }
+
+    public function testGetAverageRating_NullWhenNoRatings(): void
+    {
+        $qb = $this->stubQueryBuilder([], null);
+        $this->em->method('createQueryBuilder')->willReturn($qb);
+
+        $this->assertNull($this->repository->getAverageRating('W01'));
+    }
+
+    public function testGetAverageRating_WithDateRange_AddsBounds(): void
+    {
+        $qb = $this->stubQueryBuilder([], '5');
+        // rating IS NOT NULL + 2 date bounds
+        $qb->expects($this->exactly(3))->method('andWhere');
+        $this->em->method('createQueryBuilder')->willReturn($qb);
+
+        $this->assertSame(
+            5.0,
+            $this->repository->getAverageRating(
+                'W01',
+                new \DateTimeImmutable('2026-01-01'),
+                new \DateTimeImmutable('2026-12-31')
+            )
+        );
+    }
+
+    public function testGetDepartmentBreakdown_MapsNullDepartment(): void
+    {
+        $rows = [
+            ['department' => null, 'count' => '2', 'avgRating' => null],
+            ['department' => 'Ve sinh', 'count' => '1', 'avgRating' => '4.0'],
+        ];
+        $qb = $this->stubQueryBuilder($rows);
+        $this->em->method('createQueryBuilder')->willReturn($qb);
+
+        $breakdown = $this->repository->getDepartmentBreakdown('W01');
+        $this->assertCount(2, $breakdown);
+        $this->assertSame('Không phân loại', $breakdown[0]['department']);
+        $this->assertSame(2, $breakdown[0]['count']);
+        $this->assertNull($breakdown[0]['avgRating']);
+        $this->assertSame(1, $breakdown[1]['count']);
+        $this->assertEqualsWithDelta(4.0, $breakdown[1]['avgRating'], 0.001);
+    }
+
+    public function testGetDepartmentBreakdown_WithDateRange(): void
+    {
+        $qb = $this->stubQueryBuilder([]);
+        $qb->expects($this->exactly(2))->method('andWhere');
+        $this->em->method('createQueryBuilder')->willReturn($qb);
+
+        $this->assertSame([], $this->repository->getDepartmentBreakdown(
+            'W01',
+            new \DateTimeImmutable('2026-01-01'),
+            new \DateTimeImmutable('2026-12-31')
+        ));
+    }
 }

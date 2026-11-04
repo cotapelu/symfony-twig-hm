@@ -1,3 +1,16 @@
+## 2026-11-03 Iteration 633 – Feedback Module + Silent assignTo Bug (Cycle 31)
+
+### Work + real bug
+Writing the assignFeedback test exposed a production bug: the service never called
+`assignTo($officerId)` — feedback stayed 'submitted' no matter how many times it
+was "assigned". Fixed (red → green).
+
+### Metrics
+- Feedback Entity 25.6% → 92.68%, Repository 29.9% → 94.03%, Service 41.9% → 93.33%
+- PHP overall: 53.89% → 54.29% lines; Unit suite 5453 tests, 0 failures
+
+---
+
 ## 2026-11-03 Iteration 632 – Appointment Module: Repo 12% → 96%, Entity 18% → 96% (Cycle 30)
 
 ### Work

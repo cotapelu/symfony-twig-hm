@@ -180,4 +180,145 @@ class FeedbackServiceTest extends TestCase
         $result = $this->service->getPendingFeedback();
         $this->assertCount(2, $result);
     }
+
+    // ================= state machine (service layer) =================
+    public function testAssignFeedback_AssignsOfficerAndMovesToUnderReview(): void
+    {
+        $feedback = new Feedback(
+            'fb-1', Feedback::TYPE_COMPLAINT, 'W01', 'T', 'D', 'A'
+        );
+        $this->repository->method('findById')->with('fb-1')->willReturn($feedback);
+        $this->repository->expects($this->once())->method('save')->with($feedback);
+
+        $result = $this->service->assignFeedback('fb-1', 'OFF-7');
+
+        // The service must actually assign: officer recorded + status advanced.
+        // (Previously $officerId was dropped — no assignTo() call — a silent bug.)
+        $this->assertSame($feedback, $result);
+        $this->assertSame(Feedback::STATUS_UNDER_REVIEW, $feedback->getStatus());
+    }
+
+    public function testAssignFeedback_NotFound(): void
+    {
+        $this->repository->method('findById')->willReturn(null);
+        $this->repository->expects($this->never())->method('save');
+
+        $this->assertNull($this->service->assignFeedback('nope', 'OFF-1'));
+    }
+
+    public function testStartProcessing_NotFound(): void
+    {
+        $this->repository->method('findById')->willReturn(null);
+        $this->repository->expects($this->never())->method('save');
+
+        $this->assertNull($this->service->startProcessing('nope'));
+    }
+
+    public function testStartProcessing_Success(): void
+    {
+        $feedback = new Feedback('fb-1', Feedback::TYPE_COMPLAINT, 'W01', 'T', 'D', 'A');
+        $feedback->assignTo('OFF-1');
+        $this->repository->method('findById')->willReturn($feedback);
+
+        $result = $this->service->startProcessing('fb-1');
+
+        $this->assertSame(Feedback::STATUS_IN_PROGRESS, $result->getStatus());
+    }
+
+    public function testResolveFeedback_Success(): void
+    {
+        $feedback = new Feedback('fb-1', Feedback::TYPE_COMPLAINT, 'W01', 'T', 'D', 'A');
+        $this->repository->method('findById')->willReturn($feedback);
+
+        $result = $this->service->resolveFeedback('fb-1', 'Da xu ly', 'OFF-1');
+
+        $this->assertTrue($result->isResolved());
+    }
+
+    public function testResolveFeedback_NotFound(): void
+    {
+        $this->repository->method('findById')->willReturn(null);
+        $this->assertNull($this->service->resolveFeedback('nope', 's', 'OFF-1'));
+    }
+
+    public function testCloseFeedback_Success(): void
+    {
+        $feedback = new Feedback('fb-1', Feedback::TYPE_COMPLAINT, 'W01', 'T', 'D', 'A');
+        $this->repository->method('findById')->willReturn($feedback);
+
+        $this->assertSame(
+            Feedback::STATUS_CLOSED,
+            $this->service->closeFeedback('fb-1')->getStatus()
+        );
+    }
+
+    public function testRejectFeedback_Success(): void
+    {
+        $feedback = new Feedback('fb-1', Feedback::TYPE_COMPLAINT, 'W01', 'T', 'D', 'A');
+        $this->repository->method('findById')->willReturn($feedback);
+
+        $this->assertSame(
+            Feedback::STATUS_REJECTED,
+            $this->service->rejectFeedback('fb-1', 'khong thuoc tham quyen')->getStatus()
+        );
+    }
+
+    public function testRateResolution_RejectsOutOfRange(): void
+    {
+        $feedback = new Feedback('fb-1', Feedback::TYPE_COMPLAINT, 'W01', 'T', 'D', 'A');
+        $feedback->resolve('xong', 'OFF-1'); // service guards: must be resolved first
+        $this->repository->method('findById')->willReturn($feedback);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->service->rateResolution('fb-1', 9);
+    }
+
+    public function testRateResolution_RejectsUnresolved(): void
+    {
+        $feedback = new Feedback('fb-1', Feedback::TYPE_COMPLAINT, 'W01', 'T', 'D', 'A');
+        $this->repository->method('findById')->willReturn($feedback);
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Can only rate resolved feedback');
+        $this->service->rateResolution('fb-1', 5);
+    }
+
+    public function testRateResolution_Success(): void
+    {
+        $feedback = new Feedback('fb-1', Feedback::TYPE_COMPLAINT, 'W01', 'T', 'D', 'A');
+        $feedback->resolve('xong', 'OFF-1');
+        $this->repository->method('findById')->willReturn($feedback);
+        $this->repository->expects($this->once())->method('save')->with($feedback);
+
+        $this->assertSame($feedback, $this->service->rateResolution('fb-1', 4));
+        $this->assertSame(4, $feedback->toArray()['citizenSatisfaction'] ?? null);
+    }
+
+    public function testGetOverdueFeedback_Delegates(): void
+    {
+        $this->repository->expects($this->once())->method('findOverdueFeedback')->willReturn([]);
+        $this->assertSame([], $this->service->getOverdueFeedback());
+    }
+
+    public function testGetStatistics_Delegates(): void
+    {
+        $this->repository->expects($this->once())->method('getStatistics')
+            ->with('W01', null, null)->willReturn(['total' => 3]);
+
+        $this->assertSame(['total' => 3], $this->service->getStatistics('W01'));
+    }
+
+    public function testGetAverageRating_NullWhenNoRatings(): void
+    {
+        $this->repository->method('getAverageRating')->willReturn(null);
+        $this->assertNull($this->service->getAverageRating('W01'));
+    }
+
+    public function testGetDepartmentBreakdown_Delegates(): void
+    {
+        $breakdown = [['department' => 'Ve sinh', 'count' => 2, 'avgRating' => 4.0]];
+        $this->repository->method('getDepartmentBreakdown')->willReturn($breakdown);
+
+        $this->assertSame($breakdown, $this->service->getDepartmentBreakdown('W01'));
+    }
 }
