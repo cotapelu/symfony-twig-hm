@@ -159,6 +159,12 @@ Step 3: [T/PHP hoặc M/FE type] batch tiếp theo tuỳ kết quả Step 1-2
 - Bug thật tìm thấy khi viết test: **validation order** (pharmacy check trước item check — test sai assumption, fix test); entity typed properties không default (Medicine.requiresPrescription/Pharmacy.estimatedDeliveryTime) — tests init cả 2.
 - Tiếp: Appointment Repository+Entity (256 unc), Feedback (198), ANTT repos (153), SmartIncidents entities (151).
 
+### Cycle 32 — PHP coverage: ANTT module (2026-11-03)
+- **IncidentRepository 21% → 100%** (new test file, 25 methods: findBy variants, search criteria matrix + date bounds, counts, paging).
+- **SecurityCaseRepository 40.4% → 87.88%** (new test file; field names đã verify từ source: findByCaseType→'type', findByInvestigationOfficer→'assignedOfficerId', findByWardCode→'wardId').
+- **Patrol entity 61.1% → 82.44%** (+9 tests: fluent transitions, record counters, updatedAt touch).
+- **Full Unit suite: 5506 tests, 0 failures**; PHP overall **54.29% → 54.66%**.
+
 ### Cycle 30 — PHP coverage: Appointment module (2026-11-03)
 - **Repository 12.2% → 96.15%** (+15 tests): findByWard/Officer/Upcoming/Today (filter branches), findAvailableSlots (slot/overlap logic ×4), getStatistics (aggregation + unknown-status branch + date range).
 - **Entity 17.9% → 95.86%** (+20 tests mới, file AppointmentEntityTest.php): constructor/init, state machine happy paths (confirm/start/complete/cancel/noShow), illegal transitions ×6 (LogicException), isFuture/isPast/isToday/getEndTime, setters (incl. null), toArray, version.

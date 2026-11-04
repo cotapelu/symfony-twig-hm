@@ -171,4 +171,102 @@ class PatrolTest extends TestCase
         $patrol->setWardCode(null);
         $this->assertNull($patrol->getWardCode());
     }
+
+    // ================= fluent transitions =================
+    public function testSetTeamLeader(): void
+    {
+        $patrol = $this->createPatrol();
+        $result = $patrol->setTeamLeader('OFF-1', 'Nguyen Van A');
+
+        $this->assertSame($patrol, $result); // fluent
+        $this->assertSame('OFF-1', $patrol->getTeamLeaderId());
+        $this->assertSame('Nguyen Van A', $patrol->getTeamLeaderName());
+    }
+
+    public function testSetTeamLeaderAcceptsNull(): void
+    {
+        $patrol = $this->createPatrol()->setTeamLeader('OFF-1', 'A');
+        $patrol->setTeamLeader(null, null);
+
+        $this->assertNull($patrol->getTeamLeaderId());
+        $this->assertNull($patrol->getTeamLeaderName());
+    }
+
+    public function testSetTimeSetsStartAndOptionalEnd(): void
+    {
+        $patrol = $this->createPatrol();
+        $start = new \DateTimeImmutable('2026-05-01 08:00');
+        $end = new \DateTimeImmutable('2026-05-01 10:00');
+
+        $patrol->setTime($start, $end);
+        $this->assertSame($start, $patrol->getStartTime());
+        $this->assertSame($end, $patrol->getEndTime());
+
+        $patrol->setTime($start);
+        $this->assertNull($patrol->getEndTime());
+    }
+
+    public function testStartPatrolAdvancesStatusAndStartTime(): void
+    {
+        $patrol = $this->createPatrol();
+
+        $patrol->startPatrol();
+
+        $this->assertSame('in_progress', $patrol->getStatus());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $patrol->getStartTime());
+    }
+
+    public function testCompletePatrolStoresFindingsAndEndTime(): void
+    {
+        $patrol = $this->createPatrol()->startPatrol();
+
+        $patrol->completePatrol('Phat hien 2 vi pham');
+
+        $this->assertSame('completed', $patrol->getStatus());
+        $this->assertSame('Phat hien 2 vi pham', $patrol->getFindingsSummary());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $patrol->getEndTime());
+    }
+
+    public function testCancelPatrolStoresReasonInNotes(): void
+    {
+        $patrol = $this->createPatrol()->startPatrol();
+
+        $patrol->cancelPatrol('Thoi tiet xau');
+
+        $this->assertSame('cancelled', $patrol->getStatus());
+        $this->assertSame('Thoi tiet xau', $patrol->getNotes());
+    }
+
+    public function testRecordIncidentIncrements(): void
+    {
+        $patrol = $this->createPatrol();
+        $this->assertSame(0, $patrol->getIncidentsReported());
+
+        $patrol->recordIncident();
+        $patrol->recordIncident();
+
+        $this->assertSame(2, $patrol->getIncidentsReported());
+    }
+
+    public function testRecordViolationIncrements(): void
+    {
+        $patrol = $this->createPatrol();
+        $this->assertSame(0, $patrol->getViolationsRecorded());
+
+        $patrol->recordViolation();
+
+        $this->assertSame(1, $patrol->getViolationsRecorded());
+    }
+
+    public function testTransitionsTouchUpdatedAt(): void
+    {
+        $patrol = $this->createPatrol();
+        $before = $patrol->getUpdatedAt();
+        usleep(1100); // ensure clock moves past the previous timestamp
+
+        $patrol->recordViolation();
+        $after = $patrol->getUpdatedAt();
+
+        $this->assertNotSame($before, $after);
+    }
 }

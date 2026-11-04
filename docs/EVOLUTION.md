@@ -1,3 +1,15 @@
+## 2026-11-03 Iteration 634 – ANTT: IncidentRepository 21% → 100% (Cycle 32)
+
+### Work
+- New IncidentRepositoryTest (25 methods, 100% lines): all findBy variants, search criteria matrix, counts, paging
+- New SecurityCaseRepositoryTest (40.4% → 87.88%)
+- Patrol entity transitions (+9 tests, 61.1% → 82.44%)
+
+### Metrics
+PHP overall: 54.29% → 54.66% lines. Unit suite: 5506 tests, 0 failures.
+
+---
+
 ## 2026-11-03 Iteration 633 – Feedback Module + Silent assignTo Bug (Cycle 31)
 
 ### Work + real bug
