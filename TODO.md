@@ -158,6 +158,13 @@ Step 3: [T/PHP hoặc M/FE type] batch tiếp theo tuỳ kết quả Step 1-2
 - **Verify**: suite test 57/57 xanh trong class; **full Unit suite: 5376 tests, 0 failures**; class coverage **96.17% lines / 91.18% methods** (was 24.3%); overall PHP **52.96% → 53.35%**.
 - Bug thật tìm thấy khi viết test: **validation order** (pharmacy check trước item check — test sai assumption, fix test); entity typed properties không default (Medicine.requiresPrescription/Pharmacy.estimatedDeliveryTime) — tests init cả 2.
 - Tiếp: Appointment Repository+Entity (256 unc), Feedback (198), ANTT repos (153), SmartIncidents entities (151).
+
+### Cycle 30 — PHP coverage: Appointment module (2026-11-03)
+- **Repository 12.2% → 96.15%** (+15 tests): findByWard/Officer/Upcoming/Today (filter branches), findAvailableSlots (slot/overlap logic ×4), getStatistics (aggregation + unknown-status branch + date range).
+- **Entity 17.9% → 95.86%** (+20 tests mới, file AppointmentEntityTest.php): constructor/init, state machine happy paths (confirm/start/complete/cancel/noShow), illegal transitions ×6 (LogicException), isFuture/isPast/isToday/getEndTime, setters (incl. null), toArray, version.
+- **Full Unit suite: 5411 tests, 0 failures**; PHP overall **53.35% → 53.89%**.
+- Test-side gotchas: Entity constructor KHÔNG nhận duration (set sau); QB mock cần 1 Query object phục vụ cả getResult + getSingleScalarResult (getStatistics chạy 2 query trên cùng builder).
+- Tiếp: Feedback (198 unc), ANTT repos (153), SmartIncidents entities (151), Government/Message module totals.
 - Lệnh đo: `podman run --rm --userns=keep-id -v $PWD:/app -w /app localhost/phuongxa-php-cli-xdebug php -d xdebug.mode=coverage vendor/bin/phpunit ...` (image `php-cli-test` KHÔNG có xdebug).
 2. **[T] Sửa docs số liệu sai**: `docs/PROJECT_STATE.md` + root TODO claim PHP ~22% → ghi 52.96% (measured 2026-11-02, basis: Unit suite, modules+src). Ghi cả podman-coverage method vào `docs/`.
 3. **[M] Backend languages**: sửa violation phát hiện khi check (Go/Python/Kotlin/Rust/Zig — pending results).

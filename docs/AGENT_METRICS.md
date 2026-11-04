@@ -1,3 +1,13 @@
+## [2026-11-03 ~05:25-05:55] Cycle 30 — PHP coverage: Appointment Repository+Entity (T)
+- **Type**: Test Coverage Expansion
+- **Status**: ✅ Success
+- **Repository**: 12.2% → 96.15% lines — 15 tests (filter branches, slot-overlap logic, statistics aggregation, date ranges).
+- **Entity**: 17.9% → 95.86% lines — 20 tests in new AppointmentEntityTest (state machine + guard transitions + time logic + serialization).
+- **Verify**: full Unit suite 5411 tests, 0 failures; PHP overall 53.35% → 53.89% lines.
+- **Next**: Feedback (198 unc), ANTT repos (153), SmartIncidents entities (151).
+
+---
+
 ## [2026-11-03 ~04:50-05:20] Cycle 29 — PHP coverage: PharmacyDeliveryService 24.3% → 96.17% (T)
 - **Type**: Test Coverage Expansion (P1, gap lớn nhất sau FE gate green)
 - **Status**: ✅ Success
