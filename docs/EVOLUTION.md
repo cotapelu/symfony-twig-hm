@@ -1,3 +1,16 @@
+## 2026-11-03 Iteration 636 – Citizen Domain Entity: 30% → 79% (Cycle 34)
+
+### Work
+- New CitizenDomainTest for App\Government\Domain\Entity\Citizen (existing
+  CitizenTest targeted a different duplicate class)
+- Validation coverage: name/email/phone/DOB + XSS sanitization, gender/blood/
+  marital enums, age, lifecycle, serialization
+
+### Metrics
+PHP overall: 54.98% → 55.18% lines. Unit suite: 5553 tests, 0 failures.
+
+---
+
 ## 2026-11-03 Iteration 635 – SmartIncidents Entities: 12%→99%, 49%→97% (Cycle 33)
 
 ### Work

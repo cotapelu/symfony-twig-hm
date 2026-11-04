@@ -159,6 +159,12 @@ Step 3: [T/PHP hoặc M/FE type] batch tiếp theo tuỳ kết quả Step 1-2
 - Bug thật tìm thấy khi viết test: **validation order** (pharmacy check trước item check — test sai assumption, fix test); entity typed properties không default (Medicine.requiresPrescription/Pharmacy.estimatedDeliveryTime) — tests init cả 2.
 - Tiếp: Appointment Repository+Entity (256 unc), Feedback (198), ANTT repos (153), SmartIncidents entities (151).
 
+### Cycle 34 — PHP coverage: Citizen domain entity (2026-11-03)
+- **Citizen 29.8% → 79.01%** (new CitizenDomainTest, 19 tests: fullName/email/phone/DOB validation, XSS sanitize, gender/blood/marital enums, activate/deactivate, getAge, toArray camelCase).
+- **Duplicate-entity phát hiện**: `tests/Entity/Government/CitizenTest.php` test class `App\Entity\Government\Citizen` (khác hoàn toàn `App\Government\Domain\Entity\Citizen`) — domain entity gần như không có test. Ghi nhận cho dọn dẹp sau.
+- Entity setters void (không chain), validations: gender male/female/other, blood A±/B±/AB±/O±, marital single/married/divorced/widowed, identity 9/12 digits, DOB ≥1900 & không tương lai.
+- **Full Unit suite: 5553 tests, 0 failures**; PHP overall **54.98% → 55.18%**.
+
 ### Cycle 33 — PHP coverage: SmartIncidents entities (2026-11-03)
 - **SmartIncidentActivity 12.2% → 98.78%** (new test: 7 static factories — createCreated/StatusChanged/Assigned (±team)/Resolved/Escalated/MessageSent/AttachmentAdded; metadata JSON round-trip; toArray keys).
 - **SmartIncident 49.4% → 96.79%** (new test: transitions resolve/close/assignTo/escalate, isOpen/isResolved matrix, attachments add/remove 2 chiều, view/upvote counters, metadata, toArray snake_case payload).
