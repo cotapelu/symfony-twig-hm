@@ -1,3 +1,14 @@
+## 2026-11-03 Iteration 635 – SmartIncidents Entities: 12%→99%, 49%→97% (Cycle 33)
+
+### Work
+- SmartIncidentActivity: 12.2% → 98.78% — 7 static factory methods, metadata JSON, toArray
+- SmartIncident: 49.4% → 96.79% — transitions, status predicates, attachment lifecycle, counters, toArray (snake_case API payload)
+
+### Metrics
+PHP overall: 54.66% → 54.98% lines. Unit suite: 5534 tests, 0 failures.
+
+---
+
 ## 2026-11-03 Iteration 634 – ANTT: IncidentRepository 21% → 100% (Cycle 32)
 
 ### Work

@@ -159,6 +159,11 @@ Step 3: [T/PHP hoặc M/FE type] batch tiếp theo tuỳ kết quả Step 1-2
 - Bug thật tìm thấy khi viết test: **validation order** (pharmacy check trước item check — test sai assumption, fix test); entity typed properties không default (Medicine.requiresPrescription/Pharmacy.estimatedDeliveryTime) — tests init cả 2.
 - Tiếp: Appointment Repository+Entity (256 unc), Feedback (198), ANTT repos (153), SmartIncidents entities (151).
 
+### Cycle 33 — PHP coverage: SmartIncidents entities (2026-11-03)
+- **SmartIncidentActivity 12.2% → 98.78%** (new test: 7 static factories — createCreated/StatusChanged/Assigned (±team)/Resolved/Escalated/MessageSent/AttachmentAdded; metadata JSON round-trip; toArray keys).
+- **SmartIncident 49.4% → 96.79%** (new test: transitions resolve/close/assignTo/escalate, isOpen/isResolved matrix, attachments add/remove 2 chiều, view/upvote counters, metadata, toArray snake_case payload).
+- **Full Unit suite: 5534 tests, 0 failures**; PHP overall **54.66% → 54.98%**.
+
 ### Cycle 32 — PHP coverage: ANTT module (2026-11-03)
 - **IncidentRepository 21% → 100%** (new test file, 25 methods: findBy variants, search criteria matrix + date bounds, counts, paging).
 - **SecurityCaseRepository 40.4% → 87.88%** (new test file; field names đã verify từ source: findByCaseType→'type', findByInvestigationOfficer→'assignedOfficerId', findByWardCode→'wardId').

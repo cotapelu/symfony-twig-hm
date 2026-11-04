@@ -1,3 +1,12 @@
+## [2026-11-03 ~07:10-07:35] Cycle 33 — PHP coverage: SmartIncidents entities (T)
+- **Type**: Test Coverage Expansion
+- **Status**: ✅ Success
+- **SmartIncidentActivity** 12.2% → 98.78% (7 static factories, metadata, toArray).
+- **SmartIncident** 49.4% → 96.79% (transitions, isOpen/isResolved matrix, collections, counters, toArray snake_case).
+- **Verify**: full Unit suite 5534 tests, 0 failures; PHP overall 54.66% → 54.98% lines.
+
+---
+
 ## [2026-11-03 ~06:35-07:05] Cycle 32 — PHP coverage: ANTT repos 100%/88% + Patrol entity (T)
 - **Type**: Test Coverage Expansion
 - **Status**: ✅ Success
